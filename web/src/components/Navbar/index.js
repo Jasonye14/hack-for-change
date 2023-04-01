@@ -7,10 +7,10 @@ import {
 } from './NavbarElement';
 
 // Material UI
-import { Avatar } from '@mui/material';
+// import { Avatar } from '@mui/material';
 
 //Assets
-import blank_prof from '../../images/blank_profile.jpeg';
+// import blank_prof from '../../images/blank_profile.jpeg';
 
 const Navbar = () => {
   return (

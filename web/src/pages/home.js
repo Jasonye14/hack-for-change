@@ -7,7 +7,7 @@ import './home.css';
 import sea_turtle from '../images/sea_turtle.jpg';
 
 //Material UI
-import Container from '@mui/material/Container';
+// import Container from '@mui/material/Container';
 
 const Home = () => {
   return (
