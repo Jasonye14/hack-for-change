@@ -32,9 +32,18 @@ const [code, setCode] = useState('');
 const [isTwoFactorEnabled, setIsTwoFactorEnabled] = useState(false);
 const [verificationType, setVerificationType] = useState('');
 
-  const handleLogin = async () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const data = new FormData(event.currentTarget);
+
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
+
     const auth = getAuth();
-    await signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
+    signInWithEmailAndPassword(auth, email, password).then(userCredential => {
         // Signed in successfully
         const user = userCredential.user;
         console.log(user);
@@ -42,15 +51,16 @@ const [verificationType, setVerificationType] = useState('');
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
       });
   };
 
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
 
-  provider.setCustomParameters({
-    'login_hint': 'user@example.com'
-  });
+    provider.setCustomParameters({
+      'login_hint': 'user@example.com'
+    });
 
     const auth = getAuth();
     await signInWithPopup(auth, provider).then((result) => {
@@ -99,21 +109,15 @@ function Copyright(props) {
       <Link color="inherit" href="https://mui.com/">
         Your Website
       </Link>{' '}
-      {new Date().getFullYear()}
+      {new Date().getFullYear()} 
       {'.'}
     </Typography>
   );
 }
 
-const theme = createTheme();
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+  const theme = createTheme();
+
+  console.log(setEmail, setPassword, code, setCode, setIsTwoFactorEnabled, setVerificationType);
 
   return (
     <ThemeProvider theme={theme}>
@@ -160,7 +164,6 @@ const theme = createTheme();
             />
             <Button
               className="btn"
-              onClick={handleLogin}
               type="submit"
               fullWidth
               variant="contained"
