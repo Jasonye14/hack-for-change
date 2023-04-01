@@ -60,19 +60,16 @@ const UserLogin = () => {
     const auth = getAuth();
 
     await signInWithPopup(auth, provider).then((result) => {
-      // const credential = GoogleAuthProvider.credentialFromResult(result);
       const user = result.user;
       const email = user.email;
       const eUsername = email.replace(/\..+/g, '').replace('@', ''); // jak325@lehigh.edu => jak325lehigh
       let found = false;
-      // const token = credential.accessToken;
 
       let usersReference = ref(db, 'users');
       onValue(usersReference, snapshot => {
         const data = snapshot.val();
         Object.entries(data).forEach(([username, data]) => {
           if (data.email === user.email) {
-            // document.cookie = `token=${token}`; // store token as cookie (necessary?)
             found = true;
             window.location.href = `/users/${username}`; // redirect to user's home page
           }
@@ -90,12 +87,6 @@ const UserLogin = () => {
           window.location.href = `/users/${eUsername}`; // redirect to user's home page
         }
       });
-
-      
-      
-      
-      
-      // document.cookie = `token=${token}`; // store token as cookie (necessary?)
 
     }).catch((error) => {
       console.error(error.message);
