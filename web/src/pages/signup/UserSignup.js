@@ -13,6 +13,16 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+// component Imports
+import GoogleButton from '../../components/Buttons/GoogleSignin';
+
+// auth
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
+// database
+import db from '../../utils/firebase';
+import { onValue, ref, set } from "firebase/database";
+
 const UserSignUp = () => {
     function Copyright(props) {
         return (
@@ -28,6 +38,57 @@ const UserSignUp = () => {
       }
       
       const theme = createTheme();
+
+    const handleGoogle = async () => {
+      const provider = new GoogleAuthProvider();
+      const auth = getAuth();
+  
+      await signInWithPopup(auth, provider).then((result) => {
+        // const credential = GoogleAuthProvider.credentialFromResult(result);
+        const user = result.user;
+        const email = user.email;
+        const eUsername = email.replace(/\..+/g, '').replace('@', ''); // jak325@lehigh.edu => jak325lehigh
+        // const token = credential.accessToken;
+  
+        // const usersReference = ref(db, `users/${username}`); // need to check if user email is in db
+        // onValue(usersReference, snapshot => {
+        //   const data = snapshot.val();
+        //   if (!data) { // if user is not in database, add them
+            
+        //     window.location.href = `/users/${username}`; // redirect to user's home page
+        //   } else {
+        //     window.location.href = `/users/${data}`; // redirect to user's home page
+        //   }
+        // });
+
+        let usersReference = ref(db, 'users');
+        onValue(usersReference, snapshot => {
+          const data = snapshot.val();
+          Object.entries(data).forEach(([username, data]) => {
+            if (data.email === user.email) {
+              // document.cookie = `token=${token}`; // store token as cookie (necessary?)
+              window.location.href = `/users/${username}`; // redirect to user's home page
+            }
+          });
+        });
+
+        // user not found in db; create an instance for said user
+        usersReference = ref(db, `users/${eUsername}`)
+        set(usersReference, {
+          email: email,
+          fname: "",
+          lname: "",
+          location: "",
+        });
+
+        // document.cookie = `token=${token}`; // store token as cookie (necessary?)
+        window.location.href = `/users/${eUsername}`; // redirect to user's home page
+  
+      }).catch((error) => {
+        console.error(error.message);
+      });
+  
+    }
 
       const handleSubmit = (event) => {
         event.preventDefault();
@@ -58,25 +119,14 @@ const UserSignUp = () => {
               </Typography>
               <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={12}>
                     <TextField
                       autoComplete="given-name"
-                      name="firstName"
-                      required
+                      name="username"
                       fullWidth
-                      id="firstName"
-                      label="First Name"
+                      id="username"
+                      label="Username (Email will be used if none provided)"
                       autoFocus
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="lastName"
-                      label="Last Name"
-                      name="lastName"
-                      autoComplete="family-name"
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -115,9 +165,10 @@ const UserSignUp = () => {
                 >
                   Sign Up
                 </Button>
+                <GoogleButton onClick={handleGoogle}></GoogleButton>
                 <Grid container justifyContent="flex-end">
                   <Grid item>
-                    <Link href="#" variant="body2">
+                    <Link href="/login" variant="body2">
                       Already have an account? Sign in
                     </Link>
                   </Grid>
