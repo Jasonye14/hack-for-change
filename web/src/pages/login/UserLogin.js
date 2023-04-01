@@ -32,6 +32,10 @@ const [code, setCode] = useState('');
 const [isTwoFactorEnabled, setIsTwoFactorEnabled] = useState(false);
 const [verificationType, setVerificationType] = useState('');
 
+//here to handle used vars error for now
+console.log(isTwoFactorEnabled);
+console.log(verificationType);
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
