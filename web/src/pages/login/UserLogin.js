@@ -22,7 +22,6 @@ import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPasswor
 // database
 import db from '../../utils/firebase';
 import { onValue, ref } from "firebase/database";
-// import { log } from 'console';
 
 // EXPORT
 const UserLogin = () => {
@@ -32,9 +31,18 @@ const [code, setCode] = useState('');
 const [isTwoFactorEnabled, setIsTwoFactorEnabled] = useState(false);
 const [verificationType, setVerificationType] = useState('');
 
-  const handleLogin = async () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const data = new FormData(event.currentTarget);
+
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
+
     const auth = getAuth();
-    await signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
+    signInWithEmailAndPassword(auth, email, password).then(userCredential => {
         // Signed in successfully
         const user = userCredential.user;
         console.log(user);
@@ -42,6 +50,7 @@ const [verificationType, setVerificationType] = useState('');
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
       });
 
 
@@ -58,9 +67,9 @@ const [verificationType, setVerificationType] = useState('');
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
 
-  provider.setCustomParameters({
-    'login_hint': 'user@example.com'
-  });
+    provider.setCustomParameters({
+      'login_hint': 'user@example.com'
+    });
 
     const auth = getAuth();
     await signInWithPopup(auth, provider).then((result) => {
@@ -109,21 +118,15 @@ function Copyright(props) {
       <Link color="inherit" href="https://mui.com/">
         Your Website
       </Link>{' '}
-      {new Date().getFullYear()}
+      {new Date().getFullYear()} 
       {'.'}
     </Typography>
   );
 }
 
-const theme = createTheme();
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+  const theme = createTheme();
+
+  console.log(setEmail, setPassword, code, setCode, setIsTwoFactorEnabled, setVerificationType);
 
   return (
     <ThemeProvider theme={theme}>
@@ -170,7 +173,6 @@ const theme = createTheme();
             />
             <Button
               className="btn"
-              onClick={handleLogin}
               type="submit"
               fullWidth
               variant="contained"
@@ -186,7 +188,7 @@ const theme = createTheme();
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
