@@ -36,12 +36,16 @@ function createCard(imageSource, title, description, location, time) {
 }
 
 const Events = () => {
+  const TITLE = "Make an Impact Today";
   return (
-    <div style={{ display: "flex", alignContent: "flex-start", minHeight: "100vh", padding: "80px 0px 0px 50px", flexWrap: "wrap", backgroundImage: "url(" + background + ")"}}>
-    {createCard(oceanCleanUp, "Ocean Cleanup", "Saving Ocean", "California", "11am March 13")}
-    {createCard(background)}
-    {createCard()}
-  </div>
+    <div style={{backgroundImage: "url(" + background + ")", }}>
+      <Typography variant="h3" sx={{paddingTop: "80px", paddingLeft: "35%"}}>{TITLE}</Typography>
+      <div style={{ display: "flex", alignContent: "flex-start", minHeight: "100vh", padding: "20px 0px 0px 50px", flexWrap: "wrap"}}>
+        {createCard(oceanCleanUp, "Ocean Cleanup", "Saving Ocean", "California", "11am March 13")}
+        {createCard(background)}
+        {createCard()}
+      </div>
+    </div>
   );
 };
 
