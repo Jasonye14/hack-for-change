@@ -7,7 +7,7 @@ import './home.css';
 // Assets
 import sea_turtle from '../images/sea_turtle.jpg';
 import turtle2 from '../images/turtle2.jpg';
-import seal_trapped_plastic from '../images/seal_entangled_in_plastic_netting.jpg';
+import hedgehog_plastic from '../images/hedgehog-plastic-around-neck.webp';
 
 //Material UI
 import Container from '@mui/material/Container';
@@ -57,7 +57,7 @@ const content = {
 
 
 const Home = () => {
-  const [contentState, setContent] = useState("");
+  const [contentState, setContent] = useState(content[0]);
   const handleContentClick = (index) => {
     setContent(content[index]);
   }
@@ -72,7 +72,6 @@ const Home = () => {
             }
           }}
           navButtonsAlwaysVisible
-          
         >
           <Card>
             <CardMedia
@@ -193,21 +192,21 @@ const Home = () => {
         </Container>
         
 
-        <Card variant='square'
+        {/* <Card variant='square'
           sx={{
             boxShadow: "3px 10px black",
           }}
         >
           <CardMedia
             sx={{
-              height: 600,
+              height: 700,
               width: "100%",
               marginTop: '2rem',
             }}
-            image={seal_trapped_plastic}
-            title="seal trapped in rope"
+            image={hedgehog_plastic}
+            title="hedgehog trapped in plastic"
           />
-        </Card>
+        </Card> */}
       
 
 
