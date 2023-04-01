@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import GoogleButton from '../../components/Buttons/GoogleSignin';
 
 // auth
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword } from "firebase/auth";
 
 // database
 import db from '../../utils/firebase';
@@ -22,8 +22,19 @@ const UserLogin = () => {
   const [isTwoFactorEnabled, setIsTwoFactorEnabled] = useState(false);
   const [verificationType, setVerificationType] = useState('');
 
-  const handleLogin = () => {
-    // handle login logic here
+  const handleLogin = async () => {
+    const auth = getAuth();
+    await signInWithEmailAndPassword(auth, username, password).then((userCredential) => {
+        // Signed in successfully
+        const user = userCredential.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+
+
     if (isTwoFactorEnabled) {
       // send verification code via email or phone
       if (verificationType === 'email') {
@@ -34,7 +45,7 @@ const UserLogin = () => {
     }
   };
 
-  const handleGoogleLogin = () => {
+  const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
 
     provider.setCustomParameters({
@@ -42,23 +53,23 @@ const UserLogin = () => {
     });
 
     const auth = getAuth();
-    signInWithPopup(auth, provider).then((result) => {
+    await signInWithPopup(auth, provider).then((result) => {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
       
       const user = result.user;
       console.log(credential);
-      console.log(token);
 
       // if user's email exists in users table, log them in
 
       const usersReference = ref(db, 'users');
-      onValue(usersReference, (snapshot) => {
+      onValue(usersReference, snapshot => {
         const data = snapshot.val();
         if (data) { // ensure there is data in users path
           Object.entries(data).forEach(([k, v]) => {
             console.log(k, v.email);
             if (v.email === user.email) {
+              document.cookie = `token=${token}`;
               window.location.href = `/users/${v.username}`;
             }
           });
