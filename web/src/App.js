@@ -7,9 +7,6 @@ import Home from './pages/home';
 import Events from './pages/events';
 import UserLogin from './pages/login/UserLogin';
 import UserSignUp from './pages/signup/UserSignup';
-// Firebase
-import { db } from './utils/firebase';
-import { onValue, ref } from "firebase/database";
 
 function App() {
   return (

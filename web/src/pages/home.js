@@ -7,6 +7,8 @@ import './home.css';
 // Assets
 import sea_turtle from '../images/sea_turtle.jpg';
 import turtle2 from '../images/turtle2.jpg';
+import reef from '../images/coral_reef.jpg'
+import seal_trapped_plastic from '../images/seal_entangled_in_plastic_netting.jpg';
 
 //Material UI
 import Container from '@mui/material/Container';
@@ -20,26 +22,26 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
-import { Typography, Box, BottomNavigation, Paper, Stack } from '@mui/material';
+import { Typography, Box, BottomNavigation, Paper, Stack, BottomNavigationAction } from '@mui/material';
 
 
 const edu_content = ['The Effect on animals', 'Effects on Human Health', 'Safety of our Planet'];
 const content = {
-  1: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+  0: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
   sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
   Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
   nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
   reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
   Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
   deserunt mollit anim id est laborum.`,
-  2:`"Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+  1:`"Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
   sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
   Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
   nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
   reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
   Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
   deserunt mollit anim id est laborum.2222222"`,
-  3:`"Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+  2:`"Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
   sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
   Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
   nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
@@ -49,16 +51,11 @@ const content = {
 }
 
 
-const Home = () => {
-  const [contentState, setContent] = useState([true, false, false]);
 
+const Home = () => {
+  const [contentState, setContent] = useState("");
   const handleContentClick = (index) => {
-    let newContentState = contentState;
-    for (let i = 0; i < newContentState.length; i++) {
-      newContentState[i] = false;
-    }
-    newContentState[index] = true;
-    setContent(newContentState);
+    setContent(content[index]);
   }
 
   return (
@@ -67,7 +64,7 @@ const Home = () => {
         <Carousel
           activeIndicatorIconButtonProps={{
             style: {
-                color: 'grey' // 2
+              color: 'grey' // 2
             }
           }}
           navButtonsAlwaysVisible
@@ -83,10 +80,7 @@ const Home = () => {
           </Card>
           <Card>
             <CardMedia
-              sx={{
-                height: 600,
-                margin: "auto"
-              }}
+              sx={{ height: 600 }}
               image={turtle2}
               title="sea_turtle"
             />
@@ -135,9 +129,10 @@ const Home = () => {
             sx={{
               width: "40%",
               padding: "20px",
+              paddingBottom: "200px",
               backgroundColor: "#003C5F",
               color: "white",
-              boxShadow: "3"
+              boxShadow: "3",
               // borderRadius: "10px"
             }}
           >
@@ -145,10 +140,10 @@ const Home = () => {
               Why should we care?
             </Typography>
             <List>
-              {edu_content.map((type) => {
+              {edu_content.map((type, index) => {
                 return (
                   <ListItem key={type}>
-                    <ListItemButton sx={{backgroundColor: "#004c79"}}>
+                    <ListItemButton sx={{backgroundColor: "#004c79"}} onClick={() => handleContentClick(index)}>
                       <ListItemText primary={type} />
                       <ListItemIcon sx={{color: "white"}}>
                         <ArrowForwardIosIcon></ArrowForwardIosIcon>
@@ -170,23 +165,34 @@ const Home = () => {
           >
             <Paper sx={{backgroundColor:  "hsla(0, 0%, 0%, 0)"}} elevation={0}>
               <Typography variant="body1">
-                {contentState.map((value, index) => {
-                  if (value) {
-                    return content[index]
-                  }
-                  return "";
-                })}
+                {contentState}
               </Typography>
             </Paper>
           </Box>
         </Container>
+        
+
+        <Card variant='square'
+          sx={{
+            boxShadow: "3px 10px black",
+          }}
+        >
+          <CardMedia
+            sx={{
+              height: 600,
+              width: "100%",
+              marginTop: '2rem',
+            }}
+            image={seal_trapped_plastic}
+            title="seal trapped in rope"
+          />
+        </Card>
       
 
 
         <Box sx={{ width: "100%" }}>
-          <BottomNavigation
-            showLabels
-          >
+          <BottomNavigation showLabels>
+            <BottomNavigationAction label="@2023 Hack for Change" />
           </BottomNavigation>
         </Box>
       </Stack>
