@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 // import PhoneInput from 'react-phone-number-input';
 // import 'react-phone-number-input/style.css';
-import './UserLogin.css';
+
+//component Imports
 import GoogleButton from '../../components/Buttons/GoogleSignin';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
+// css style
+import './UserLogin.css';
 
 const UserLogin = () => {
   const [username, setUsername] = useState('');
@@ -72,7 +76,7 @@ const UserLogin = () => {
           <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
 
-        <div className="form-group">
+        {/* <div className="form-group">
           <input type="checkbox" id="twoFactor" checked={isTwoFactorEnabled} onChange={(e) => setIsTwoFactorEnabled(e.target.checked)} />
           <label htmlFor="twoFactor">Enable Two-Factor Authentication</label>
         </div>
@@ -95,7 +99,7 @@ const UserLogin = () => {
               <button className="btn" onClick={handleVerifyCode}>Verify</button>
             </div>
           </>
-        )}
+        )} */}
 
         <GoogleButton onClick={handleGoogleLogin}></GoogleButton>
         <button className="btn" onClick={handleLogin}>Login</button>
