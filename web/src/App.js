@@ -6,9 +6,6 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import Home from './pages/home';
 import Events from './pages/events';
 import UserLogin from './pages/login/UserLogin';
-// Firebase
-import { db } from './utils/firebase';
-import { onValue, ref } from "firebase/database";
 
 function App() {
   return (
