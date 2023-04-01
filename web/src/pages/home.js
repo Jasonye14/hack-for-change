@@ -13,7 +13,7 @@ import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 
-import Stack from '@mui/material/Stack';
+import { Typography, Box, BottomNavigation, Paper, Stack } from '@mui/material';
 
 
 const Home = () => {
@@ -23,15 +23,15 @@ const Home = () => {
         <Carousel
           activeIndicatorIconButtonProps={{
             style: {
-                backgroundColor: 'blue' // 2
+                color: 'grey' // 2
             }
           }}
           navButtonsAlwaysVisible
         >
-          {/* <Card>
+          <Card>
             <CardMedia
-              sx={{ height: 200 }}
-              img={sea_turtle}
+              sx={{ height: 600 }}
+              image={sea_turtle}
               title="sea_turtle"
             >
             </CardMedia>
@@ -39,18 +39,54 @@ const Home = () => {
           </Card>
           <Card>
             <CardMedia
-              sx={{ height: 200 }}
-              img={sea_turtle}
+              sx={{
+                height: 600,
+                margin: "auto"
+              }}
+              image={turtle2}
               title="sea_turtle"
             />
-          </Card> */}
-          
-
-          {/* <img className={"homeImage"} src={sea_turtle} alt=""></img>
-          <img className={"homeImage"} src={turtle2} alt=""></img> */}
+          </Card>
         </Carousel>
-
         
+        <Container sx={{
+          padding: 5
+        }}>
+          <Typography variant='h1'>
+            Our Mission Statement
+          </Typography>
+          <Paper
+            sx={{
+              textAlign: 'center',
+              height: 'fit-content',
+              width: "90%",
+              padding: '30px',
+              lineHeight: '60px,'
+            }}
+            elevation={8}
+          >
+            <Typography variant="body1">
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
+              reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
+              deserunt mollit anim id est laborum."
+            </Typography>
+          </Paper>
+          
+        </Container>
+      
+
+
+        <Box sx={{ width: "100%" }}>
+          <BottomNavigation
+            showLabels
+          >
+          </BottomNavigation>
+      </Box>
+
       </Stack>
 
 
