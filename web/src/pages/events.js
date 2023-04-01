@@ -39,7 +39,7 @@ const Events = () => {
   const TITLE = "Make an Impact Today";
   return (
     <div style={{backgroundImage: "url(" + background + ")", }}>
-      <Typography variant="h3" sx={{paddingTop: "80px", paddingLeft: "35%"}}>{TITLE}</Typography>
+      <Typography variant="h3" sx={{paddingTop: "80px", paddingLeft: "35%", fontFamily: "Helvetica, Arial, sans-serif", fontSize: "4rem", fontWeight: "bold", color: "#fff", textShadow: "2px 2px 4px rgba(0,0,0,0.5)"}}>{TITLE}</Typography>
       <div style={{ display: "flex", alignContent: "flex-start", minHeight: "100vh", padding: "20px 0px 0px 50px", flexWrap: "wrap"}}>
         {createCard(oceanCleanUp, "Ocean Cleanup", "Saving Ocean", "California", "11am March 13")}
         {createCard(background)}
