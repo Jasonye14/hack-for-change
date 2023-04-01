@@ -4,7 +4,6 @@ import {
     NavLink,
     Bars,
     NavMenu,
-    NavBtnLink
 } from './NavbarElement';
 
 const Navbar = () => {
