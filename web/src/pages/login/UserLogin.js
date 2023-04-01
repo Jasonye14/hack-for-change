@@ -22,7 +22,7 @@ import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPasswor
 // database
 import db from '../../utils/firebase';
 import { onValue, ref } from "firebase/database";
-import { log } from 'console';
+// import { log } from 'console';
 
 // EXPORT
 const UserLogin = () => {

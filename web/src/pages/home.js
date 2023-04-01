@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
 
 // CSS
@@ -16,13 +16,51 @@ import CardMedia from '@mui/material/CardMedia';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-// import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 import { Typography, Box, BottomNavigation, Paper, Stack } from '@mui/material';
 
 
+const edu_content = ['The Effect on animals', 'Effects on Human Health', 'Safety of our Planet'];
+const content = {
+  1: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+  sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+  nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
+  reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+  Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
+  deserunt mollit anim id est laborum.`,
+  2:`"Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+  sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+  nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
+  reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+  Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
+  deserunt mollit anim id est laborum.2222222"`,
+  3:`"Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+  sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+  nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
+  reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+  Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
+  deserunt mollit anim id est laborum.333333333"`
+}
+
+
 const Home = () => {
+  const [contentState, setContent] = useState([true, false, false]);
+
+  const handleContentClick = (index) => {
+    let newContentState = contentState;
+    for (let i = 0; i < newContentState.length; i++) {
+      newContentState[i] = false;
+    }
+    newContentState[index] = true;
+    setContent(newContentState);
+  }
+
   return (
     <div>
       <Stack>
@@ -73,12 +111,12 @@ const Home = () => {
           >
             <Typography variant="body1">
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
-              deserunt mollit anim id est laborum."
+                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
+                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
+                deserunt mollit anim id est laborum."
             </Typography>
           </Paper>
         </Container>
@@ -107,23 +145,18 @@ const Home = () => {
               Why should we care?
             </Typography>
             <List>
-              <ListItem >
-                <ListItemButton>
-                  <ListItemText primary="The Effect on animals" />
-                </ListItemButton>
-              </ListItem>
-
-              <ListItem >
-                <ListItemButton>
-                  <ListItemText primary="Effects on Human Health" />
-                </ListItemButton>
-              </ListItem>
-
-              <ListItem>
-                <ListItemButton>
-                  <ListItemText primary="Safety of our Planet" />
-                </ListItemButton>
-              </ListItem>
+              {edu_content.map((type) => {
+                return (
+                  <ListItem key={type}>
+                    <ListItemButton sx={{backgroundColor: "#004c79"}}>
+                      <ListItemText primary={type} />
+                      <ListItemIcon sx={{color: "white"}}>
+                        <ArrowForwardIosIcon></ArrowForwardIosIcon>
+                      </ListItemIcon>
+                    </ListItemButton>
+                  </ListItem>
+                );
+              })}
             </List>
           </Box>
 
@@ -131,12 +164,19 @@ const Home = () => {
             sx={{
               width: "40%",
               padding: "20px",
-              backgroundColor: "grey",
+              backgroundColor: "whitesmoke",
               color: "white"
             }}
           >
-            <Paper>
-
+            <Paper sx={{backgroundColor:  "hsla(0, 0%, 0%, 0)"}} elevation={0}>
+              <Typography variant="body1">
+                {contentState.map((value, index) => {
+                  if (value) {
+                    return content[index]
+                  }
+                  return "";
+                })}
+              </Typography>
             </Paper>
           </Box>
         </Container>
