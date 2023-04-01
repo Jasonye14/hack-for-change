@@ -171,7 +171,6 @@ function Copyright(props) {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
-            <GoogleButton onClick={handleGoogleLogin}></GoogleButton>
             <Button
               className="btn"
               type="submit"
@@ -181,6 +180,7 @@ function Copyright(props) {
             >
               Sign In
             </Button>
+            <GoogleButton onClick={handleGoogleLogin}></GoogleButton>
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
