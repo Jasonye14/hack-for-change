@@ -13,6 +13,12 @@ import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+
 import { Typography, Box, BottomNavigation, Paper, Stack } from '@mui/material';
 
 
@@ -75,7 +81,29 @@ const Home = () => {
               deserunt mollit anim id est laborum."
             </Typography>
           </Paper>
-          
+        </Container>
+
+        <Container
+          sx={{
+            
+          }}
+        >
+          <Box
+            sx={{
+              width: "40%",
+              padding: "20px",
+              backgroundColor: "#003C5F",
+              borderRadius: "10px"
+            }}
+          >
+            <List>
+              <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemText primary="Why does it matter?" />
+              </ListItemButton>
+              </ListItem>
+            </List>
+          </Box>
         </Container>
       
 
