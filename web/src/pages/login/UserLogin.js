@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -21,107 +21,94 @@ import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPasswor
 
 // database
 import db from '../../utils/firebase';
-import { onValue, ref } from "firebase/database";
-// import { log } from 'console';
+import { onValue, ref, set } from "firebase/database";
 
 // EXPORT
 const UserLogin = () => {
-const [email, setEmail] = useState('');
-const [password, setPassword] = useState('');
-const [code, setCode] = useState('');
-const [isTwoFactorEnabled, setIsTwoFactorEnabled] = useState(false);
-const [verificationType, setVerificationType] = useState('');
 
-//here to handle used vars error for now
-console.log(isTwoFactorEnabled);
-console.log(verificationType);
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
+    const auth = getAuth();
     const data = new FormData(event.currentTarget);
 
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password).then(userCredential => {
+    await signInWithEmailAndPassword(auth, data.get('email'), data.get('password')).then(userCredential => {
         // Signed in successfully
         const user = userCredential.user;
-        console.log(user);
+        console.log(userCredential);
+
+        // get username from db; must exist at this point since auth succeeded
+        const usersReference = ref(db, 'users');
+        onValue(usersReference, snapshot => {
+          const data = snapshot.val();
+          Object.entries(data).forEach(([username, data]) => {
+            if (data.email === user.email) {
+              // document.cookie = `token=${token}`; // store token as cookie (necessary?)
+              window.location.href = `/users/${username}`; // redirect to user's home page
+            }
+          });
+        });
+           
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        console.error(error.message);
       });
   };
 
-  const handleGoogleLogin = async () => {
+  const handleGoogle = async () => {
     const provider = new GoogleAuthProvider();
-
-    provider.setCustomParameters({
-      'login_hint': 'user@example.com'
-    });
-
     const auth = getAuth();
+
     await signInWithPopup(auth, provider).then((result) => {
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
-      
+      // const credential = GoogleAuthProvider.credentialFromResult(result);
       const user = result.user;
-      console.log(credential);
+      const email = user.email;
+      const eUsername = email.replace(/\..+/g, '').replace('@', ''); // jak325@lehigh.edu => jak325lehigh
+      // const token = credential.accessToken;
 
-    // if user's email exists in users table, log them in
-
-      const usersReference = ref(db, 'users');
+      let usersReference = ref(db, 'users');
       onValue(usersReference, snapshot => {
         const data = snapshot.val();
-        if (data) { // ensure there is data in users path
-          Object.entries(data).forEach(([k, v]) => {
-            console.log(k, v.email);
-            if (v.email === user.email) {
-              document.cookie = `token=${token}`;
-              window.location.href = `/users/${v.username}`;
-            }
-          });
-        }
+        Object.entries(data).forEach(([username, data]) => {
+          if (data.email === user.email) {
+            // document.cookie = `token=${token}`; // store token as cookie (necessary?)
+            window.location.href = `/users/${username}`; // redirect to user's home page
+          }
+        });
       });
-      
 
-    // IdP data available using getAdditionalUserInfo(result)
-    // ...
-  }).catch((error) => {
+      // user not found in db; create an instance for said user
+      usersReference = ref(db, `users/${eUsername}`)
+      set(usersReference, {
+        email: email,
+        fname: "",
+        lname: "",
+        location: "",
+      });
 
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // const email = error.customData.email;
+      // document.cookie = `token=${token}`; // store token as cookie (necessary?)
+      window.location.href = `/users/${eUsername}`; // redirect to user's home page
 
-    const credential = GoogleAuthProvider.credentialFromError(error);
+    }).catch((error) => {
+      console.error(error.message);
+    });
 
-    console.log({ errorCode, errorMessage, credential });
-  });
+  }
 
-}
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()} 
-      {'.'}
-    </Typography>
-  );
-}
+  function Copyright(props) {
+    return (
+      <Typography variant="body2" color="text.secondary" align="center" {...props}>
+        {'Copyright © '}
+        <Link color="inherit" href="https://mui.com/">
+          Your Website
+        </Link>{' '}
+        {new Date().getFullYear()} 
+        {'.'}
+      </Typography>
+    );
+  }
 
   const theme = createTheme();
-
-  console.log(setEmail, setPassword, code, setCode, setIsTwoFactorEnabled, setVerificationType);
 
   return (
     <ThemeProvider theme={theme}>
@@ -175,7 +162,7 @@ function Copyright(props) {
             >
               Sign In
             </Button>
-            <GoogleButton onClick={handleGoogleLogin}></GoogleButton>
+            <GoogleButton onClick={handleGoogle}></GoogleButton>
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
@@ -183,7 +170,7 @@ function Copyright(props) {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

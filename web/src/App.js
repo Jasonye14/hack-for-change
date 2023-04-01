@@ -6,9 +6,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import Home from './pages/home';
 import Events from './pages/events';
 import UserLogin from './pages/login/UserLogin';
-// Firebase
-// import { db } from './utils/firebase';
-// import { onValue, ref } from "firebase/database";
+import UserSignUp from './pages/signup/UserSignup';
 
 function App() {
   return (
@@ -18,7 +16,7 @@ function App() {
         <Route path='/' exact element={<Home/>} />
         <Route path='/events' element={<Events/>} />
         <Route path='/login' element={<UserLogin/>} />
-        <Route path='/signup' element={<UserLogin/>} />
+        <Route path='/signup' element={<UserSignUp/>} />
       </Routes>
     </Router>
   );
@@ -27,7 +25,7 @@ function App() {
 function NavBarWrapper() {
   const location = useLocation();
   // Only render the NavBar component if the current route is not /login
-  if (location.pathname === '/login') {
+  if (location.pathname === '/login' || location.pathname === '/signup' ) {
     return null;
   }
   return <NavBar />;
