@@ -88,7 +88,7 @@ const UserLogin = () => {
   return (
     <div className="login-container">
       <h2>Login</h2>
-      <div>
+      <div className="background">
         <div className="form-group">
           <label htmlFor="username">Username</label>
           <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
