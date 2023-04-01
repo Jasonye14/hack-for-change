@@ -60,34 +60,33 @@ const UserLogin = () => {
     const auth = getAuth();
 
     await signInWithPopup(auth, provider).then((result) => {
-      // const credential = GoogleAuthProvider.credentialFromResult(result);
       const user = result.user;
       const email = user.email;
       const eUsername = email.replace(/\..+/g, '').replace('@', ''); // jak325@lehigh.edu => jak325lehigh
-      // const token = credential.accessToken;
+      let found = false;
 
       let usersReference = ref(db, 'users');
       onValue(usersReference, snapshot => {
         const data = snapshot.val();
         Object.entries(data).forEach(([username, data]) => {
           if (data.email === user.email) {
-            // document.cookie = `token=${token}`; // store token as cookie (necessary?)
+            found = true;
             window.location.href = `/users/${username}`; // redirect to user's home page
           }
         });
-      });
 
-      // user not found in db; create an instance for said user
-      usersReference = ref(db, `users/${eUsername}`)
-      set(usersReference, {
-        email: email,
-        fname: "",
-        lname: "",
-        location: "",
+        // user not found in db; create an instance for said user
+        if (!found) {
+          usersReference = ref(db, `users/${eUsername}`)
+          set(usersReference, {
+            email: email,
+            fname: "",
+            lname: "",
+            location: "",
+          });
+          window.location.href = `/users/${eUsername}`; // redirect to user's home page
+        }
       });
-
-      // document.cookie = `token=${token}`; // store token as cookie (necessary?)
-      window.location.href = `/users/${eUsername}`; // redirect to user's home page
 
     }).catch((error) => {
       console.error(error.message);
