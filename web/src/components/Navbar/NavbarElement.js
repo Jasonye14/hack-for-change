@@ -4,6 +4,10 @@ import styled from 'styled-components';
 
 export const Nav = styled.nav`
   background: #000;
+  opacity: 0.8;
+  position: fixed;
+  z-index: 999;
+  width: 100%;
   height: 50px;
   display: flex;
   max-width: 100vw;
