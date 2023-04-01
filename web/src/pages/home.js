@@ -16,7 +16,7 @@ import CardMedia from '@mui/material/CardMedia';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
+// import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
 import { Typography, Box, BottomNavigation, Paper, Stack } from '@mui/material';
@@ -85,7 +85,12 @@ const Home = () => {
 
         <Container
           sx={{
-            
+            padding: 0,
+            margin: 0,
+            maxWidth: "100% !important",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-evenly"
           }}
         >
           <Box
@@ -93,16 +98,46 @@ const Home = () => {
               width: "40%",
               padding: "20px",
               backgroundColor: "#003C5F",
-              borderRadius: "10px"
+              color: "white",
+              boxShadow: "3"
+              // borderRadius: "10px"
             }}
           >
+            <Typography variant='h4'>
+              Why should we care?
+            </Typography>
             <List>
-              <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemText primary="Why does it matter?" />
-              </ListItemButton>
+              <ListItem >
+                <ListItemButton>
+                  <ListItemText primary="The Effect on animals" />
+                </ListItemButton>
+              </ListItem>
+
+              <ListItem >
+                <ListItemButton>
+                  <ListItemText primary="Effects on Human Health" />
+                </ListItemButton>
+              </ListItem>
+
+              <ListItem>
+                <ListItemButton>
+                  <ListItemText primary="Safety of our Planet" />
+                </ListItemButton>
               </ListItem>
             </List>
+          </Box>
+
+          <Box
+            sx={{
+              width: "40%",
+              padding: "20px",
+              backgroundColor: "grey",
+              color: "white"
+            }}
+          >
+            <Paper>
+
+            </Paper>
           </Box>
         </Container>
       
@@ -113,12 +148,8 @@ const Home = () => {
             showLabels
           >
           </BottomNavigation>
-      </Box>
-
+        </Box>
       </Stack>
-
-
-
     </div>
   );
 };
