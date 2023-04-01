@@ -29,13 +29,26 @@ const UserLogin = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const data = new FormData(event.currentTarget);
     const auth = getAuth();
+    const data = new FormData(event.currentTarget);
 
     await signInWithEmailAndPassword(auth, data.get('email'), data.get('password')).then(userCredential => {
         // Signed in successfully
         const user = userCredential.user;
-        console.log(user);
+        console.log(userCredential);
+
+        // get username from db; must exist at this point since auth succeeded
+        const usersReference = ref(db, 'users');
+        onValue(usersReference, snapshot => {
+          const data = snapshot.val();
+          Object.entries(data).forEach(([username, data]) => {
+            if (data.email === user.email) {
+              // document.cookie = `token=${token}`; // store token as cookie (necessary?)
+              window.location.href = `/users/${username}`; // redirect to user's home page
+            }
+          });
+        });
+           
       })
       .catch((error) => {
         console.error(error.message);
@@ -47,11 +60,11 @@ const UserLogin = () => {
     const auth = getAuth();
 
     await signInWithPopup(auth, provider).then((result) => {
-      const credential = GoogleAuthProvider.credentialFromResult(result);
+      // const credential = GoogleAuthProvider.credentialFromResult(result);
       const user = result.user;
       const email = user.email;
       const username = email.replace(/\..+/g, '').replace('@', ''); // jak325@lehigh.edu => jak325lehigh
-      const token = credential.accessToken;
+      // const token = credential.accessToken;
 
       const usersReference = ref(db, `users/${username}`);
       onValue(usersReference, snapshot => {
@@ -65,7 +78,7 @@ const UserLogin = () => {
         }
       });
 
-      document.cookie = `token=${token}`; // store token as cookie
+      // document.cookie = `token=${token}`; // store token as cookie (necessary?)
       window.location.href = `/users/${username}`; // redirect to user's home page
 
     }).catch((error) => {
