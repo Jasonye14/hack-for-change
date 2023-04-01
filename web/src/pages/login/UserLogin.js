@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 // import PhoneInput from 'react-phone-number-input';
 // import 'react-phone-number-input/style.css';
 import './UserLogin.css';
+import GoogleButton from '../../components/Buttons/GoogleSignin';
 
 const UserLogin = () => {
   const [username, setUsername] = useState('');
@@ -65,6 +66,7 @@ const UserLogin = () => {
           </>
         )}
 
+        <GoogleButton></GoogleButton>
         <button className="btn" onClick={handleLogin}>Login</button>
       </form>
     </div>

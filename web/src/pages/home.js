@@ -13,7 +13,6 @@ const Home = () => {
   return (
     <div>
       <img className={"homeImage"} src={sea_turtle} alt=""></img>
-      
     </div>
   );
 };
