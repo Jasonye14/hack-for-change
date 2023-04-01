@@ -26,22 +26,22 @@ const Home = () => {
         }}
         navButtonsAlwaysVisible
       >
-        {/* <Card>
+        <Card>
           <CardMedia
-            sx={{ height: 200 }}
-            img={sea_turtle}
-            title="sea_turtle"
+            sx={{ height: 600 }}
+            image={sea_turtle}
+            title="Profile Image"
           >
           </CardMedia>
 
         </Card>
         <Card>
           <CardMedia
-            sx={{ height: 200 }}
-            img={sea_turtle}
+            sx={{ height: 600 }}
+            image={turtle2}
             title="sea_turtle"
           />
-        </Card> */}
+        </Card>
         
 
         {/* <img className={"homeImage"} src={sea_turtle} alt=""></img>
