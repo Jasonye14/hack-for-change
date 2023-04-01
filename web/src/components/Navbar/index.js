@@ -21,7 +21,7 @@ const Navbar = () => {
         <NavMenu>
           <NavLink to='/'>Home</NavLink>
           <NavLink to='/events'>Events</NavLink>
-          <NavLink to='/login' style={{marginLeft: "auto"}}>Login</NavLink>
+          <NavLink to='/login' style={{marginLeft: "auto", marginRight: "3rem",}}>Login</NavLink>
           {/* <Avatar
             alt="Remy Sharp"
             src={blank_prof}
