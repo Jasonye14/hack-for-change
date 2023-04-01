@@ -22,10 +22,11 @@ import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPasswor
 // database
 import db from '../../utils/firebase';
 import { onValue, ref } from "firebase/database";
+import { log } from 'console';
 
 // EXPORT
 const UserLogin = () => {
-  const [username, setUsername] = useState('');
+const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
 const [code, setCode] = useState('');
 const [isTwoFactorEnabled, setIsTwoFactorEnabled] = useState(false);
@@ -33,7 +34,7 @@ const [verificationType, setVerificationType] = useState('');
 
   const handleLogin = async () => {
     const auth = getAuth();
-    await signInWithEmailAndPassword(auth, username, password).then((userCredential) => {
+    await signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
         // Signed in successfully
         const user = userCredential.user;
         console.log(user);
