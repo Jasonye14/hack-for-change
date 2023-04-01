@@ -1,6 +1,8 @@
 import * as React from 'react';
 //image imports
 import oceanCleanUp from "../images/events/OceanCleanup.jpeg"
+import background from "../images/events/eventBackground.jpeg";
+//MUI imports
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -9,26 +11,25 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { display } from '@mui/system';
 
-function createCard() {
+function createCard(imageSource, title, description, location, time) {
   return (
-    <Card sx={{ maxWidth: "33%", position: "relative", margin: "65px 0 0 0", }}>
+    <Card sx={{ minWidth: "32%", minHeight: "400px", maxHeight: "600px", position: "relative", marginRight: "10px", marginTop: "10px",}}>
       <CardMedia
         sx={{ height: 200 }}
         image={oceanCleanUp}
-        title="green iguana"
+        title={title}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Lizard
+          {title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
+          {description}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
+        <Button size="small">{location}</Button>
+        <Button size="small">{time}</Button>
       </CardActions>
     </Card>
   );
@@ -36,9 +37,9 @@ function createCard() {
 
 const Events = () => {
   return (
-    <div style={{display: "flex", justifyContent: "space-between", padding: "20px 20px", }}>
-    {createCard()}
-    {createCard()}
+    <div style={{ display: "flex", alignContent: "flex-start", minHeight: "100vh", padding: "80px 0px 0px 50px", flexWrap: "wrap", backgroundImage: "url(" + background + ")"}}>
+    {createCard(oceanCleanUp, "Ocean Cleanup", "Saving Ocean", "California", "11am March 13")}
+    {createCard(background)}
     {createCard()}
   </div>
   );
