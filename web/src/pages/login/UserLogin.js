@@ -43,16 +43,6 @@ const [verificationType, setVerificationType] = useState('');
         const errorCode = error.code;
         const errorMessage = error.message;
       });
-
-
-    if (isTwoFactorEnabled) {
-      // send verification code via email or phone
-      if (verificationType === 'email') {
-        // send verification code via email
-      } else if (verificationType === 'phone') {
-        // send verification code via phone
-      }
-    }
   };
 
   const handleGoogleLogin = async () => {
