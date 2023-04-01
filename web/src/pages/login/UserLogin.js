@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 
 //component Imports
 import GoogleButton from '../../components/Buttons/GoogleSignin';
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 // css style
 import './UserLogin.css';
@@ -27,6 +28,36 @@ const UserLogin = () => {
     }
   };
 
+  const handleGoogleLogin = () => {
+    const provider = new GoogleAuthProvider();
+
+    provider.setCustomParameters({
+      'login_hint': 'user@example.com'
+    });
+
+    const auth = getAuth();
+    signInWithPopup(auth, provider).then((result) => {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      // The signed-in user info.
+      const user = result.user;
+      // IdP data available using getAdditionalUserInfo(result)
+      // ...
+    }).catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData.email;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      // ...
+      console.log({errorCode, errorMessage, email, credential});
+    });
+
+  }
+
   const handleVerifyCode = () => {
     // handle code verification logic here
   };
@@ -34,7 +65,7 @@ const UserLogin = () => {
   return (
     <div className="login-container">
       <h2>Login</h2>
-      <form>
+      <div>
         <div className="form-group">
           <label htmlFor="username">Username</label>
           <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
@@ -70,9 +101,9 @@ const UserLogin = () => {
           </>
         )} */}
 
-        <GoogleButton></GoogleButton>
+        <GoogleButton onClick={handleGoogleLogin}></GoogleButton>
         <button className="btn" onClick={handleLogin}>Login</button>
-      </form>
+      </div>
     </div>
   );
 };
