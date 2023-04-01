@@ -2,9 +2,15 @@ import React, { useState } from 'react';
 // import PhoneInput from 'react-phone-number-input';
 // import 'react-phone-number-input/style.css';
 
-//component Imports
+// component Imports
 import GoogleButton from '../../components/Buttons/GoogleSignin';
+
+// auth
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
+// database
+import db from '../../utils/firebase';
+import { onValue, ref } from "firebase/database";
 
 // css style
 import './UserLogin.css';
@@ -37,23 +43,40 @@ const UserLogin = () => {
 
     const auth = getAuth();
     signInWithPopup(auth, provider).then((result) => {
-      // This gives you a Google Access Token. You can use it to access the Google API.
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
-      // The signed-in user info.
+      
       const user = result.user;
+      console.log(credential);
+      console.log(token);
+
+      // if user's email exists in users table, log them in
+
+      const usersReference = ref(db, 'users');
+      onValue(usersReference, (snapshot) => {
+        const data = snapshot.val();
+        if (data) { // ensure there is data in users path
+          Object.entries(data).forEach(([k, v]) => {
+            console.log(k, v.email);
+            if (v.email === user.email) {
+              window.location.href = `/users/${v.username}`;
+            }
+          });
+        }
+      });
+      
+
       // IdP data available using getAdditionalUserInfo(result)
       // ...
     }).catch((error) => {
-      // Handle Errors here.
+
       const errorCode = error.code;
       const errorMessage = error.message;
-      // The email of the user's account used.
-      const email = error.customData.email;
-      // The AuthCredential type that was used.
+      // const email = error.customData.email;
+
       const credential = GoogleAuthProvider.credentialFromError(error);
-      // ...
-      console.log({errorCode, errorMessage, email, credential});
+  
+      console.log({errorCode, errorMessage, credential});
     });
 
   }
