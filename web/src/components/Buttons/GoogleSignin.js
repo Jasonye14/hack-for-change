@@ -28,7 +28,7 @@ const GoogleButton = (props) => {
             height: '30px', 
          }}
       />
-      Sign in with Google
+      Use Google Account
     </button>
   );
 };

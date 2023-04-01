@@ -55,7 +55,7 @@ const UserLogin = () => {
       });
   };
 
-  const handleGoogleLogin = async () => {
+  const handleGoogle = async () => {
     const provider = new GoogleAuthProvider();
     const auth = getAuth();
 
@@ -63,23 +63,42 @@ const UserLogin = () => {
       // const credential = GoogleAuthProvider.credentialFromResult(result);
       const user = result.user;
       const email = user.email;
-      const username = email.replace(/\..+/g, '').replace('@', ''); // jak325@lehigh.edu => jak325lehigh
+      const eUsername = email.replace(/\..+/g, '').replace('@', ''); // jak325@lehigh.edu => jak325lehigh
       // const token = credential.accessToken;
 
-      const usersReference = ref(db, `users/${username}`);
+      // const usersReference = ref(db, `users/${username}`); // need to check if user email is in db
+      // onValue(usersReference, snapshot => {
+      //   const data = snapshot.val();
+      //   if (!data) { // if user is not in database, add them
+          
+      //     window.location.href = `/users/${username}`; // redirect to user's home page
+      //   } else {
+      //     window.location.href = `/users/${data}`; // redirect to user's home page
+      //   }
+      // });
+
+      let usersReference = ref(db, 'users');
       onValue(usersReference, snapshot => {
-        if (!snapshot.val()) { // if user is not in database, add them
-          set(usersReference, {
-            email: email,
-            fname: "",
-            lname: "",
-            location: "",
-          });
-        }
+        const data = snapshot.val();
+        Object.entries(data).forEach(([username, data]) => {
+          if (data.email === user.email) {
+            // document.cookie = `token=${token}`; // store token as cookie (necessary?)
+            window.location.href = `/users/${username}`; // redirect to user's home page
+          }
+        });
+      });
+
+      // user not found in db; create an instance for said user
+      usersReference = ref(db, `users/${eUsername}`)
+      set(usersReference, {
+        email: email,
+        fname: "",
+        lname: "",
+        location: "",
       });
 
       // document.cookie = `token=${token}`; // store token as cookie (necessary?)
-      window.location.href = `/users/${username}`; // redirect to user's home page
+      window.location.href = `/users/${eUsername}`; // redirect to user's home page
 
     }).catch((error) => {
       console.error(error.message);
@@ -154,7 +173,7 @@ const UserLogin = () => {
             >
               Sign In
             </Button>
-            <GoogleButton onClick={handleGoogleLogin}></GoogleButton>
+            <GoogleButton onClick={handleGoogle}></GoogleButton>
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
