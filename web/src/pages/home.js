@@ -7,7 +7,6 @@ import './home.css';
 // Assets
 import sea_turtle from '../images/sea_turtle.jpg';
 import turtle2 from '../images/turtle2.jpg';
-import hedgehog_plastic from '../images/hedgehog-plastic-around-neck.webp';
 
 //Material UI
 import Container from '@mui/material/Container';
@@ -211,9 +210,9 @@ const Home = () => {
 
 
         <Box sx={{ width: "100%" }}>
-          <BottomNavigation showLabels>
-            <BottomNavigationAction label="Cleanr" />
-            <BottomNavigationAction label="@2023 Hack for Change" />
+          <BottomNavigation sx={{justifyContent:"center", alignItems:"center"}} showLabels>
+            <BottomNavigationAction sx={{minWidth:"min-content", flexGrow:0}} label="Cleanr" />
+            <BottomNavigationAction sx={{minWidth:"max-content", flexGrow:0}} label="@2023 Hack for Change" />
           </BottomNavigation>
         </Box>
       </Stack>

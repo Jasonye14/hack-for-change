@@ -24,75 +24,63 @@ import db from '../../utils/firebase';
 import { onValue, ref, set } from "firebase/database";
 
 const UserSignUp = () => {
-    function Copyright(props) {
-        return (
-          <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-              Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-          </Typography>
-        );
-      }
+  function Copyright(props) {
+    return (
+      <Typography variant="body2" color="text.secondary" align="center" {...props}>
+        {'Copyright © '}
+        <Link color="inherit" href="https://mui.com/">
+          Your Website
+        </Link>{' '}
+        {new Date().getFullYear()}
+        {'.'}
+      </Typography>
+    );
+  }
       
-      const theme = createTheme();
+  const theme = createTheme();
 
-    const handleGoogle = async () => {
-      const provider = new GoogleAuthProvider();
-      const auth = getAuth();
-  
-      await signInWithPopup(auth, provider).then((result) => {
-        // const credential = GoogleAuthProvider.credentialFromResult(result);
-        const user = result.user;
-        const email = user.email;
-        const eUsername = email.replace(/\..+/g, '').replace('@', ''); // jak325@lehigh.edu => jak325lehigh
-        // const token = credential.accessToken;
-  
-        // const usersReference = ref(db, `users/${username}`); // need to check if user email is in db
-        // onValue(usersReference, snapshot => {
-        //   const data = snapshot.val();
-        //   if (!data) { // if user is not in database, add them
-            
-        //     window.location.href = `/users/${username}`; // redirect to user's home page
-        //   } else {
-        //     window.location.href = `/users/${data}`; // redirect to user's home page
-        //   }
-        // });
+  const handleGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    const auth = getAuth();
 
-        let usersReference = ref(db, 'users');
-        onValue(usersReference, snapshot => {
-          const data = snapshot.val();
-          Object.entries(data).forEach(([username, data]) => {
-            if (data.email === user.email) {
-              // document.cookie = `token=${token}`; // store token as cookie (necessary?)
-              window.location.href = `/users/${username}`; // redirect to user's home page
-            }
-          });
+    await signInWithPopup(auth, provider).then((result) => {
+      const user = result.user;
+      const email = user.email;
+      const eUsername = email.replace(/\..+/g, '').replace('@', ''); // jak325@lehigh.edu => jak325lehigh
+      let found = false;
+
+      let usersReference = ref(db, 'users');
+      onValue(usersReference, snapshot => {
+        const data = snapshot.val();
+        Object.entries(data).forEach(([username, data]) => {
+          if (data.email === user.email) {
+            found = true;
+            window.location.href = `/users/${username}`; // redirect to user's home page
+          }
         });
 
         // user not found in db; create an instance for said user
-        usersReference = ref(db, `users/${eUsername}`)
-        set(usersReference, {
-          email: email,
-          fname: "",
-          lname: "",
-          location: "",
-        });
-
-        // document.cookie = `token=${token}`; // store token as cookie (necessary?)
-        window.location.href = `/users/${eUsername}`; // redirect to user's home page
-  
-      }).catch((error) => {
-        console.error(error.message);
+        if (!found) {
+          usersReference = ref(db, `users/${eUsername}`)
+          set(usersReference, {
+            email: email,
+            fname: "",
+            lname: "",
+            location: "",
+          });
+          window.location.href = `/users/${eUsername}`; // redirect to user's home page
+        }
       });
-  
-    }
+
+    }).catch((error) => {
+      console.error(error.message);
+    });
+
+  }
 
       const handleSubmit = (event) => {
         event.preventDefault();
-        
+
         const data = new FormData(event.currentTarget);
         console.log({
           email: data.get('email'),
