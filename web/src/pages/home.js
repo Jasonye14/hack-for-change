@@ -49,8 +49,9 @@ const content = {
 }
 
 
+
 const Home = () => {
-  const [contentState, setContent] = useState([true, false, false]);
+  const [contentState, setContent] = useState([false, false, true]);
 
   const handleContentClick = (index) => {
     let newContentState = contentState;
@@ -145,10 +146,10 @@ const Home = () => {
               Why should we care?
             </Typography>
             <List>
-              {edu_content.map((type) => {
+              {edu_content.map((type, index) => {
                 return (
                   <ListItem key={type}>
-                    <ListItemButton sx={{backgroundColor: "#004c79"}}>
+                    <ListItemButton sx={{backgroundColor: "#004c79"}} onClick={() => handleContentClick(index)}>
                       <ListItemText primary={type} />
                       <ListItemIcon sx={{color: "white"}}>
                         <ArrowForwardIosIcon></ArrowForwardIosIcon>
@@ -172,9 +173,13 @@ const Home = () => {
               <Typography variant="body1">
                 {contentState.map((value, index) => {
                   if (value) {
-                    return content[index]
+                    return (
+                      <>
+                        {content[index]}
+                      </>
+                    );
                   }
-                  return "";
+                  return <></>;
                 })}
               </Typography>
             </Paper>
