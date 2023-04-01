@@ -66,17 +66,6 @@ const UserLogin = () => {
       const eUsername = email.replace(/\..+/g, '').replace('@', ''); // jak325@lehigh.edu => jak325lehigh
       // const token = credential.accessToken;
 
-      // const usersReference = ref(db, `users/${username}`); // need to check if user email is in db
-      // onValue(usersReference, snapshot => {
-      //   const data = snapshot.val();
-      //   if (!data) { // if user is not in database, add them
-          
-      //     window.location.href = `/users/${username}`; // redirect to user's home page
-      //   } else {
-      //     window.location.href = `/users/${data}`; // redirect to user's home page
-      //   }
-      // });
-
       let usersReference = ref(db, 'users');
       onValue(usersReference, snapshot => {
         const data = snapshot.val();
