@@ -17,63 +17,75 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import GoogleButton from '../../components/Buttons/GoogleSignin';
 
 // auth
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword } from "firebase/auth";
 
 // database
 import db from '../../utils/firebase';
 import { onValue, ref } from "firebase/database";
+import { log } from 'console';
 
 // EXPORT
 const UserLogin = () => {
-  const [username, setUsername] = useState('');
+const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
 const [code, setCode] = useState('');
 const [isTwoFactorEnabled, setIsTwoFactorEnabled] = useState(false);
 const [verificationType, setVerificationType] = useState('');
 
-const handleLogin = () => {
-  // handle login logic here
-  if (isTwoFactorEnabled) {
-    // send verification code via email or phone
-    if (verificationType === 'email') {
-      // send verification code via email
-    } else if (verificationType === 'phone') {
-      // send verification code via phone
-    }
-  }
-};
+  const handleLogin = async () => {
+    const auth = getAuth();
+    await signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
+        // Signed in successfully
+        const user = userCredential.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
 
-const handleGoogleLogin = () => {
-  const provider = new GoogleAuthProvider();
+
+    if (isTwoFactorEnabled) {
+      // send verification code via email or phone
+      if (verificationType === 'email') {
+        // send verification code via email
+      } else if (verificationType === 'phone') {
+        // send verification code via phone
+      }
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
 
   provider.setCustomParameters({
     'login_hint': 'user@example.com'
   });
 
-  const auth = getAuth();
-  signInWithPopup(auth, provider).then((result) => {
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken;
-
-    const user = result.user;
-    console.log(credential);
-    console.log(token);
+    const auth = getAuth();
+    await signInWithPopup(auth, provider).then((result) => {
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      
+      const user = result.user;
+      console.log(credential);
 
     // if user's email exists in users table, log them in
 
-    const usersReference = ref(db, 'users');
-    onValue(usersReference, (snapshot) => {
-      const data = snapshot.val();
-      if (data) { // ensure there is data in users path
-        Object.entries(data).forEach(([k, v]) => {
-          console.log(k, v.email);
-          if (v.email === user.email) {
-            window.location.href = `/users/${v.username}`;
-          }
-        });
-      }
-    });
-
+      const usersReference = ref(db, 'users');
+      onValue(usersReference, snapshot => {
+        const data = snapshot.val();
+        if (data) { // ensure there is data in users path
+          Object.entries(data).forEach(([k, v]) => {
+            console.log(k, v.email);
+            if (v.email === user.email) {
+              document.cookie = `token=${token}`;
+              window.location.href = `/users/${v.username}`;
+            }
+          });
+        }
+      });
+      
 
     // IdP data available using getAdditionalUserInfo(result)
     // ...
