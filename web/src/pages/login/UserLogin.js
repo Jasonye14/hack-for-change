@@ -156,7 +156,6 @@ const theme = createTheme();
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
-            <GoogleButton onClick={handleGoogleLogin}></GoogleButton>
             <Button
               className="btn"
               onClick={handleLogin}
@@ -167,6 +166,7 @@ const theme = createTheme();
             >
               Sign In
             </Button>
+            <GoogleButton onClick={handleGoogleLogin}></GoogleButton>
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">

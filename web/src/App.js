@@ -18,6 +18,7 @@ function App() {
         <Route path='/' exact element={<Home/>} />
         <Route path='/events' element={<Events/>} />
         <Route path='/login' element={<UserLogin/>} />
+        <Route path='/signup' element={<UserLogin/>} />
       </Routes>
     </Router>
   );
