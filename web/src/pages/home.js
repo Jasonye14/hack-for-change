@@ -1,6 +1,5 @@
 import React from 'react';
 import Carousel from 'react-material-ui-carousel';
-import { Paper, Button } from '@mui/material'
 
 // CSS
 import './home.css';
@@ -14,39 +13,47 @@ import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 
+import Stack from '@mui/material/Stack';
+
 
 const Home = () => {
   return (
     <div>
-      <Carousel
-        activeIndicatorIconButtonProps={{
-          style: {
-              backgroundColor: 'blue' // 2
-          }
-        }}
-        navButtonsAlwaysVisible
-      >
-        <Card>
-          <CardMedia
-            sx={{ height: 600 }}
-            image={sea_turtle}
-            title="Profile Image"
-          >
-          </CardMedia>
+      <Stack>
+        <Carousel
+          activeIndicatorIconButtonProps={{
+            style: {
+                backgroundColor: 'blue' // 2
+            }
+          }}
+          navButtonsAlwaysVisible
+        >
+          {/* <Card>
+            <CardMedia
+              sx={{ height: 200 }}
+              img={sea_turtle}
+              title="sea_turtle"
+            >
+            </CardMedia>
 
-        </Card>
-        <Card>
-          <CardMedia
-            sx={{ height: 600 }}
-            image={turtle2}
-            title="sea_turtle"
-          />
-        </Card>
+          </Card>
+          <Card>
+            <CardMedia
+              sx={{ height: 200 }}
+              img={sea_turtle}
+              title="sea_turtle"
+            />
+          </Card> */}
+          
+
+          {/* <img className={"homeImage"} src={sea_turtle} alt=""></img>
+          <img className={"homeImage"} src={turtle2} alt=""></img> */}
+        </Carousel>
+
         
+      </Stack>
 
-        {/* <img className={"homeImage"} src={sea_turtle} alt=""></img>
-        <img className={"homeImage"} src={turtle2} alt=""></img> */}
-      </Carousel>
+
 
     </div>
   );
