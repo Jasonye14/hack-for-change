@@ -14,6 +14,9 @@ import { display } from '@mui/system';
 //Components
 import NewEventForm from '../components/NewEventForm';
 
+// auth
+import { getAuth } from "firebase/auth";
+
 // database
 import db from './../utils/firebase';
 import { onValue, ref, set } from "firebase/database";
@@ -59,6 +62,9 @@ const Events = () => {
       const data = snapshot.val();
       setEvents(Object.values(data));
     });
+
+    // check if logged in via cookies
+    
 
   }, []);
 

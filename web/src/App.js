@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NavBar from './components/Navbar';
 // Pages
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
@@ -28,6 +28,10 @@ function App(props) {
   // const handleLogin = () => {
   //   setIsLoggedIn(true);
   // };
+
+  useEffect(() => {
+    document.cookie = 'loggedin=false'; // store auth state as cookie
+  })
 
   return (
     <Router>
