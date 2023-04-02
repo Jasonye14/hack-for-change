@@ -12,22 +12,16 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { display } from '@mui/system';
-
-//Components
-import NewEventForm from '../components/NewEventForm';
-
-// auth
-import { getAuth } from "firebase/auth";
 
 // database
 import db from './../utils/firebase';
-import { onValue, ref, set } from "firebase/database";
+import { onValue, ref } from "firebase/database";
 
 const images = [oceanCleanUp, riverCleanUp, forestCleanup, cityCleanUp];
 
 function createCard(key, imageSource, host, title, description, location, event_time, post_time) {
-  let theDate = new Date(event_time), localDate = theDate.toLocaleDateString(), localTime = theDate.toLocaleTimeString();
+  let theDate = new Date(event_time);
+  // let localDate = theDate.toLocaleDateString(), localTime = theDate.toLocaleTimeString()
   let readableTime = theDate.toDateString();
   return (
     <Card key={key} sx={{ width: "32%", maxWidth: "32%", minHeight: "400px", maxHeight: "600px", position: "relative", marginRight: "10px", marginTop: "10px",}}>
