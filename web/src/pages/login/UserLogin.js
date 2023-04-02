@@ -24,6 +24,9 @@ import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPasswor
 import db from '../../utils/firebase';
 import { onValue, ref, set } from "firebase/database";
 
+//Import image background
+import ocean from '../../images/login/oceanBackground.jpg';
+
 //APP
 import App from '../../App'
 // EXPORT
@@ -110,7 +113,8 @@ const UserLogin = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+      <img src={ocean} alt="" style={{position: "absolute", top:0, minWidth: "100vw", minHeight: "100vh", zIndex: -1, opacity: 0.8}}></img>
+      <Container component="main" maxWidth="xs" sx={{backgroundColor: "white", opacity: 0.8, borderRadius: "20px"}}>
         <CssBaseline />
         <Box
           sx={{
