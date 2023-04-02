@@ -5,21 +5,17 @@ import Carousel from 'react-material-ui-carousel';
 import './home.css';
 
 // Assets
-import sea_turtle from '../images/sea_turtle.jpg';
-import turtle2 from '../images/turtle2.jpg';
+import sea_turtle from '../images/home/sea_turtle.jpg';
+import turtle2 from '../images/home/turtle2.jpg';
+import NewEventForm from '../components/NewEventForm';
 
 //Material UI
 import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
-
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
+import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { Typography, Box, BottomNavigation, Paper, Stack, BottomNavigationAction, CardContent } from '@mui/material';
 
 
@@ -208,6 +204,8 @@ const Home = () => {
         </Card> */}
       
 
+        {/* For testing purposes only */}
+        <NewEventForm/>
 
         <Box sx={{ width: "100%" }}>
           <BottomNavigation sx={{justifyContent:"center", alignItems:"center"}} showLabels>
