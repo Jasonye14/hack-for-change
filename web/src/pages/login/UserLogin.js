@@ -23,6 +23,8 @@ import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPasswor
 import db from '../../utils/firebase';
 import { onValue, ref, set } from "firebase/database";
 
+//APP
+import App from '../../App'
 // EXPORT
 const UserLogin = () => {
 
@@ -44,6 +46,9 @@ const UserLogin = () => {
           Object.entries(data).forEach(([username, data]) => {
             if (data.email === user.email) {
               // document.cookie = `token=${token}`; // store token as cookie (necessary?)
+              //Make Route in APP.js
+              
+
               window.location.href = `/users/${username}`; // redirect to user's home page
             }
           });
@@ -71,6 +76,9 @@ const UserLogin = () => {
         Object.entries(data).forEach(([username, data]) => {
           if (data.email === user.email) {
             found = true;
+            //Make Route in APP.js
+            
+
             window.location.href = `/users/${username}`; // redirect to user's home page
           }
         });
@@ -84,6 +92,10 @@ const UserLogin = () => {
             lname: "",
             location: "",
           });
+          //Make Route in APP.js
+          
+          console.log("in google veri");
+
           window.location.href = `/users/${eUsername}`; // redirect to user's home page
         }
       });

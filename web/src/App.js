@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react';
+import React, { useState } from 'react';
 import NavBar from './components/Navbar';
 // Pages
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
@@ -7,8 +7,27 @@ import Home from './pages/home';
 import Events from './pages/events';
 import UserLogin from './pages/login/UserLogin';
 import UserSignUp from './pages/signup/UserSignup';
+import NotFound from './pages/NotFound';
 
-function App() {
+function App(props) {
+
+  // const handleClick = () => {
+  //   props.addRoute(); // call the handleAddRoute function passed as a prop
+  // };
+  // const [dynamicRoute, setDynamicRoute] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // add isLoggedIn state
+
+  // // function to add a new route dynamically
+  // const handleAddRoute = () => {
+  //   const newRoute = '/dynamic-route'; // set the new route path
+  //   setDynamicRoute(newRoute); // update the state with the new route path
+  // };
+  
+  //handles login
+  // const handleLogin = () => {
+  //   setIsLoggedIn(true);
+  // };
+
   return (
     <Router>
       <NavBarWrapper/>
@@ -17,7 +36,9 @@ function App() {
         <Route path='/events' element={<Events/>} />
         <Route path='/login' element={<UserLogin/>} />
         <Route path='/signup' element={<UserSignUp/>} />
+        <Route path="/users/:username" element={<NotFound/>} />
       </Routes>
+      
     </Router>
   );
 }
@@ -32,3 +53,4 @@ function NavBarWrapper() {
 }
 
 export default App;
+
