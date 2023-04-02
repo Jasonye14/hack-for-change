@@ -1,14 +1,19 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { 
     Nav,
     NavLink,
     Bars,
     NavMenu,
+    NavBtnLink
 } from './NavbarElement';
 
 import NewEventForm from '../NewEventForm';
 
 const Navbar = () => {
+
+  useEffect(() => {
+    
+  });
 
 
   return (
@@ -21,6 +26,7 @@ const Navbar = () => {
           <NewEventForm></NewEventForm>
 
           <NavLink to='/login' style={{marginLeft: "auto", marginRight: "3rem",}}>Login</NavLink>
+          <NavBtnLink to='' style={{marginLeft: "auto", marginRight: "3rem",}}>Logout</NavBtnLink>
 
           {/* <Avatar
             alt="Remy Sharp"
