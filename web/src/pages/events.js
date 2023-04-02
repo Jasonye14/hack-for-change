@@ -30,7 +30,7 @@ function createCard(key, imageSource, host, title, description, location, event_
   let theDate = new Date(event_time), localDate = theDate.toLocaleDateString(), localTime = theDate.toLocaleTimeString();
   let readableTime = theDate.toDateString();
   return (
-    <Card key={key} sx={{ minWidth: "32%", minHeight: "400px", maxHeight: "600px", position: "relative", marginRight: "10px", marginTop: "10px",}}>
+    <Card key={key} sx={{ width: "32%", maxWidth: "32%", minHeight: "400px", maxHeight: "600px", position: "relative", marginRight: "10px", marginTop: "10px",}}>
       <CardMedia
         sx={{ height: 200 }}
         image={imageSource}
