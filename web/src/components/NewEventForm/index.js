@@ -69,7 +69,7 @@ function NewEventForm() {
 
   return (
     <div>
-      <Button onClick={handleOpen} variant="contained" size='large' sx={{backgroundColor: "transparent !important", color: "black"}}>Create New Event</Button>
+      <Button onClick={handleOpen} variant="contained" size='large' sx={{backgroundColor: "whitesmoke !important", color: "black"}}>Create New Event</Button>
       <Modal
         open={open}
         onClose={handleClose}
