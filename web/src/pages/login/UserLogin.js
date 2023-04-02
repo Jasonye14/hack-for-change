@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Alert, AlertTitle} from '@mui/material';
 
 // component Imports
 import GoogleButton from '../../components/Buttons/GoogleSignin';
@@ -23,8 +24,11 @@ import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPasswor
 import db from '../../utils/firebase';
 import { onValue, ref, set } from "firebase/database";
 
+//APP
+import App from '../../App'
 // EXPORT
 const UserLogin = () => {
+  const [errorOpen, setError] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -33,40 +37,13 @@ const UserLogin = () => {
     const data = new FormData(event.currentTarget);
 
     await signInWithEmailAndPassword(auth, data.get('email'), data.get('password')).then(userCredential => {
-        // Signed in successfully
-        const user = userCredential.user;
-        console.log(userCredential);
+      setError(false);
+      // Signed in successfully
+      const user = userCredential.user;
+      console.log(userCredential);
 
-        // get username from db; must exist at this point since auth succeeded
-        const usersReference = ref(db, 'users');
-        onValue(usersReference, snapshot => {
-          const data = snapshot.val();
-          Object.entries(data).forEach(([username, data]) => {
-            if (data.email === user.email) {
-              // document.cookie = `token=${token}`; // store token as cookie (necessary?)
-              window.location.href = `/users/${username}`; // redirect to user's home page
-            }
-          });
-        });
-           
-      })
-      .catch((error) => {
-        console.error(error.message);
-      });
-  };
-
-  const handleGoogle = async () => {
-    const provider = new GoogleAuthProvider();
-    const auth = getAuth();
-
-    await signInWithPopup(auth, provider).then((result) => {
-      // const credential = GoogleAuthProvider.credentialFromResult(result);
-      const user = result.user;
-      const email = user.email;
-      const eUsername = email.replace(/\..+/g, '').replace('@', ''); // jak325@lehigh.edu => jak325lehigh
-      // const token = credential.accessToken;
-
-      let usersReference = ref(db, 'users');
+      // get username from db; must exist at this point since auth succeeded
+      const usersReference = ref(db, 'users');
       onValue(usersReference, snapshot => {
         const data = snapshot.val();
         Object.entries(data).forEach(([username, data]) => {
@@ -76,18 +53,53 @@ const UserLogin = () => {
           }
         });
       });
+          
+    })
+    .catch((error) => {
+      console.error(error.message);
+      setError(true);
+    });
+  };
 
-      // user not found in db; create an instance for said user
-      usersReference = ref(db, `users/${eUsername}`)
-      set(usersReference, {
-        email: email,
-        fname: "",
-        lname: "",
-        location: "",
+  const handleGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    const auth = getAuth();
+
+    await signInWithPopup(auth, provider).then((result) => {
+      const user = result.user;
+      const email = user.email;
+      const eUsername = email.replace(/\..+/g, '').replace('@', ''); // jak325@lehigh.edu => jak325lehigh
+      let found = false;
+
+      let usersReference = ref(db, 'users');
+      onValue(usersReference, snapshot => {
+        const data = snapshot.val();
+        Object.entries(data).forEach(([username, data]) => {
+          if (data.email === user.email) {
+            found = true;
+            //Make Route in APP.js
+            
+
+            window.location.href = `/users/${username}`; // redirect to user's home page
+          }
+        });
+
+        // user not found in db; create an instance for said user
+        if (!found) {
+          usersReference = ref(db, `users/${eUsername}`)
+          set(usersReference, {
+            email: email,
+            fname: "",
+            lname: "",
+            location: "",
+          });
+          //Make Route in APP.js
+          
+          console.log("in google veri");
+
+          window.location.href = `/users/${eUsername}`; // redirect to user's home page
+        }
       });
-
-      // document.cookie = `token=${token}`; // store token as cookie (necessary?)
-      window.location.href = `/users/${eUsername}`; // redirect to user's home page
 
     }).catch((error) => {
       console.error(error.message);
@@ -128,6 +140,12 @@ const UserLogin = () => {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+          {errorOpen &&
+            <Alert severity="error">
+              <AlertTitle>Login Invalid</AlertTitle>
+              <strong>Username or Password does not exist</strong>
+            </Alert>
+          }
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"

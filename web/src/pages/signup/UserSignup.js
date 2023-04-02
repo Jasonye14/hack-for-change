@@ -17,169 +17,175 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import GoogleButton from '../../components/Buttons/GoogleSignin';
 
 // auth
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from "firebase/auth";
 
 // database
 import db from '../../utils/firebase';
 import { onValue, ref, set } from "firebase/database";
 
 const UserSignUp = () => {
-    function Copyright(props) {
-        return (
-          <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-              Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-          </Typography>
-        );
-      }
+  function Copyright(props) {
+    return (
+      <Typography variant="body2" color="text.secondary" align="center" {...props}>
+        {'Copyright © '}
+        <Link color="inherit" href="https://mui.com/">
+          Your Website
+        </Link>{' '}
+        {new Date().getFullYear()}
+        {'.'}
+      </Typography>
+    );
+  }
       
-      const theme = createTheme();
+  const theme = createTheme();
 
-    const handleGoogle = async () => {
-      const provider = new GoogleAuthProvider();
-      const auth = getAuth();
-  
-      await signInWithPopup(auth, provider).then((result) => {
-        // const credential = GoogleAuthProvider.credentialFromResult(result);
-        const user = result.user;
-        const email = user.email;
-        const eUsername = email.replace(/\..+/g, '').replace('@', ''); // jak325@lehigh.edu => jak325lehigh
-        // const token = credential.accessToken;
-  
-        // const usersReference = ref(db, `users/${username}`); // need to check if user email is in db
-        // onValue(usersReference, snapshot => {
-        //   const data = snapshot.val();
-        //   if (!data) { // if user is not in database, add them
-            
-        //     window.location.href = `/users/${username}`; // redirect to user's home page
-        //   } else {
-        //     window.location.href = `/users/${data}`; // redirect to user's home page
-        //   }
-        // });
+  const handleGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    const auth = getAuth();
 
-        let usersReference = ref(db, 'users');
-        onValue(usersReference, snapshot => {
-          const data = snapshot.val();
-          Object.entries(data).forEach(([username, data]) => {
-            if (data.email === user.email) {
-              // document.cookie = `token=${token}`; // store token as cookie (necessary?)
-              window.location.href = `/users/${username}`; // redirect to user's home page
-            }
-          });
+    await signInWithPopup(auth, provider).then((result) => {
+      const user = result.user;
+      const email = user.email;
+      const eUsername = email.replace(/\..+/g, '').replace('@', ''); // jak325@lehigh.edu => jak325lehigh
+      let found = false;
+
+      let usersReference = ref(db, 'users');
+      onValue(usersReference, snapshot => {
+        const data = snapshot.val();
+        Object.entries(data).forEach(([username, data]) => {
+          if (data.email === user.email) {
+            found = true;
+            window.location.href = `/users/${username}`; // redirect to user's home page
+          }
         });
 
         // user not found in db; create an instance for said user
-        usersReference = ref(db, `users/${eUsername}`)
-        set(usersReference, {
-          email: email,
-          fname: "",
-          lname: "",
-          location: "",
-        });
-
-        // document.cookie = `token=${token}`; // store token as cookie (necessary?)
-        window.location.href = `/users/${eUsername}`; // redirect to user's home page
-  
-      }).catch((error) => {
-        console.error(error.message);
+        if (!found) {
+          usersReference = ref(db, `users/${eUsername}`)
+          set(usersReference, {
+            email: email,
+            fname: "",
+            lname: "",
+            location: "",
+          });
+          window.location.href = `/users/${eUsername}`; // redirect to user's home page
+        }
       });
-  
-    }
 
-      const handleSubmit = (event) => {
-        event.preventDefault();
-        
-        const data = new FormData(event.currentTarget);
-        console.log({
-          email: data.get('email'),
-          password: data.get('password'),
-        });
-      };
+    }).catch((error) => {
+      console.error(error.message);
+    });
+
+  }
+
+  const handleSubmit = (event) => { // TODO: finish this
+    event.preventDefault();
+
+    const data = new FormData(event.currentTarget);
+    const email = data.get('email');
+    const password = data.get('password');
+    const username = data.get('username') || email.replace(/\..+/g, '').replace('@', ''); // default username if none provided
+
+    const auth = getAuth();
+
+    createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
+      const user = userCredential.user;
+      const usersReference = ref(db, `users/${username}`)
+      set(usersReference, {
+        email: user.email,
+        fname: "",
+        lname: "",
+        location: "",
+      });
+      window.location.href = `/users/${username}`; // redirect to user's home page
+    }).catch((error) => {
+      if(error.message === "Firebase: Error (auth/email-already-in-use)") {
+        console.error("ERROR: Email already taken.");
+      }
+    });
+
+  }
     
-      return (
-        <ThemeProvider theme={theme}>
-          <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <Box
-              sx={{
-                marginTop: 8,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-              }}
-            >
-              <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                <LockOutlinedIcon />
-              </Avatar>
-              <Typography component="h1" variant="h5">
-                Sign up
-              </Typography>
-              <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <TextField
-                      autoComplete="given-name"
-                      name="username"
-                      fullWidth
-                      id="username"
-                      label="Username (Email will be used if none provided)"
-                      autoFocus
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="email"
-                      label="Email Address"
-                      name="email"
-                      autoComplete="email"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      name="password"
-                      label="Password"
-                      type="password"
-                      id="password"
-                      autoComplete="new-password"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControlLabel
-                      control={<Checkbox value="allowExtraEmails" color="primary" />}
-                      label="I want to receive inspiration, marketing promotions and updates via email."
-                    />
-                  </Grid>
-                </Grid>
-                <Button
-                  type="submit"
+  return (
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  autoComplete="given-name"
+                  name="username"
                   fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Sign Up
-                </Button>
-                <GoogleButton onClick={handleGoogle}></GoogleButton>
-                <Grid container justifyContent="flex-end">
-                  <Grid item>
-                    <Link href="/login" variant="body2">
-                      Already have an account? Sign in
-                    </Link>
-                  </Grid>
-                </Grid>
-              </Box>
-            </Box>
-            <Copyright sx={{ mt: 5 }} />
-          </Container>
-        </ThemeProvider>
-      );
+                  id="username"
+                  label="Username (Email will be used if none provided)"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={<Checkbox value="allowExtraEmails" color="primary" />}
+                  label="I want to receive inspiration, marketing promotions and updates via email."
+                />
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign Up
+            </Button>
+            <GoogleButton onClick={handleGoogle}></GoogleButton>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link href="/login" variant="body2">
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+        <Copyright sx={{ mt: 5 }} />
+      </Container>
+    </ThemeProvider>
+  );
 };
 
 export default UserSignUp;
