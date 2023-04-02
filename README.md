@@ -2,7 +2,10 @@
 
 "Our mission is to create a social media platform that brings people together to combat trash and pollution in their communities. We are committed to empowering individuals to take action, organizing events that promote community involvement, and creating a sustainable future for our planet. We believe that by connecting people and encouraging collective action, we can make a significant impact in the fight against environmental degradation."
 
-## Check it out here: https://dazzling-queijadas-2e9bc9.netlify.app/
+### Installation
+1. `cd web && npm install`
+2. `npm start`
+3. The website should now be hosted locally at `http://localhost:3000/`
 
 ### Authentication
 
