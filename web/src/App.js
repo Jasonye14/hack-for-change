@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useEffect} from 'react';
+import React, {} from 'react';
 import NavBar from './components/Navbar';
 import Navbar2 from './components/Navbar/index2';
 // Pages
@@ -11,9 +11,9 @@ import UserSignUp from './pages/signup/UserSignup';
 // import NotFound from './pages/NotFound';
 
 function App(props) {
-  useEffect(() => {
-    document.cookie = 'loggedin=false'; // store auth state as cookie
-  })
+  // useEffect(() => {
+  //   document.cookie = 'loggedin=false'; // store auth state as cookie
+  // })
 
   return (
     <Router>
