@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 //image imports
 import oceanCleanUp from "../images/events/OceanCleanup.jpeg"
 import background from "../images/events/eventBackground.jpeg";
@@ -11,9 +11,13 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { display } from '@mui/system';
 
-function createCard(imageSource, title, description, location, time) {
+// database
+import db from './../utils/firebase';
+import { onValue, ref, set } from "firebase/database";
+
+function createCard(key, imageSource, host, title, description, location, event_time, post_time) {
   return (
-    <Card sx={{ minWidth: "32%", minHeight: "400px", maxHeight: "600px", position: "relative", marginRight: "10px", marginTop: "10px",}}>
+    <Card key={key} sx={{ minWidth: "32%", minHeight: "400px", maxHeight: "600px", position: "relative", marginRight: "10px", marginTop: "10px",}}>
       <CardMedia
         sx={{ height: 200 }}
         image={oceanCleanUp}
@@ -27,20 +31,33 @@ function createCard(imageSource, title, description, location, time) {
           {description}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small">{location}</Button>
-        <Button size="small">{time}</Button>
+      <CardActions sx={{flexDirection: "column"}}>
+        <Button size="small"><Typography>Location: </Typography>{location}</Button>
+        <Button size="small"><Typography>Time: </Typography>{event_time}</Button>
       </CardActions>
     </Card>
   );
 }
 
 const Events = () => {
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    // load events from db
+    const usersReference = ref(db, 'events');
+    onValue(usersReference, snapshot => {
+      const data = snapshot.val();
+      setEvents(Object.values(data));
+    });
+
+  }, []);
+
   return (
     <div style={{ display: "flex", alignContent: "flex-start", minHeight: "100vh", padding: "80px 0px 0px 50px", flexWrap: "wrap", backgroundImage: "url(" + background + ")"}}>
-    {createCard(oceanCleanUp, "Ocean Cleanup", "Saving Ocean", "California", "11am March 13")}
+    {/* {createCard(oceanCleanUp, "Host", "Ocean Cleanup", "Saving Ocean", "California", "11am March 13", "Post date")}
     {createCard(background)}
-    {createCard()}
+    {createCard()} */}
+    {events.map((e, index) => createCard(index, oceanCleanUp, e.host, e.title, e.desc, e.location, e.event_date, e.post_date))}
   </div>
   );
 };
