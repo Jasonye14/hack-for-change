@@ -105,12 +105,8 @@ const UserSignUp = () => {
       window.location.href = `/users/${username}`; // redirect to user's home page
 
     }).catch((error) => {
-      if(error.message === "Firebase: Error (auth/email-already-in-use)") {
         console.error("ERROR: Email already taken.");
-      }
     });
-
-    console.error("ERROR: Email already taken");
 
   }
     
