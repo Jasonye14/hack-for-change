@@ -58,7 +58,7 @@ function NewEventForm() {
       host: "logged in",
       location: location,
       event_date: "",
-      post_date: ""
+      post_date: Date.now()
     });
   }
 
