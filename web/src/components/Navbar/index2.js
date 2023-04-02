@@ -8,7 +8,7 @@ import {
 
 import NewEventForm from '../NewEventForm';
 
-const Navbar = () => {
+const Navbar2 = () => {
 
 
   return (
@@ -17,8 +17,9 @@ const Navbar = () => {
         <Bars/>
         <NavMenu>
           <NavLink to='/'>Home</NavLink>
+          <NewEventForm></NewEventForm>
           <NavLink to='/login' style={{marginLeft: "auto", marginRight: "3rem",}}>Login</NavLink>
-
+          
           {/* <Avatar
             alt="Remy Sharp"
             src={blank_prof}
@@ -29,4 +30,4 @@ const Navbar = () => {
     </>
   );
 };
-export default Navbar;
+export default Navbar2;
