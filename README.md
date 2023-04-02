@@ -6,11 +6,22 @@
 
 ### Authentication
 
+![image](https://user-images.githubusercontent.com/49174829/229359119-717a407f-7a7c-4cf1-924e-cd0c97f13ab5.png)
+
 Users can log in and register in two ways:
 - Using their email/password
-- Using their Google account (Note: the Google button on the login page will make an account automatically)
+- Using their Google account
 
 ### Events
 
-Here, users can register for events on Cleanr and post events of their own to fight for a better Earth.
+![image](https://user-images.githubusercontent.com/49174829/229359004-0b1eb2da-53fb-4414-b4e3-45cba89b5e8f.png)
+
+![image](https://user-images.githubusercontent.com/49174829/229359155-1c3f3a8b-1d82-490a-be2b-3c67e21ca0bc.png)
+
+Users can post events of their own to spread the word.
+- Events must have:
+    * Title
+    * Description
+    * Location
+    * Date/Time
 - Users must be registered to post events of their own
