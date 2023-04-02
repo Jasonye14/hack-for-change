@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 //image imports
-import oceanCleanUp from "../images/events/OceanCleanup.jpeg"
+import oceanCleanUp from "../images/events/OceanCleanup.jpeg";
+import riverCleanUp from "../images/events/RiverCleanup.jpeg";
+import forestCleanup from "../images/events/forestCleanup.png";
+import cityCleanUp from "../images/events/CityCleanup.png";
 import background from "../images/events/eventBackground.jpeg";
 //MUI imports
 import Card from '@mui/material/Card';
@@ -21,6 +24,8 @@ import { getAuth } from "firebase/auth";
 import db from './../utils/firebase';
 import { onValue, ref, set } from "firebase/database";
 
+const images = [oceanCleanUp, riverCleanUp, forestCleanup, cityCleanUp];
+
 function createCard(key, imageSource, host, title, description, location, event_time, post_time) {
   let theDate = new Date(event_time), localDate = theDate.toLocaleDateString(), localTime = theDate.toLocaleTimeString();
   let readableTime = theDate.toDateString();
@@ -28,7 +33,7 @@ function createCard(key, imageSource, host, title, description, location, event_
     <Card key={key} sx={{ minWidth: "32%", minHeight: "400px", maxHeight: "600px", position: "relative", marginRight: "10px", marginTop: "10px",}}>
       <CardMedia
         sx={{ height: 200 }}
-        image={oceanCleanUp}
+        image={imageSource}
         title={title}
       />
       <CardContent>
@@ -68,7 +73,7 @@ const Events = () => {
       {/* {createCard(oceanCleanUp, "Host", "Ocean Cleanup", "Saving Ocean", "California", "11am March 13", "Post date")}
       {createCard(background)}
       {createCard()} */}
-      {events.map((e, index) => createCard(index, oceanCleanUp, e.host, e.title, e.desc, e.location, e.event_date, e.post_date))}
+      {events.map((e, index) => createCard(index, images[index%4], e.host, e.title, e.desc, e.location, e.event_date, e.post_date))}
     </div>
   );
 };
