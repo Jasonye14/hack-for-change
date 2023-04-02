@@ -31,9 +31,9 @@ function createCard(key, imageSource, host, title, description, location, event_
           {description}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small">{location}</Button>
-        <Button size="small">{event_time}</Button>
+      <CardActions sx={{flexDirection: "column"}}>
+        <Button size="small"><Typography>Location: </Typography>{location}</Button>
+        <Button size="small"><Typography>Time: </Typography>{event_time}</Button>
       </CardActions>
     </Card>
   );
