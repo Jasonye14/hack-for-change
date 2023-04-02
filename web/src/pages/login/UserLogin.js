@@ -27,8 +27,9 @@ import { onValue, ref, set } from "firebase/database";
 //Import image background
 import ocean from '../../images/login/oceanBackground.jpg';
 
-//APP
-import App from '../../App'
+//Import image background
+import ocean from '../../images/login/oceanBackground.jpg';
+
 // EXPORT
 const UserLogin = () => {
   const [errorOpen, setError] = useState(false);
