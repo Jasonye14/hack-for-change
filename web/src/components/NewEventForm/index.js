@@ -10,6 +10,8 @@ import { Stack } from '@mui/system';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { TimeField } from '@mui/x-date-pickers/TimeField';
+import dayjs from 'dayjs';
 
 // database
 import db from '../../utils/firebase';
@@ -34,6 +36,7 @@ function NewEventForm() {
   const [desc, setDesc] = useState("");
   const [location, setLocation] = useState("");
   const [time, setTime] = useState("");
+  const [date, setDate] = useState("");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -47,9 +50,20 @@ function NewEventForm() {
     setLocation(event.target.value);
   }
   const handleTimeInput = (event) => {
-    setTime(event.target.value);
+    console.log(event);
+    if(event.$d != 'Invalid Date') {
+      setTime(event.$d);
+    }
+  }
+  const handleDateInput = (event) => {
+    console.log(event);
+    console.log(event);
+    if(event.$d != 'Invalid Date') {
+      setDate(event.$d);
+    }
   }
   const handleSubmitForm = () => {
+    // let time = document.getElementById("datePicker")
     // add new event to db
     const eventsReference = ref(db, 'events');
     set(eventsReference, {
@@ -78,16 +92,12 @@ function NewEventForm() {
             <TextField required onChange={(e) => handleTitleInput(e)} label="Title" variant='outlined' />
             <TextField required onChange={(e) => handleDescInput(e)} label="Description" multiline />
             <TextField required onChange={(e) => handleLocationInput(e)} label="Location" variant="outlined" />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker />
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'en'}>
+              <DatePicker id="datePicker" required label="Date" onChange={(e) => handleDateInput(e)}/>
+              <TimeField id="timeField" required label="Time" onChange={(e) => handleTimeInput(e)}/>
             </LocalizationProvider>
             <Button variant='outlined' onClick={handleSubmitForm}>Add New Event</Button>
-            {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </Typography> */}
         </Stack>
-        {/* <Box sx={style}>
-        </Box> */}
       </Modal>
     </div>
   );
