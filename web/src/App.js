@@ -22,7 +22,7 @@ function App(props) {
         <Route path='/' exact element={<Home />} />
         <Route path='/login' element={<UserLogin />} />
         <Route path='/signup' element={<UserSignUp />} />
-        <Route path="/users/:username" element={<Events />} />
+        <Route path="*" element={<Events />} />
       </Routes>
       
     </Router>
