@@ -1,21 +1,16 @@
 import React, { useState } from 'react';
 
 //Material UI
-// import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import { TextField } from '@mui/material';
-import { Stack } from '@mui/system';
+import { Button, Typography, Modal, TextField, Stack } from '@mui/material';
+
+// Date-time input fields
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { TimeField } from '@mui/x-date-pickers/TimeField';
-import dayjs from 'dayjs';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 // database
 import db from '../../utils/firebase';
-import { onValue, ref, set } from "firebase/database";
+import { onValue, push, ref, set } from "firebase/database";
 
 const style = {
   position: 'absolute',
@@ -35,8 +30,7 @@ function NewEventForm() {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [location, setLocation] = useState("");
-  const [time, setTime] = useState("");
-  const [date, setDate] = useState("");
+  const [datetime, setDateTime] = useState();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -49,30 +43,27 @@ function NewEventForm() {
   const handleLocationInput = (event) => {
     setLocation(event.target.value);
   }
-  const handleTimeInput = (event) => {
-    console.log(event);
-    if(event.$d != 'Invalid Date') {
-      setTime(event.$d);
-    }
-  }
-  const handleDateInput = (event) => {
-    console.log(event);
-    console.log(event);
-    if(event.$d != 'Invalid Date') {
-      setDate(event.$d);
+
+  const handleDateTimeInput = (event) => {
+    console.log("Date: ", event);
+    if(event.$d !== 'Invalid Date') {
+      setDateTime(event.$d);
     }
   }
   const handleSubmitForm = () => {
-    // let time = document.getElementById("datePicker")
-    // add new event to db
-    const eventsReference = ref(db, 'events');
-    set(eventsReference, {
+    setOpen(false);
+    setTitle("");
+    setDesc("");
+    setLocation("");
+
+    const eventsRef = push(ref(db, "events"));
+    set(eventsRef, {
       title: title,
       desc: desc,
       host: "logged in",
       location: location,
-      event_date: "",
-      post_date: Date.now()
+      event_date: datetime.toISOString(),
+      post_date: (new Date()).toISOString()
     });
   }
 
@@ -86,17 +77,16 @@ function NewEventForm() {
         aria-describedby="modal-modal-description"
       >
         <Stack sx={style}>
-            <Typography id="modal-modal-title" variant="h5" component="h2">
-                Create A New Event
-            </Typography>
-            <TextField required onChange={(e) => handleTitleInput(e)} label="Title" variant='outlined' />
-            <TextField required onChange={(e) => handleDescInput(e)} label="Description" multiline />
-            <TextField required onChange={(e) => handleLocationInput(e)} label="Location" variant="outlined" />
-            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'en'}>
-              <DatePicker id="datePicker" required label="Date" onChange={(e) => handleDateInput(e)}/>
-              <TimeField id="timeField" required label="Time" onChange={(e) => handleTimeInput(e)}/>
-            </LocalizationProvider>
-            <Button variant='outlined' onClick={handleSubmitForm}>Add New Event</Button>
+          <Typography id="modal-modal-title" variant="h5" component="h2">
+              Create A New Event
+          </Typography>
+          <TextField required onChange={(e) => handleTitleInput(e)} label="Title" variant='outlined' />
+          <TextField required onChange={(e) => handleDescInput(e)} label="Description" multiline />
+          <TextField required onChange={(e) => handleLocationInput(e)} label="Location" variant="outlined" />
+          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'en'}>
+            <DateTimePicker id="datePicker" required label="Date" onChange={(e) => handleDateTimeInput(e)}/>
+          </LocalizationProvider>
+          <Button variant='outlined' onClick={handleSubmitForm}>Add New Event</Button>
         </Stack>
       </Modal>
     </div>
