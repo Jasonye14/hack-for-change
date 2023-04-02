@@ -7,6 +7,9 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { TextField } from '@mui/material';
 import { Stack } from '@mui/system';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 const style = {
   position: 'absolute',
@@ -62,7 +65,9 @@ function NewEventForm() {
             <TextField required onChange={(e) => handleTitleInput(e)} label="Title" variant='outlined' />
             <TextField required onChange={(e) => handleDescInput(e)} label="Description" multiline />
             <TextField required onChange={(e) => handleLocationInput(e)} label="Location" variant="outlined" />
-            <TextField required onChange={(e) => handleTimeInput(e)} label="Time" variant="outlined" />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker />
+            </LocalizationProvider>
             <Button variant='outlined' onClick={handleSubmitForm}>Add New Event</Button>
             {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                 Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
