@@ -21,12 +21,12 @@ import { Typography, Box, BottomNavigation, Paper, Stack, BottomNavigationAction
 
 const edu_content = ['The Effect of Plastic on Marine Life', 'Effects on Land and Forest Life', 'Impact on Human Health'];
 const content = {
-  0: `Plastics pollution has a direct and deadly effect on marine life. Such effects include:\n\
-    1. Entanglement: Marine animals like sea turtles, whales, and dolphins can become entangled in plastic debris, which can cause injury or even death.\n\
-    2. Ingestion: Marine animals often mistake plastic debris for food and ingest it, which can lead to blockages in their digestive systems, causing injury, and even death.\n\
-    3. Chemical contamination: Plastic debris can release harmful chemicals into the ocean, which can contaminate the water and affect the health of marine animals.\n\
-    4. Habitat destruction: Plastic pollution can damage marine habitats, such as coral reefs and seagrass beds, which provide essential habitat for a diverse range of marine species.\n\
-    5. Bioaccumulation: Toxic chemicals that are released from plastics can accumulate in the tissues of marine animals over time, potentially leading to health problems and even death.\n\
+  0: `Plastics pollution has a direct and deadly effect on marine life. Such effects include:\n
+    1. Entanglement: Marine animals like sea turtles, whales, and dolphins can become entangled in plastic debris, which can cause injury or even death.\n
+    2. Ingestion: Marine animals often mistake plastic debris for food and ingest it, which can lead to blockages in their digestive systems, causing injury, and even death.\n
+    3. Chemical contamination: Plastic debris can release harmful chemicals into the ocean, which can contaminate the water and affect the health of marine animals.\n
+    4. Habitat destruction: Plastic pollution can damage marine habitats, such as coral reefs and seagrass beds, which provide essential habitat for a diverse range of marine species.\n
+    5. Bioaccumulation: Toxic chemicals that are released from plastics can accumulate in the tissues of marine animals over time, potentially leading to health problems and even death.\n
     6. Altered behavior: Plastic pollution can alter the behavior of marine animals, affecting their feeding patterns, migration, and reproductive success.`,
 
   1:`Trash litter and plastic pollution also have various harmful effects on animals on land and in forests, including:\n
