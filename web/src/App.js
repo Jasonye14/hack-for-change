@@ -17,6 +17,7 @@ function App(props) {
   // const [dynamicRoute, setDynamicRoute] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false); // add isLoggedIn state
 
+
   // // function to add a new route dynamically
   // const handleAddRoute = () => {
   //   const newRoute = '/dynamic-route'; // set the new route path
@@ -32,11 +33,11 @@ function App(props) {
     <Router>
       <NavBarWrapper/>
       <Routes>
-        <Route path='/' exact element={<Home/>} />
-        <Route path='/events' element={<Events/>} />
-        <Route path='/login' element={<UserLogin/>} />
-        <Route path='/signup' element={<UserSignUp/>} />
-        <Route path="/users/:username" element={<NotFound/>} />
+        <Route path='/' exact element={<Home />} />
+        <Route path='/events' element={<Events />} />
+        <Route path='/login' element={<UserLogin />} />
+        <Route path='/signup' element={<UserSignUp />} />
+        <Route path="/users/:username" element={<NotFound />} />
       </Routes>
       
     </Router>

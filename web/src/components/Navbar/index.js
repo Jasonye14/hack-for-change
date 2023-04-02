@@ -4,14 +4,13 @@ import {
     NavLink,
     Bars,
     NavMenu,
-    NavBtnLink
 } from './NavbarElement';
 
-// Material UI
-
-//Assets
+import NewEventForm from '../NewEventForm';
 
 const Navbar = () => {
+
+
   return (
     <>
       <Nav>
@@ -20,6 +19,8 @@ const Navbar = () => {
           <NavLink to='/'>Home</NavLink>
           <NavLink to='/events'>Events</NavLink>
           <NavLink to='/login' style={{marginLeft: "auto", marginRight: "3rem",}}>Login</NavLink>
+
+          <NewEventForm></NewEventForm>
           {/* <Avatar
             alt="Remy Sharp"
             src={blank_prof}

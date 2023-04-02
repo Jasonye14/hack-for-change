@@ -64,7 +64,6 @@ const Events = () => {
 
   return (
     <div style={{ display: "flex", alignContent: "flex-start", minHeight: "100vh", padding: "80px 0px 0px 50px", flexWrap: "wrap", backgroundImage: "url(" + background + ")"}}>
-      <NewEventForm></NewEventForm>
       {/* {createCard(oceanCleanUp, "Host", "Ocean Cleanup", "Saving Ocean", "California", "11am March 13", "Post date")}
       {createCard(background)}
       {createCard()} */}
