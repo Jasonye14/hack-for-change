@@ -1,6 +1,7 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NavBar from './components/Navbar';
+import Navbar2 from './components/Navbar/index2';
 // Pages
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Home from './pages/home/home';
@@ -29,15 +30,18 @@ function App(props) {
   //   setIsLoggedIn(true);
   // };
 
+  useEffect(() => {
+    document.cookie = 'loggedin=false'; // store auth state as cookie
+  })
+
   return (
     <Router>
       <NavBarWrapper/>
       <Routes>
         <Route path='/' exact element={<Home />} />
-        <Route path='/events' element={<Events />} />
         <Route path='/login' element={<UserLogin />} />
         <Route path='/signup' element={<UserSignUp />} />
-        <Route path="/users/:username" element={<NotFound />} />
+        <Route path="/users/:username" element={<Events />} />
       </Routes>
       
     </Router>
@@ -49,6 +53,9 @@ function NavBarWrapper() {
   // Only render the NavBar component if the current route is not /login
   if (location.pathname === '/login' || location.pathname === '/signup' ) {
     return null;
+  }
+  if(location.pathname !== '/'){
+    return <Navbar2/>;
   }
   return <NavBar />;
 }

@@ -48,7 +48,7 @@ const UserLogin = () => {
         const data = snapshot.val();
         Object.entries(data).forEach(([username, data]) => {
           if (data.email === user.email) {
-            // document.cookie = `token=${token}`; // store token as cookie (necessary?)
+            document.cookie = 'loggedin=true'; // store auth state as cookie
             window.location.href = `/users/${username}`; // redirect to user's home page
           }
         });
@@ -79,7 +79,7 @@ const UserLogin = () => {
             found = true;
             //Make Route in APP.js
             
-
+            document.cookie = 'loggedin=true'; // store auth state as cookie
             window.location.href = `/users/${username}`; // redirect to user's home page
           }
         });
@@ -94,9 +94,8 @@ const UserLogin = () => {
             location: "",
           });
           //Make Route in APP.js
-          
-          console.log("in google veri");
 
+          document.cookie = 'loggedin=true'; // store auth state as cookie
           window.location.href = `/users/${eUsername}`; // redirect to user's home page
         }
       });
