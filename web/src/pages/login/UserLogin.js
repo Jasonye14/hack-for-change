@@ -24,6 +24,9 @@ import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPasswor
 import db from '../../utils/firebase';
 import { onValue, ref,set  } from "firebase/database";
 
+//Import image background
+import ocean from '../../images/login/oceanBackground.jpg';
+
 // EXPORT
 const UserLogin = () => {
   const [errorOpen, setError] = useState(false);
@@ -46,7 +49,7 @@ const UserLogin = () => {
         const data = snapshot.val();
         Object.entries(data).forEach(([username, data]) => {
           if (data.email === user.email) {
-            // document.cookie = `token=${token}`; // store token as cookie (necessary?)
+            document.cookie = 'loggedin=true'; // store auth state as cookie
             window.location.href = `/users/${username}`; // redirect to user's home page
           }
         });
@@ -77,7 +80,7 @@ const UserLogin = () => {
             found = true;
             //Make Route in APP.js
             
-
+            document.cookie = 'loggedin=true'; // store auth state as cookie
             window.location.href = `/users/${username}`; // redirect to user's home page
           }
         });
@@ -92,9 +95,8 @@ const UserLogin = () => {
             location: "",
           });
           //Make Route in APP.js
-          
-          console.log("in google veri");
 
+          document.cookie = 'loggedin=true'; // store auth state as cookie
           window.location.href = `/users/${eUsername}`; // redirect to user's home page
         }
       });
@@ -105,24 +107,12 @@ const UserLogin = () => {
 
   }
 
-  function Copyright(props) {
-    return (
-      <Typography variant="body2" color="text.secondary" align="center" {...props}>
-        {'Copyright © '}
-        <Link color="inherit" href="https://mui.com/">
-          Your Website
-        </Link>{' '}
-        {new Date().getFullYear()} 
-        {'.'}
-      </Typography>
-    );
-  }
-
   const theme = createTheme();
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+      <img src={ocean} alt="" style={{position: "absolute", top:0, minWidth: "100vw", minHeight: "100vh", zIndex: -1, opacity: 0.8}}></img>
+      <Container component="main" maxWidth="xs" sx={{backgroundColor: "white", opacity: 0.8, borderRadius: "20px"}}>
         <CssBaseline />
         <Box
           sx={{
@@ -180,11 +170,6 @@ const UserLogin = () => {
             </Button>
             <GoogleButton onClick={handleGoogle}></GoogleButton>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
                 <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
@@ -193,7 +178,6 @@ const UserLogin = () => {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );
