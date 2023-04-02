@@ -32,11 +32,6 @@ function createCard(key, imageSource, host, title, description, location, event_
         title={title}
       />
       <CardContent>
-        <Typography>
-          {localDate} | {localTime}
-        </Typography>
-      </CardContent>
-      <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {title}
         </Typography>

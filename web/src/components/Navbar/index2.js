@@ -4,12 +4,25 @@ import {
     NavLink,
     Bars,
     NavMenu,
+    NavBtnLink
 } from './NavbarElement';
+
+import { getAuth, signOut } from "firebase/auth";
 
 import NewEventForm from '../NewEventForm';
 
 const Navbar2 = () => {
+  const handleLogout = () => {
+    document.cookie = 'loggedin=false'; // store auth state as cookie
 
+
+    const auth = getAuth();
+    signOut(auth).then(() => {
+      window.location.href = '/';
+    }).catch((error) => {
+      console.log("");
+    });
+  }
 
   return (
     <>
@@ -18,8 +31,8 @@ const Navbar2 = () => {
         <NavMenu>
           <NavLink to='/'>Home</NavLink>
           <NewEventForm></NewEventForm>
-          <NavLink to='/login' style={{marginLeft: "auto", marginRight: "3rem",}}>Login</NavLink>
-          
+          <NavBtnLink style={{marginLeft: "auto", marginRight: "3rem",}} onClick={handleLogout}>Logout</NavBtnLink>
+
           {/* <Avatar
             alt="Remy Sharp"
             src={blank_prof}

@@ -75,13 +75,11 @@ const Home = () => {
             elevation={8}
           >
             <Typography variant="body1" sx={{whiteSpace: "pre-line"}}>
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
-                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
-                deserunt mollit anim id est laborum."
+              "Our mission is to create a social media platform that brings people together 
+              to combat trash and pollution in their communities. We are committed to empowering 
+              individuals to take action, organizing events that promote community involvement, 
+              and creating a sustainable future for our planet. We believe that by connecting people 
+              and encouraging collective action, we can make a significant impact in the fight against environmental degradation." - Jason, Alec, Jon
             </Typography>
           </Paper>
         </Container>
