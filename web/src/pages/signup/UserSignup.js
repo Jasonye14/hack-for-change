@@ -78,31 +78,39 @@ const UserSignUp = () => {
 
   }
 
-  const handleSubmit = (event) => { // TODO: finish this
+  const handleSubmit = async (event) => { // TODO: finish this
     event.preventDefault();
 
     const data = new FormData(event.currentTarget);
     const email = data.get('email');
     const password = data.get('password');
     const username = data.get('username') || email.replace(/\..+/g, '').replace('@', ''); // default username if none provided
+    const fname = data.get('fname') ?? '';
+    const lname = data.get('lname') ?? '';
 
     const auth = getAuth();
 
-    createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
+    await createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
       const user = userCredential.user;
-      const usersReference = ref(db, `users/${username}`)
+      const usersReference = ref(db, `users/${username}`);
+      console.log(user);
+
+      console.log(user);
       set(usersReference, {
         email: user.email,
-        fname: "",
-        lname: "",
+        fname: fname,
+        lname: lname,
         location: "",
       });
       window.location.href = `/users/${username}`; // redirect to user's home page
+
     }).catch((error) => {
       if(error.message === "Firebase: Error (auth/email-already-in-use)") {
         console.error("ERROR: Email already taken.");
       }
     });
+
+    console.error("ERROR: Email already taken");
 
   }
     
@@ -128,11 +136,28 @@ const UserSignUp = () => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  autoComplete="given-name"
                   name="username"
                   fullWidth
                   id="username"
                   label="Username (Email will be used if none provided)"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  name="fname"
+                  fullWidth
+                  id="fname"
+                  label="First Name"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  name="lname"
+                  fullWidth
+                  id="lname"
+                  label="Last Name"
                   autoFocus
                 />
               </Grid>
