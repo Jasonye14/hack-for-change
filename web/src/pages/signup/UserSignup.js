@@ -78,7 +78,7 @@ const UserSignUp = () => {
 
   }
 
-      const handleSubmit = (event) => {
+      const handleSubmit = (event) => { // TODO: finish this
         event.preventDefault();
 
         const data = new FormData(event.currentTarget);

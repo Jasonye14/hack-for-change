@@ -1,10 +1,10 @@
 import React from 'react';
 
-const GoogleButton = (props) => {
+const GoogleButton = ({ onClick }) => {
 
   return (
     <button
-      onClick={props.onClick}
+      onClick={onClick}
       style={{
         backgroundColor: '#fff',
         height: '50px',

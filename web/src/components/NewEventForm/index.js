@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
 //Material UI
 // import Box from '@mui/material/Box';
@@ -7,6 +7,10 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { TextField } from '@mui/material';
 import { Stack } from '@mui/system';
+
+// database
+import db from '../../utils/firebase';
+import { onValue, ref, set } from "firebase/database";
 
 const style = {
   position: 'absolute',
@@ -43,7 +47,16 @@ function NewEventForm() {
     setTime(event.target.value);
   }
   const handleSubmitForm = () => {
-    // ...do something
+    // add new event to db
+    const eventsReference = ref(db, 'events');
+    set(eventsReference, {
+      title: title,
+      desc: desc,
+      host: "logged in",
+      location: location,
+      event_date: "",
+      post_date: ""
+    });
   }
 
   return (

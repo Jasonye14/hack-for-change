@@ -44,8 +44,8 @@ const Events = () => {
 
   useEffect(() => {
     // load events from db
-    const usersReference = ref(db, 'events');
-    onValue(usersReference, snapshot => {
+    const eventsReference = ref(db, 'events');
+    onValue(eventsReference, snapshot => {
       const data = snapshot.val();
       setEvents(Object.values(data));
     });
