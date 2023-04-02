@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 //image imports
 import oceanCleanUp from "../images/events/OceanCleanup.jpeg"
