@@ -22,10 +22,8 @@ import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPasswor
 
 // database
 import db from '../../utils/firebase';
-import { onValue, ref, set } from "firebase/database";
+import { onValue, ref } from "firebase/database";
 
-//APP
-import App from '../../App'
 // EXPORT
 const UserLogin = () => {
   const [errorOpen, setError] = useState(false);

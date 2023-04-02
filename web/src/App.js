@@ -15,7 +15,6 @@ function App(props) {
   //   props.addRoute(); // call the handleAddRoute function passed as a prop
   // };
   // const [dynamicRoute, setDynamicRoute] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // add isLoggedIn state
 
   // // function to add a new route dynamically
   // const handleAddRoute = () => {

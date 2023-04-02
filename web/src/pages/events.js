@@ -16,7 +16,7 @@ import NewEventForm from '../components/NewEventForm';
 
 // database
 import db from './../utils/firebase';
-import { onValue, ref, set } from "firebase/database";
+import { ref, set } from "firebase/database";
 
 function createCard(key, imageSource, host, title, description, location, event_time, post_time) {
   let theDate = new Date(event_time), localDate = theDate.toLocaleDateString(), localTime = theDate.toLocaleTimeString();
