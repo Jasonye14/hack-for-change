@@ -1,11 +1,11 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react';
 //image imports
-import oceanCleanUp from "../images/events/OceanCleanup.jpeg";
-import riverCleanUp from "../images/events/RiverCleanup.jpeg";
-import forestCleanup from "../images/events/forestCleanup.png";
-import cityCleanUp from "../images/events/CityCleanup.png";
-import background from "../images/events/eventBackground.jpeg";
+import oceanCleanUp from "../../images/events/OceanCleanup.jpeg";
+import riverCleanUp from "../../images/events/RiverCleanup.jpeg";
+import forestCleanup from "../../images/events/forestCleanup.png";
+import cityCleanUp from "../../images/events/CityCleanup.png";
+import background from "../../images/events/eventBackground.jpeg";
 //MUI imports
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -15,7 +15,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 // database
-import db from './../utils/firebase';
+import db from '../../utils/firebase';
 import { onValue, ref } from "firebase/database";
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
