@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -22,39 +22,38 @@ import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPasswor
 
 // database
 import db from '../../utils/firebase';
-import { onValue, ref,set  } from "firebase/database";
+import { onValue, ref, set  } from "firebase/database";
 
 //Import image background
 import ocean from '../../images/login/oceanBackground.jpg';
 
 // EXPORT
-const UserLogin = () => {
+const UserLogin = ({ user, setUser }) => {
   const [errorOpen, setError] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     const auth = getAuth();
     const data = new FormData(event.currentTarget);
 
-    await signInWithEmailAndPassword(auth, data.get('email'), data.get('password')).then(userCredential => {
-      setError(false);
+    await signInWithEmailAndPassword(auth, data.get('email'), data.get('password'))
+    .then(userCredential => {
       // Signed in successfully
-      const user = userCredential.user;
-      console.log(userCredential);
+      const fbUser = userCredential.user;
+      setError(false);
+      setUser(userCredential.user);
 
       // get username from db; must exist at this point since auth succeeded
       const usersReference = ref(db, 'users');
       onValue(usersReference, snapshot => {
         const data = snapshot.val();
         Object.entries(data).forEach(([username, data]) => {
-          if (data.email === user.email) {
+          if (data.email === fbUser.email) {
             document.cookie = 'loggedin=true'; // store auth state as cookie
             window.location.href = `/users/${username}`; // redirect to user's home page
           }
         });
       });
-          
     })
     .catch((error) => {
       console.error(error.message);
@@ -66,20 +65,21 @@ const UserLogin = () => {
     const provider = new GoogleAuthProvider();
     const auth = getAuth();
 
-    await signInWithPopup(auth, provider).then((result) => {
-      const user = result.user;
-      const email = user.email;
+    await signInWithPopup(auth, provider)
+    .then((userCredential) => {
+      const fbUser = userCredential.user;
+      const email = fbUser.email;
       const eUsername = email.replace(/\..+/g, '').replace('@', ''); // jak325@lehigh.edu => jak325lehigh
       let found = false;
+      setUser(user);
 
       let usersReference = ref(db, 'users');
       onValue(usersReference, snapshot => {
         const data = snapshot.val();
         Object.entries(data).forEach(([username, data]) => {
-          if (data.email === user.email) {
+          if (data.email === fbUser.email) {
             found = true;
             //Make Route in APP.js
-            
             document.cookie = 'loggedin=true'; // store auth state as cookie
             window.location.href = `/users/${username}`; // redirect to user's home page
           }
@@ -101,7 +101,8 @@ const UserLogin = () => {
         }
       });
 
-    }).catch((error) => {
+    })
+    .catch((error) => {
       console.error(error.message);
     });
 
