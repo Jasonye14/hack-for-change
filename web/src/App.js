@@ -8,10 +8,11 @@ import Home from './pages/home/Home';
 import Events from './pages/events/Events';
 import UserLogin from './pages/login/UserLogin';
 import UserSignUp from './pages/signup/UserSignup';
-import NotFound from './pages/not-found/NotFound';
+// import NotFound from './pages/not-found/NotFound';
 
 // Database
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import NotFound from './pages/ not-found/NotFound';
 
 function App(props) {
   useEffect(() => {
