@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBar from './components/Navbar';
 import Navbar2 from './components/Navbar/index2';
 // Pages
@@ -16,32 +16,22 @@ import { onValue, ref } from "firebase/database";
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 function App(props) {
-  // useEffect(() => {
-  //   document.cookie = 'loggedin=false'; // store auth state as cookie
-  // })
+  useEffect(() => {
+    document.cookie = 'loggedin=false'; // store auth state as cookie
+  })
 
-  // const [uid, setUid] = useState("");
-  // const [events, setEvents] = useState([]);
+  const [uid, setUid] = useState("");
 
-  // useEffect(() => {
-  //   const auth = getAuth();
-  //   onAuthStateChanged(auth, user => {
-  //     if (user) { // if user is signed in
-  //       setUid(user.uid);
-        
-  //       // load events from db
-  //       const eventsReference = ref(db, 'events');
-  //       onValue(eventsReference, snapshot => {
-  //         const data = snapshot.val();
-  //         setEvents(Object.values(data));
-  //       });
-  //     } else {
-  //       // user is not logged in
-  //       window.location.href = "NotFound";
-  //     }
-  //   });
-  
-  // }, []);
+  useEffect(() => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, user => {
+      if (user) { // if user is signed in
+        setUid(user.uid);
+      } else {
+        window.location.href = "/NotFound";
+      }
+    });
+  }, []);
 
   return (
     <Router>
