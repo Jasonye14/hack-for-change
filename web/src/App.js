@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useEffect, useState } from 'react';
+import React, {} from 'react';
 import NavBar from './components/Navbar';
 import Navbar2 from './components/Navbar/index2';
 // Pages
@@ -8,31 +8,12 @@ import Home from './pages/home/home';
 import Events from './pages/events';
 import UserLogin from './pages/login/UserLogin';
 import UserSignUp from './pages/signup/UserSignup';
-import NotFound from './pages/NotFound';
+// import NotFound from './pages/NotFound';
 
 function App(props) {
-
-  // const handleClick = () => {
-  //   props.addRoute(); // call the handleAddRoute function passed as a prop
-  // };
-  // const [dynamicRoute, setDynamicRoute] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // add isLoggedIn state
-
-
-  // // function to add a new route dynamically
-  // const handleAddRoute = () => {
-  //   const newRoute = '/dynamic-route'; // set the new route path
-  //   setDynamicRoute(newRoute); // update the state with the new route path
-  // };
-  
-  //handles login
-  // const handleLogin = () => {
-  //   setIsLoggedIn(true);
-  // };
-
-  useEffect(() => {
-    document.cookie = 'loggedin=false'; // store auth state as cookie
-  })
+  // useEffect(() => {
+  //   document.cookie = 'loggedin=false'; // store auth state as cookie
+  // })
 
   return (
     <Router>
