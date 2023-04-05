@@ -65,6 +65,18 @@ const Events = () => {
           setEvents(Object.values(data));
         });
 
+        // load events from session storage
+        let newEvents = [];
+        let i = 0;
+        while (true) {
+          let event = sessionStorage.getItem(i);
+          if (!event) {
+            break;
+          }
+          // console.log(JSON.parse(event));
+          setNewEvents(...newEvents, JSON.parse(event));
+        }
+
       } else {
         // user is not logged in
         window.location.href = "/NotFound";
@@ -73,25 +85,15 @@ const Events = () => {
   
   }, []);
 
-  // const f = () => {
-  //   // load events from session storage
-  //   let newEvents = [];
-  //   let i = 0;
-  //   while (true) {
-  //     let event = sessionStorage.getItem(i);
-  //     if (!event) {
-  //       break;
-  //     }
-  //     // console.log(JSON.parse(event));
-  //     setNewEvents(...newEvents, JSON.parse(event));
-  //   }
-  // }
+  const f = () => {
+    console.log(newEvents);
+  }
 
   return (
     <div style={{ display: "flex", alignContent: "flex-start", minHeight: "100vh", padding: "80px 0px 0px 50px", flexWrap: "wrap", backgroundImage: "url(" + background + ")"}}>
       {events.map((e, index) => createCard(index, images[index%4], e.host, e.title, e.desc, e.location, e.event_date, e.post_date))}
       {newEvents.map((e, index) => createCard(index, images[index%4], e.host, e.title, e.desc, e.location, e.event_date, e.post_date))}
-      {/* <button onClick={f}></button> */}
+      <button onClick={f}></button>
     </div>
   );
 };
