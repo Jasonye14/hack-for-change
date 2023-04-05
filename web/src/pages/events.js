@@ -16,12 +16,12 @@ import Typography from '@mui/material/Typography';
 // database
 import db from './../utils/firebase';
 import { onValue, ref } from "firebase/database";
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const images = [oceanCleanUp, riverCleanUp, forestCleanup, cityCleanUp];
 
 function createCard(key, imageSource, host, title, description, location, event_time, post_time) {
   let theDate = new Date(event_time);
-  // let localDate = theDate.toLocaleDateString(), localTime = theDate.toLocaleTimeString()
   let readableTime = theDate.toDateString();
   return (
     <Card key={key} sx={{ width: "32%", maxWidth: "32%", minHeight: "400px", maxHeight: "600px", position: "relative", marginRight: "10px", marginTop: "10px",}}>
@@ -47,26 +47,31 @@ function createCard(key, imageSource, host, title, description, location, event_
 }
 
 const Events = () => {
+  const [uid, setUid] = useState("");
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    // load events from db
-    const eventsReference = ref(db, 'events');
-    onValue(eventsReference, snapshot => {
-      const data = snapshot.val();
-      setEvents(Object.values(data));
+    const auth = getAuth();
+    onAuthStateChanged(auth, user => {
+      if (user) { // if user is signed in
+        setUid(user.uid);
+        
+        // load events from db
+        const eventsReference = ref(db, 'events');
+        onValue(eventsReference, snapshot => {
+          const data = snapshot.val();
+          setEvents(Object.values(data));
+        });
+      } else {
+        // user is not logged in
+        window.location.href = "NotFound";
+      }
     });
-
-    // check if logged in via cookies
-    
-
+  
   }, []);
 
   return (
     <div style={{ display: "flex", alignContent: "flex-start", minHeight: "100vh", padding: "80px 0px 0px 50px", flexWrap: "wrap", backgroundImage: "url(" + background + ")"}}>
-      {/* {createCard(oceanCleanUp, "Host", "Ocean Cleanup", "Saving Ocean", "California", "11am March 13", "Post date")}
-      {createCard(background)}
-      {createCard()} */}
       {events.map((e, index) => createCard(index, images[index%4], e.host, e.title, e.desc, e.location, e.event_date, e.post_date))}
     </div>
   );

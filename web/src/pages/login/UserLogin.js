@@ -111,7 +111,7 @@ const UserLogin = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <img src={ocean} alt="" style={{position: "absolute", top:0, minWidth: "100vw", minHeight: "100vh", zIndex: -1, opacity: 0.8}}></img>
+      <img src={ocean} alt="" style={{position: "absolute", top:0, width: "100vw", height: "100vh", zIndex: -1, opacity: 0.8}}></img>
       <Container component="main" maxWidth="xs" sx={{backgroundColor: "white", opacity: 0.8, borderRadius: "20px"}}>
         <CssBaseline />
         <Box

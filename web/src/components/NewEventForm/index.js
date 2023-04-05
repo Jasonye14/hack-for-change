@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 //Material UI
 import { Button, Typography, Modal, TextField, Stack } from '@mui/material';
@@ -11,6 +11,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 // database
 import db from '../../utils/firebase';
 import { onValue, push, ref, set } from "firebase/database";
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const style = {
   position: 'absolute',
@@ -50,6 +51,7 @@ function NewEventForm() {
       setDateTime(event.$d);
     }
   }
+
   const handleSubmitForm = () => {
     setOpen(false);
     setTitle("");
