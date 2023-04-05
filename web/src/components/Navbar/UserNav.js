@@ -5,7 +5,7 @@ import {
     Bars,
     NavMenu,
     NavBtnLink
-} from './NavbarElement';
+} from './NavbarStyles';
 
 import { getAuth, signOut } from "firebase/auth";
 
