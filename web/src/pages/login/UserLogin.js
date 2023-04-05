@@ -22,7 +22,7 @@ import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPasswor
 
 // database
 import db from '../../utils/firebase';
-import { onValue, ref, set } from "firebase/database";
+import { onValue, ref,set  } from "firebase/database";
 
 //Import image background
 import ocean from '../../images/login/oceanBackground.jpg';
@@ -170,7 +170,7 @@ const UserLogin = () => {
             </Button>
             <GoogleButton onClick={handleGoogle}></GoogleButton>
             <Grid container>
-              <Grid item>
+              <Grid item sx={{paddingBottom: "20px",}}>
                 <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>

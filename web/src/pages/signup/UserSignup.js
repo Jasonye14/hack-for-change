@@ -21,6 +21,9 @@ import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPas
 import db from '../../utils/firebase';
 import { onValue, ref, set } from "firebase/database";
 
+//Import image background
+import ocean from '../../images/login/oceanBackground.jpg';
+
 const UserSignUp = () => {   
   const theme = createTheme();
 
@@ -97,7 +100,8 @@ const UserSignUp = () => {
     
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+      <img src={ocean} alt="" style={{position: "absolute", top:0, width: "100vw", height: "100vh", zIndex: -1, opacity: 0.8}}></img>
+      <Container component="main" maxWidth="xs" sx={{backgroundColor: "white", opacity: 0.8, borderRadius: "20px"}}>
         <CssBaseline />
         <Box
           sx={{
@@ -105,6 +109,7 @@ const UserSignUp = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            padding: "10px 0 15px 0",
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -175,7 +180,7 @@ const UserSignUp = () => {
             <GoogleButton onClick={handleGoogle}></GoogleButton>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/login" variant="body2">
+                <Link href="/login" variant="body2" sx={{paddingBottom: "20px",}}>
                   Already have an account? Sign in
                 </Link>
               </Grid>
