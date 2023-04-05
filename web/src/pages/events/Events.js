@@ -65,7 +65,7 @@ const Events = () => {
         });
       } else {
         // user is not logged in
-        window.location.href = "NotFound";
+        window.location.href = "/NotFound";
       }
     });
   

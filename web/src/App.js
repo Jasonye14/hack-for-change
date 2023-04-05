@@ -1,5 +1,5 @@
 import './App.css';
-import React, {} from 'react';
+import React, { useEffect } from 'react';
 import NavBar from './components/Navbar';
 import Navbar2 from './components/Navbar/UserNav';
 // Pages
@@ -10,10 +10,38 @@ import UserLogin from './pages/login/UserLogin';
 import UserSignUp from './pages/signup/UserSignup';
 import NotFound from './pages/ not-found/NotFound';
 
+// Database
+import db from './../utils/firebase';
+import { onValue, ref } from "firebase/database";
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+
 function App(props) {
   // useEffect(() => {
   //   document.cookie = 'loggedin=false'; // store auth state as cookie
   // })
+
+  // const [uid, setUid] = useState("");
+  // const [events, setEvents] = useState([]);
+
+  // useEffect(() => {
+  //   const auth = getAuth();
+  //   onAuthStateChanged(auth, user => {
+  //     if (user) { // if user is signed in
+  //       setUid(user.uid);
+        
+  //       // load events from db
+  //       const eventsReference = ref(db, 'events');
+  //       onValue(eventsReference, snapshot => {
+  //         const data = snapshot.val();
+  //         setEvents(Object.values(data));
+  //       });
+  //     } else {
+  //       // user is not logged in
+  //       window.location.href = "NotFound";
+  //     }
+  //   });
+  
+  // }, []);
 
   return (
     <Router>

@@ -30,7 +30,7 @@ const Navbar2 = () => {
         <NavMenu>
           <NavLink to='/'>Home</NavLink>
           <NewEventForm></NewEventForm>
-          <NavBtnLink style={{marginLeft: "auto", marginRight: "3rem",}} onClick={handleLogout}>Logout</NavBtnLink>
+          <NavBtnLink style={{marginLeft: "auto", marginRight: "3rem"}} onClick={handleLogout}>Logout</NavBtnLink>
 
           {/* <Avatar
             alt="Remy Sharp"
