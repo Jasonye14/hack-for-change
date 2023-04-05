@@ -8,7 +8,7 @@ import Home from './pages/home/home';
 import Events from './pages/events';
 import UserLogin from './pages/login/UserLogin';
 import UserSignUp from './pages/signup/UserSignup';
-// import NotFound from './pages/NotFound';
+import NotFound from './pages/NotFound';
 
 function App(props) {
   // useEffect(() => {
@@ -23,6 +23,8 @@ function App(props) {
         <Route path='/login' element={<UserLogin />} />
         <Route path='/signup' element={<UserSignUp />} />
         <Route path="/users/:username" element={<Events />} />
+        <Route path="/NotFound" element={<NotFound />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       
     </Router>
