@@ -26,7 +26,7 @@ const style = {
   gap: "10px"
 };
 
-function NewEventForm() {
+function NewEventForm({ uid }) {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
@@ -62,11 +62,14 @@ function NewEventForm() {
     set(eventsRef, {
       title: title,
       desc: desc,
-      host: "logged in",
+      host: uid,
       location: location,
       event_date: datetime.toISOString(),
       post_date: (new Date()).toISOString()
     });
+
+    sessionStorage.setItem()
+
   }
 
   return (
@@ -82,9 +85,9 @@ function NewEventForm() {
           <Typography id="modal-modal-title" variant="h5" component="h2">
               Create A New Event
           </Typography>
-          <TextField required onChange={(e) => handleTitleInput(e)} label="Title" variant='outlined' />
-          <TextField required onChange={(e) => handleDescInput(e)} label="Description" multiline />
-          <TextField required onChange={(e) => handleLocationInput(e)} label="Location" variant="outlined" />
+          <TextField required onChange={e => handleTitleInput(e)} label="Title" variant='outlined' />
+          <TextField required onChange={e => handleDescInput(e)} label="Description" multiline />
+          <TextField required onChange={e => handleLocationInput(e)} label="Location" variant="outlined" />
           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'en'}>
             <DateTimePicker id="datePicker" required label="Date" onChange={(e) => handleDateTimeInput(e)}/>
           </LocalizationProvider>
