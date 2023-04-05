@@ -1,14 +1,14 @@
 import './App.css';
 import React, {} from 'react';
 import NavBar from './components/Navbar';
-import Navbar2 from './components/Navbar/index2';
+import Navbar2 from './components/Navbar/UserNav';
 // Pages
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import Home from './pages/home/home';
-import Events from './pages/events';
+import Home from './pages/home/Home';
+import Events from './pages/events/Events';
 import UserLogin from './pages/login/UserLogin';
 import UserSignUp from './pages/signup/UserSignup';
-import NotFound from './pages/NotFound';
+import NotFound from './pages/ not-found/NotFound';
 
 function App(props) {
   // useEffect(() => {

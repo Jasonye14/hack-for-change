@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 // Assets
 import turtle1 from '../../images/home/turtle1.jpg';
 import turtle2 from '../../images/home/turtle2.jpg';
-import { edu_content, content } from './eduContent';
+import { edu_content, content } from './EduContent';
 
 // Material UI
 import { Card, CardMedia, CardContent } from '@mui/material';
