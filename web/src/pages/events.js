@@ -50,6 +50,7 @@ function createCard(key, imageSource, host, title, description, location, event_
 const Events = () => {
   const [uid, setUid] = useState("");
   const [events, setEvents] = useState([]);
+  const [newEvents, setNewEvents] = useState([]);
 
   useEffect(() => {
     const auth = getAuth();
@@ -63,6 +64,7 @@ const Events = () => {
           const data = snapshot.val();
           setEvents(Object.values(data));
         });
+
       } else {
         // user is not logged in
         window.location.href = "/NotFound";
@@ -71,9 +73,25 @@ const Events = () => {
   
   }, []);
 
+  // const f = () => {
+  //   // load events from session storage
+  //   let newEvents = [];
+  //   let i = 0;
+  //   while (true) {
+  //     let event = sessionStorage.getItem(i);
+  //     if (!event) {
+  //       break;
+  //     }
+  //     // console.log(JSON.parse(event));
+  //     setNewEvents(...newEvents, JSON.parse(event));
+  //   }
+  // }
+
   return (
     <div style={{ display: "flex", alignContent: "flex-start", minHeight: "100vh", padding: "80px 0px 0px 50px", flexWrap: "wrap", backgroundImage: "url(" + background + ")"}}>
       {events.map((e, index) => createCard(index, images[index%4], e.host, e.title, e.desc, e.location, e.event_date, e.post_date))}
+      {newEvents.map((e, index) => createCard(index, images[index%4], e.host, e.title, e.desc, e.location, e.event_date, e.post_date))}
+      {/* <button onClick={f}></button> */}
     </div>
   );
 };

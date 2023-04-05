@@ -27,6 +27,7 @@ const style = {
 };
 
 function NewEventForm({ uid }) {
+  const [count, setCount] = useState(0);
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
@@ -46,7 +47,7 @@ function NewEventForm({ uid }) {
   }
 
   const handleDateTimeInput = (event) => {
-    console.log("Date: ", event);
+    console.log("Date:", event);
     if(event.$d !== 'Invalid Date') {
       setDateTime(event.$d);
     }
@@ -58,17 +59,27 @@ function NewEventForm({ uid }) {
     setDesc("");
     setLocation("");
 
-    const eventsRef = push(ref(db, "events"));
-    set(eventsRef, {
+    const newEvent = {
       title: title,
       desc: desc,
       host: uid,
       location: location,
       event_date: datetime.toISOString(),
       post_date: (new Date()).toISOString()
-    });
+    }
+    
+    sessionStorage.setItem(count, JSON.stringify(newEvent));
+    setCount(prev => prev+1);
 
-    sessionStorage.setItem()
+    // const eventsRef = push(ref(db, "events"));
+    // set(eventsRef, {
+    //   title: title,
+    //   desc: desc,
+    //   host: uid,
+    //   location: location,
+    //   event_date: datetime.toISOString(),
+    //   post_date: (new Date()).toISOString()
+    // });
 
   }
 
