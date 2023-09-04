@@ -1,5 +1,5 @@
 import './App.css';
-import React, {} from 'react';
+import React, { useState } from 'react';
 import NavBar from './components/Navbar';
 import Navbar2 from './components/Navbar/index2';
 // Pages
@@ -8,6 +8,7 @@ import Home from './pages/home/home';
 import Events from './pages/events';
 import UserLogin from './pages/login/UserLogin';
 import UserSignUp from './pages/signup/UserSignup';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 // import NotFound from './pages/NotFound';
 
 function App(props) {
@@ -15,14 +16,22 @@ function App(props) {
   //   document.cookie = 'loggedin=false'; // store auth state as cookie
   // })
 
+  const [user, setUser] = useState(null)
+
   return (
     <Router>
       <NavBarWrapper/>
       <Routes>
         <Route path='/' exact element={<Home />} />
-        <Route path='/login' element={<UserLogin />} />
+        <Route path='/login' element={<UserLogin setUser={setUser}/>} />
         <Route path='/signup' element={<UserSignUp />} />
-        <Route path="/users/:username" element={<Events />} />
+        <Route path="/events"
+          element={
+            <ProtectedRoute user={user}>
+              <Events />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
       
     </Router>

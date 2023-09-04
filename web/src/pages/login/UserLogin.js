@@ -28,7 +28,7 @@ import { onValue, ref,set  } from "firebase/database";
 import ocean from '../../images/login/oceanBackground.jpg';
 
 // EXPORT
-const UserLogin = () => {
+const UserLogin = ({ setUser, redirectPath = '/events' }) => {
   const [errorOpen, setError] = useState(false);
 
   const handleSubmit = async (event) => {
@@ -37,37 +37,40 @@ const UserLogin = () => {
     const auth = getAuth();
     const data = new FormData(event.currentTarget);
 
-    await signInWithEmailAndPassword(auth, data.get('email'), data.get('password')).then(userCredential => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, data.get('email'), data.get('password'))
       setError(false);
       // Signed in successfully
       const user = userCredential.user;
-      console.log(userCredential);
+      console.log('Signed in user:', userCredential.user);
+      setUser(user);
 
-      // get username from db; must exist at this point since auth succeeded
-      const usersReference = ref(db, 'users');
-      onValue(usersReference, snapshot => {
-        const data = snapshot.val();
-        Object.entries(data).forEach(([username, data]) => {
-          if (data.email === user.email) {
-            document.cookie = 'loggedin=true'; // store auth state as cookie
-            window.location.href = `/users/${username}`; // redirect to user's home page
-          }
-        });
-      });
-          
-    })
-    .catch((error) => {
-      console.error(error.message);
+      window.location.href = redirectPath;
+  
+      // // get username from db; must exist at this point since auth succeeded
+      // const usersReference = ref(db, 'users');
+      // onValue(usersReference, snapshot => {
+      //   const data = snapshot.val();
+      //   Object.entries(data).forEach(([username, data]) => {
+      //     if (data.email === user.email) {
+      //       document.cookie = 'loggedin=true'; // store auth state as cookie
+      //       window.location.href = `/users/${username}`; // redirect to user's home page
+      //     }
+      //   });
+      // });
+    } catch (err) {
+      console.error(err.message);
       setError(true);
-    });
+    }
   };
 
   const handleGoogle = async () => {
     const provider = new GoogleAuthProvider();
     const auth = getAuth();
 
-    await signInWithPopup(auth, provider).then((result) => {
-      const user = result.user;
+    try {
+      const userCredential = await signInWithPopup(auth, provider);
+      const user = userCredential.user;
       const email = user.email;
       const eUsername = email.replace(/\..+/g, '').replace('@', ''); // jak325@lehigh.edu => jak325lehigh
       let found = false;
@@ -81,7 +84,7 @@ const UserLogin = () => {
             //Make Route in APP.js
             
             document.cookie = 'loggedin=true'; // store auth state as cookie
-            window.location.href = `/users/${username}`; // redirect to user's home page
+            // window.location.href = `/users/${username}`; // redirect to user's home page
           }
         });
 
@@ -97,14 +100,12 @@ const UserLogin = () => {
           //Make Route in APP.js
 
           document.cookie = 'loggedin=true'; // store auth state as cookie
-          window.location.href = `/users/${eUsername}`; // redirect to user's home page
+          // window.location.href = `/users/${eUsername}`; // redirect to user's home page
         }
       });
-
-    }).catch((error) => {
-      console.error(error.message);
-    });
-
+    } catch (err) {
+      console.error(err.message);
+    }
   }
 
   const theme = createTheme();
@@ -168,7 +169,8 @@ const UserLogin = () => {
             >
               Sign In
             </Button>
-            <GoogleButton onClick={handleGoogle}></GoogleButton>
+          </Box>
+          <GoogleButton onClick={handleGoogle}></GoogleButton>
             <Grid container>
               <Grid item sx={{paddingBottom: "20px",}}>
                 <Link href="/signup" variant="body2">
@@ -176,7 +178,6 @@ const UserLogin = () => {
                 </Link>
               </Grid>
             </Grid>
-          </Box>
         </Box>
       </Container>
     </ThemeProvider>
