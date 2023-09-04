@@ -15,7 +15,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 // database
-import db from './../utils/firebase';
+import db from '../utils/firebase';
 import { onValue, ref } from "firebase/database";
 
 const images = [oceanCleanUp, riverCleanUp, forestCleanup, cityCleanUp];
