@@ -13,6 +13,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Alert, AlertTitle} from '@mui/material';
+import { useAuth } from '../../pages/login/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
 
 // component Imports
 import GoogleButton from '../../components/Buttons/GoogleSignin';
@@ -29,7 +32,9 @@ import ocean from '../../images/login/oceanBackground.jpg';
 
 // EXPORT
 const UserLogin = () => {
+  const navigate = useNavigate();  // <-- use this hook
   const [errorOpen, setError] = useState(false);
+  const { setIsLoggedIn } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -41,6 +46,7 @@ const UserLogin = () => {
       setError(false);
       // Signed in successfully
       const user = userCredential.user;
+      setIsLoggedIn(true); // Set logged-in status
       console.log(userCredential);
 
       // get username from db; must exist at this point since auth succeeded
@@ -50,7 +56,7 @@ const UserLogin = () => {
         Object.entries(data).forEach(([username, data]) => {
           if (data.email === user.email) {
             document.cookie = 'loggedin=true'; // store auth state as cookie
-            window.location.href = `/users/${username}`; // redirect to user's home page
+            navigate(`/users/${username}`);  // <-- use navigate instead of window.location.href
           }
         });
       });
@@ -81,7 +87,8 @@ const UserLogin = () => {
             //Make Route in APP.js
             
             document.cookie = 'loggedin=true'; // store auth state as cookie
-            window.location.href = `/users/${username}`; // redirect to user's home page
+            navigate(`/users/${username}`);  // <-- use navigate here too
+            setIsLoggedIn(true); // Set logged-in status
           }
         });
 
