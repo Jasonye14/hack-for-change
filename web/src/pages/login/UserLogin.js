@@ -13,6 +13,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Alert, AlertTitle} from '@mui/material';
+import { useAuth } from '../../pages/login/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
 
 // component Imports
 import GoogleButton from '../../components/Buttons/GoogleSignin';
@@ -28,8 +31,10 @@ import { onValue, ref,set  } from "firebase/database";
 import ocean from '../../images/login/oceanBackground.jpg';
 
 // EXPORT
-const UserLogin = ({ setUser, redirectPath = '/events' }) => {
+const UserLogin = () => {
+  const navigate = useNavigate();  // <-- use this hook
   const [errorOpen, setError] = useState(false);
+  const { setIsLoggedIn } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -42,24 +47,22 @@ const UserLogin = ({ setUser, redirectPath = '/events' }) => {
       setError(false);
       // Signed in successfully
       const user = userCredential.user;
-      console.log('Signed in user:', userCredential.user);
-      setUser(user);
+      setIsLoggedIn(true); // Set logged-in status
+      console.log(userCredential);
 
-      window.location.href = redirectPath;
-  
-      // // get username from db; must exist at this point since auth succeeded
-      // const usersReference = ref(db, 'users');
-      // onValue(usersReference, snapshot => {
-      //   const data = snapshot.val();
-      //   Object.entries(data).forEach(([username, data]) => {
-      //     if (data.email === user.email) {
-      //       document.cookie = 'loggedin=true'; // store auth state as cookie
-      //       window.location.href = `/users/${username}`; // redirect to user's home page
-      //     }
-      //   });
-      // });
-    } catch (err) {
-      console.error(err.message);
+      // get username from db; must exist at this point since auth succeeded
+      const usersReference = ref(db, 'users');
+      onValue(usersReference, snapshot => {
+        const data = snapshot.val();
+        Object.entries(data).forEach(([username, data]) => {
+          if (data.email === user.email) {
+            document.cookie = 'loggedin=true'; // store auth state as cookie
+            navigate(`/users/${username}`);  // <-- use navigate instead of window.location.href
+          }
+        });
+      });
+    } catch(error) {
+      console.error(error.message);
       setError(true);
     }
   };
@@ -82,9 +85,9 @@ const UserLogin = ({ setUser, redirectPath = '/events' }) => {
           if (data.email === user.email) {
             found = true;
             //Make Route in APP.js
-            
             document.cookie = 'loggedin=true'; // store auth state as cookie
-            // window.location.href = `/users/${username}`; // redirect to user's home page
+            navigate(`/users/${username}`);  // <-- use navigate here too
+            setIsLoggedIn(true); // Set logged-in status
           }
         });
 
@@ -98,9 +101,7 @@ const UserLogin = ({ setUser, redirectPath = '/events' }) => {
             location: "",
           });
           //Make Route in APP.js
-
           document.cookie = 'loggedin=true'; // store auth state as cookie
-          // window.location.href = `/users/${eUsername}`; // redirect to user's home page
         }
       });
     } catch (err) {

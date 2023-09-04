@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React from 'react';
 import NavBar from './components/Navbar';
 import Navbar2 from './components/Navbar/index2';
 // Pages
@@ -9,46 +9,55 @@ import Events from './pages/events';
 import UserLogin from './pages/login/UserLogin';
 import UserSignUp from './pages/signup/UserSignup';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
-// import NotFound from './pages/NotFound';
+import NotFound from './pages/NotFound';
+import { AuthProvider, useAuth } from './pages/login/AuthContext';
 
 function App(props) {
-  // useEffect(() => {
-  //   document.cookie = 'loggedin=false'; // store auth state as cookie
-  // })
+  return (
+    <AuthProvider>
+      <Router>
+        <NavBarWrapper />
+        <RoutesContent />
+      </Router>
+    </AuthProvider>
+  );
+}
 
-  const [user, setUser] = useState(null)
+function RoutesContent() {
+  const { isLoggedIn } = useAuth();
+  console.log(isLoggedIn);
 
   return (
-    <Router>
-      <NavBarWrapper/>
-      <Routes>
-        <Route path='/' exact element={<Home />} />
-        <Route path='/login' element={<UserLogin setUser={setUser}/>} />
-        <Route path='/signup' element={<UserSignUp />} />
-        <Route path="/events"
-          element={
-            <ProtectedRoute user={user}>
-              <Events />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-      
-    </Router>
+    <Routes>
+      <Route path='/' element={<Home />} />
+      { isLoggedIn ? (
+        <>
+          <Route path="/users/:username" element={<Events />} />
+        </>
+      ) : (
+        <>
+          <Route path='/login' element={<UserLogin />} />
+          <Route path='/signup' element={<UserSignUp />} />
+          <Route path="*" element={<NotFound />} />
+        </>
+      )}
+    </Routes>
   );
 }
 
 function NavBarWrapper() {
   const location = useLocation();
-  // Only render the NavBar component if the current route is not /login
-  if (location.pathname === '/login' || location.pathname === '/signup' ) {
-    return null;
+  const { isLoggedIn } = useAuth();
+
+  if(!isLoggedIn && location.pathname === '/'){
+    return <NavBar />;
   }
-  if(location.pathname !== '/'){
-    return <Navbar2/>;
+
+  if(isLoggedIn) {
+    return <Navbar2 />;
   }
-  return <NavBar />;
+
+  return null;
 }
 
 export default App;
-
