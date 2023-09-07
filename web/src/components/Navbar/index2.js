@@ -30,17 +30,10 @@ const Navbar2 = () => {
     <>
       <Nav>
         <Bars/>
-        <NavMenu>
+        <NavMenu style={{ flexDirection: 'row-reverse'}}>
           {/* <NavLink to='/'>Home</NavLink> */}
+          <UserProfile handleLogout={handleLogout} />
           <NewEventForm></NewEventForm>
-          <NavBtnLink style={{marginLeft: "auto", marginRight: "3rem",}} onClick={handleLogout}>Logout</NavBtnLink>
-          <UserProfile></UserProfile>
-
-          {/* <Avatar
-            alt="Remy Sharp"
-            src={blank_prof}
-            sx={{ width: "2.7rem", height: "85%"}}
-          /> */}
         </NavMenu>
       </Nav>
     </>

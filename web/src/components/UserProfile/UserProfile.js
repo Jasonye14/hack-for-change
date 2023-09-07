@@ -5,18 +5,25 @@ import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
-const defaultAvatar = 'path_to_default_avatar_image'; // Replace with your default avatar image URL.
+const defaultAvatar = 'path_to_default_avatar_image';
 
-const UserProfile = ({ userProfile = {} }) => {
+const UserProfile = ({ userProfile = {}, handleLogout }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
+  const isMenuOpen = Boolean(anchorEl);
+
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    if (isMenuOpen) {
+      handleClose();
+    } else {
+      setAnchorEl(event.currentTarget);
+    }
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
+
 
   const handleMenuItemClick = (action) => {
     handleClose();
@@ -29,7 +36,7 @@ const UserProfile = ({ userProfile = {} }) => {
         // Navigate to settings or perform settings-related action
         break;
       case "logout":
-        // Perform logout action
+        if (handleLogout) handleLogout();
         break;
       default:
         break;
@@ -40,6 +47,7 @@ const UserProfile = ({ userProfile = {} }) => {
     <Box 
       onClick={handleClick}
       sx={{
+        right: '0',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -57,21 +65,19 @@ const UserProfile = ({ userProfile = {} }) => {
         sx={{
           width: "2.7rem",
           height: "2.7rem",
-          marginBottom: '0.5rem'
+          marginBottom: '0.5rem',
+          marginRight: '2rem',
+          marginTop: '1.5rem',
         }}
       />
       <Typography variant="body2" color="textPrimary">
         {userProfile.name || 'Unknown User'}
       </Typography>
-
       <Menu
         anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
+        open={isMenuOpen}
         onClose={handleClose}
-        PaperProps={{
-          elevation: 3
-        }}
+        PaperProps={{ elevation: 3 }}
       >
         <MenuItem onClick={() => handleMenuItemClick("profile")}>Profile</MenuItem>
         <MenuItem onClick={() => handleMenuItemClick("settings")}>Settings</MenuItem>
