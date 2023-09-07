@@ -28,6 +28,11 @@ export const NavLink = styled(Link)`
   &.active {
     color: #15cdfc;
   }
+  
+  &[target="_blank"]::after {
+    margin-left: 5px;
+    font-size: 0.8rem;
+  }
 `;
 
 export const Bars = styled(FaBars)`

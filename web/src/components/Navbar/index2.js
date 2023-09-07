@@ -29,7 +29,7 @@ const Navbar2 = () => {
       <Nav>
         <Bars/>
         <NavMenu>
-          <NavLink to='/'>Home</NavLink>
+          {/* <NavLink to='/'>Home</NavLink> */}
           <NewEventForm></NewEventForm>
           <NavBtnLink style={{marginLeft: "auto", marginRight: "3rem",}} onClick={handleLogout}>Logout</NavBtnLink>
 
