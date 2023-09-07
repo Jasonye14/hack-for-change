@@ -65,14 +65,9 @@ const UserProfile = ({ userProfile = {}, handleLogout }) => {
         sx={{
           width: "2.7rem",
           height: "2.7rem",
-          marginBottom: '0.5rem',
           marginRight: '2rem',
-          marginTop: '1.5rem',
         }}
       />
-      <Typography variant="body2" color="textPrimary">
-        {userProfile.name || 'Unknown User'}
-      </Typography>
       <Menu
         anchorEl={anchorEl}
         open={isMenuOpen}
