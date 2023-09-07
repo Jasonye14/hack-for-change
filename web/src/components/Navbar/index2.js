@@ -10,6 +10,8 @@ import {
 import { getAuth, signOut } from "firebase/auth";
 
 import NewEventForm from '../NewEventForm/NewEventForm.js';
+import UserProfile from '../UserProfile/UserProfile';
+import UserDropdown from '../UserProfile/ProfileDropdown';
 
 const Navbar2 = () => {
   const handleLogout = () => {
@@ -32,6 +34,7 @@ const Navbar2 = () => {
           {/* <NavLink to='/'>Home</NavLink> */}
           <NewEventForm></NewEventForm>
           <NavBtnLink style={{marginLeft: "auto", marginRight: "3rem",}} onClick={handleLogout}>Logout</NavBtnLink>
+          <UserProfile></UserProfile>
 
           {/* <Avatar
             alt="Remy Sharp"
