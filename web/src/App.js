@@ -29,41 +29,37 @@ function App(props) {
 }
 
 function RoutesContent() {
-  const { isLoggedIn } = useAuth();
-  console.log(isLoggedIn);
-
   return (
     <Routes>
       <Route path='/' element={<Home />} />
-      { isLoggedIn ? (
-        <>
-          <Route path="/users/:username" element={<UserEvents />} />
-        </>
-      ) : (
-        <>
-          <Route path='/events' element={<Events />} />
-          <Route path='/faq' element={<FAQ />} />
-          <Route path='/community' element={<Community />} />
-          <Route path='/volunteer' element={<Volunteer />} />
-          <Route path='/resources' element={<Resources />} />
-          <Route path='/login' element={<UserLogin />} />
-          <Route path='/signup' element={<UserSignUp />} />
-          <Route path="*" element={<NotFound />} />
-        </>
-      )}
+      <Route path='/events' element={<Events />} />
+      <Route path='/faq' element={<FAQ />} />
+      <Route path='/community' element={<Community />} />
+      <Route path='/volunteer' element={<Volunteer />} />
+      <Route path='/resources' element={<Resources />} />
+      <Route path='/login' element={<UserLogin />} />
+      <Route path='/signup' element={<UserSignUp />} />
+      <Route path="/users/:username" element={
+        <ProtectedRoute>
+          <UserEvents />
+        </ProtectedRoute>
+      } />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
 
 function NavBarWrapper() {
   const location = useLocation();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, currUser } = useAuth();
 
-  if(!isLoggedIn && location.pathname === '/'){
+  if(!isLoggedIn && location.pathname === '/') {
+    console.log(`No one currently logged in.`)
     return <NavBar />;
   }
 
   if(isLoggedIn) {
+    console.log(`${currUser} is currently logged in.`)
     return <Navbar2 />;
   }
 

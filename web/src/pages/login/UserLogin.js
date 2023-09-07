@@ -13,100 +13,113 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Alert, AlertTitle} from '@mui/material';
-import { useAuth } from '../../pages/login/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-
-// component Imports
+// Components
 import GoogleButton from '../../components/Buttons/GoogleSignin';
 
-// auth
-import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword } from "firebase/auth";
+// Auth
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  setPersistence,
+  browserSessionPersistence
+} from "firebase/auth";
+import { useAuth } from '../../pages/login/AuthContext';
 
-// database
+// Firebase
+import { onValue, ref, set } from "firebase/database";
 import db from '../../utils/firebase';
-import { onValue, ref,set  } from "firebase/database";
 
-//Import image background
+// Images
 import ocean from '../../images/login/oceanBackground.jpg';
 
-// EXPORT
-const UserLogin = () => {
+
+function UserLogin() {
   const navigate = useNavigate();  // <-- use this hook
   const [errorOpen, setError] = useState(false);
-  const { setIsLoggedIn } = useAuth();
+  const { setIsLoggedIn, setCurrUser, setPending } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const auth = getAuth();
+    await setPersistence(auth, browserSessionPersistence);
     const data = new FormData(event.currentTarget);
 
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, data.get('email'), data.get('password'))
-      setError(false);
-      // Signed in successfully
-      const user = userCredential.user;
-      setIsLoggedIn(true); // Set logged-in status
-      console.log(userCredential);
+    signInWithEmailAndPassword(auth, data.get('email'), data.get('password'))
+      .then((userCredential) => {
+        // Signed in successfully
+        const user = userCredential.user;
+        setIsLoggedIn(true);  // Set logged-in status
+        setCurrUser(user);    // Set current user
+        setError(false);
+        setPending(false);
 
-      // get username from db; must exist at this point since auth succeeded
-      const usersReference = ref(db, 'users');
-      onValue(usersReference, snapshot => {
-        const data = snapshot.val();
-        Object.entries(data).forEach(([username, data]) => {
-          if (data.email === user.email) {
-            document.cookie = 'loggedin=true'; // store auth state as cookie
-            navigate(`/users/${username}`);  // <-- use navigate instead of window.location.href
-          }
+        // get username from db; must exist at this point since auth succeeded
+        const usersReference = ref(db, 'users');
+        onValue(usersReference, snapshot => {
+          const data = snapshot.val();
+          Object.entries(data).forEach(([username, data]) => {
+            if (data.email === user.email) {
+              document.cookie = 'loggedin=true';  // store auth state as cookie
+              navigate(`/users/${username}`);     // <-- use navigate instead of window.location.href
+            }
+          });
         });
-      });
-    } catch(error) {
-      console.error(error.message);
-      setError(true);
-    }
+      })
+      .catch(error => {
+        setError(true);
+        console.error(error.message);
+      })
   };
 
   const handleGoogle = async () => {
     const provider = new GoogleAuthProvider();
     const auth = getAuth();
 
-    try {
-      const userCredential = await signInWithPopup(auth, provider);
-      const user = userCredential.user;
-      const email = user.email;
-      const eUsername = email.replace(/\..+/g, '').replace('@', ''); // jak325@lehigh.edu => jak325lehigh
-      let found = false;
 
-      let usersReference = ref(db, 'users');
-      onValue(usersReference, snapshot => {
-        const data = snapshot.val();
-        Object.entries(data).forEach(([username, data]) => {
-          if (data.email === user.email) {
-            found = true;
-            //Make Route in APP.js
+      signInWithPopup(auth, provider)
+      .then(userCredential => {
+        const user = userCredential.user;
+        const email = user.email;
+        const eUsername = email.replace(/\..+/g, '').replace('@', ''); // jak325@lehigh.edu => jak325lehigh
+        let found = false;
+
+        let usersReference = ref(db, 'users');
+        onValue(usersReference, snapshot => {
+          const data = snapshot.val();
+          Object.entries(data).forEach(([username, data]) => {
+            if (data.email === user.email) {
+              found = true;
+              document.cookie = 'loggedin=true';  // store auth state as cookie
+              navigate(`/users/${username}`);     // <-- use navigate here too
+              setIsLoggedIn(true);                // Set logged-in status
+              setCurrUser(user);                  // Set current user
+              setError(false);
+              setPending(false);
+            }
+          });
+  
+          // user not found in db; create an instance for said user
+          if (!found) {
+            usersReference = ref(db, `users/${eUsername}`)
+            set(usersReference, {
+              email: email,
+              fname: "",
+              lname: "",
+              location: "",
+            });
             document.cookie = 'loggedin=true'; // store auth state as cookie
-            navigate(`/users/${username}`);  // <-- use navigate here too
-            setIsLoggedIn(true); // Set logged-in status
           }
         });
-
-        // user not found in db; create an instance for said user
-        if (!found) {
-          usersReference = ref(db, `users/${eUsername}`)
-          set(usersReference, {
-            email: email,
-            fname: "",
-            lname: "",
-            location: "",
-          });
-          //Make Route in APP.js
-          document.cookie = 'loggedin=true'; // store auth state as cookie
-        }
-      });
-    } catch (err) {
-      console.error(err.message);
-    }
+      })
+      .catch(error => {
+        setError(true);
+        console.log(error.message);
+      })
   }
 
   const theme = createTheme();

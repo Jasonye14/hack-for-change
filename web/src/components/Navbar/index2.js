@@ -9,7 +9,7 @@ import {
 
 import { getAuth, signOut } from "firebase/auth";
 
-import NewEventForm from '../NewEventForm';
+import NewEventForm from '../NewEventForm/NewEventForm.js';
 
 const Navbar2 = () => {
   const handleLogout = () => {
