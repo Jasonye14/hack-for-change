@@ -16,9 +16,8 @@ function ProtectedRoute({ children }) {
         return redirect("/login");
     }
 
-    const eUsername = currUser.email.replace(/\..+/g, '').replace('@', '');
-    if (eUsername !== routeParams.username) {
-        console.log(`Tried to go to: ${routeParams.username}. Actual login uid: ${currUser.uid}`);
+    if (currUser.eUsername !== routeParams.username) {
+        console.log(`Tried to go to: ${routeParams.username}. Actual login uid: ${currUser.eUsername}`);
         return redirect("/login"); // <---- Consider changing to another page ("you dont have access...")
     }
     else {

@@ -10,17 +10,27 @@ const AuthContext = createContext({
   setPending: () => {}
 });
 
-export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // default to false
-  const [currUser, setCurrUser] = useState(null); // default to null
+/**
+ * abc123@lehigh.edu => abc123lehigh
+ * test456@gmail.com => test456gmail
+ */
+const getEUsername = (user) => {
+  return user.email.replace(/\..+/g, '').replace('@', '');
+}
+
+const AuthProvider = ({ children }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);  // default to false
+  const [currUser, setCurrUser] = useState(null);       // default to null
   const [pending, setPending] = useState(true);
   const auth = getAuth();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        const eUsername = getEUsername(user);
+        const userWithEUsername = { ...user, eUsername: eUsername}
         setIsLoggedIn(true);
-        setCurrUser(user);
+        setCurrUser(userWithEUsername);
         setPending(false);
       }
     })
@@ -33,6 +43,8 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => {
+const useAuth = () => {
   return useContext(AuthContext);
 };
+
+export {getEUsername, AuthProvider, useAuth}

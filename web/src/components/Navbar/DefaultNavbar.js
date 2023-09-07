@@ -6,7 +6,7 @@ import {
     NavMenu,
 } from './NavbarElement';
 
-const Navbar = () => {
+const DefaultNavbar = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -45,4 +45,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default DefaultNavbar;

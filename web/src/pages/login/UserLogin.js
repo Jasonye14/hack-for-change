@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -27,7 +27,7 @@ import {
   setPersistence,
   browserSessionPersistence
 } from "firebase/auth";
-import { useAuth } from '../../pages/login/AuthContext';
+import { getEUsername, useAuth } from '../../pages/login/AuthContext';
 
 // Firebase
 import { onValue, ref, set } from "firebase/database";
@@ -40,7 +40,13 @@ import ocean from '../../images/login/oceanBackground.jpg';
 function UserLogin() {
   const navigate = useNavigate();  // <-- use this hook
   const [errorOpen, setError] = useState(false);
-  const { setIsLoggedIn, setCurrUser, setPending } = useAuth();
+  const { isLoggedIn, setIsLoggedIn, currUser, setCurrUser, setPending } = useAuth();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate(`/users/${currUser.eUsername}`)
+    }
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -52,20 +58,19 @@ function UserLogin() {
     signInWithEmailAndPassword(auth, data.get('email'), data.get('password'))
       .then((userCredential) => {
         // Signed in successfully
-        const user = userCredential.user;
-        setIsLoggedIn(true);  // Set logged-in status
-        setCurrUser(user);    // Set current user
+        const user = userCredential.user
+        setIsLoggedIn(true);                                      // Set logged-in status
+        setCurrUser({ ...user, eUsername: getEUsername(user)});   // Set current user
         setError(false);
         setPending(false);
 
-        // get username from db; must exist at this point since auth succeeded
+        // Get username from db; must exist at this point since auth succeeded
         const usersReference = ref(db, 'users');
         onValue(usersReference, snapshot => {
           const data = snapshot.val();
-          Object.entries(data).forEach(([username, data]) => {
+          Object.entries(data).forEach(([eUsername, data]) => {
             if (data.email === user.email) {
-              document.cookie = 'loggedin=true';  // store auth state as cookie
-              navigate(`/users/${username}`);     // <-- use navigate instead of window.location.href
+              navigate(`/users/${eUsername}`);                    // <-- use navigate instead of window.location.href
             }
           });
         });
@@ -79,31 +84,29 @@ function UserLogin() {
   const handleGoogle = async () => {
     const provider = new GoogleAuthProvider();
     const auth = getAuth();
-
-
-      signInWithPopup(auth, provider)
+    signInWithPopup(auth, provider)
       .then(userCredential => {
         const user = userCredential.user;
         const email = user.email;
-        const eUsername = email.replace(/\..+/g, '').replace('@', ''); // jak325@lehigh.edu => jak325lehigh
+        const eUsername = getEUsername(user);                 // jak325@lehigh.edu => jak325lehigh
         let found = false;
 
         let usersReference = ref(db, 'users');
         onValue(usersReference, snapshot => {
           const data = snapshot.val();
-          Object.entries(data).forEach(([username, data]) => {
+          Object.entries(data).forEach(([eUsername, data]) => {
             if (data.email === user.email) {
               found = true;
-              document.cookie = 'loggedin=true';  // store auth state as cookie
-              navigate(`/users/${username}`);     // <-- use navigate here too
-              setIsLoggedIn(true);                // Set logged-in status
-              setCurrUser(user);                  // Set current user
+              setIsLoggedIn(true);                            // Set logged-in status
+              setCurrUser({ ...user, eUsername: eUsername});  // Set current user
               setError(false);
               setPending(false);
+
+              navigate(`/users/${eUsername}`);                // <-- use navigate here too
             }
           });
   
-          // user not found in db; create an instance for said user
+          // User not found in db; create an instance for said user
           if (!found) {
             usersReference = ref(db, `users/${eUsername}`)
             set(usersReference, {
@@ -112,7 +115,6 @@ function UserLogin() {
               lname: "",
               location: "",
             });
-            document.cookie = 'loggedin=true'; // store auth state as cookie
           }
         });
       })
@@ -184,14 +186,16 @@ function UserLogin() {
               Sign In
             </Button>
           </Box>
+
           <GoogleButton onClick={handleGoogle}></GoogleButton>
-            <Grid container>
-              <Grid item sx={{paddingBottom: "20px",}}>
-                <Link href="/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
+          
+          <Grid container>
+            <Grid item sx={{paddingBottom: "20px",}}>
+              <Link href="/signup" variant="body2">
+                {"Don't have an account? Sign Up"}
+              </Link>
             </Grid>
+          </Grid>
         </Box>
       </Container>
     </ThemeProvider>

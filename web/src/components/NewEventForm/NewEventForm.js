@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState } from 'react';
 
 //Material UI
@@ -9,7 +8,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
-// database
+// Firebase
 import db from '../../utils/firebase';
 import { onValue, push, ref, set } from "firebase/database";
 

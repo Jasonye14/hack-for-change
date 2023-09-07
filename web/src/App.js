@@ -1,8 +1,7 @@
 import './App.css';
 import React from 'react';
-import NavBar from './components/Navbar';
-import Navbar2 from './components/Navbar/index2';
-// Pages
+import DefaultNavbar from './components/Navbar/DefaultNavbar';
+import EventNavbar from './components/Navbar/EventNavbar';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Home from './pages/home/home';
 import UserEvents from './pages/UserEvents';
@@ -53,14 +52,14 @@ function NavBarWrapper() {
   const location = useLocation();
   const { isLoggedIn, currUser } = useAuth();
 
-  if(!isLoggedIn && location.pathname === '/') {
-    console.log(`No one currently logged in.`)
-    return <NavBar />;
+  if(!isLoggedIn && location.pathname !== '/login') {
+    console.log(`No one currently logged in.`);
+    return <DefaultNavbar />;
   }
 
-  if(isLoggedIn) {
-    console.log(`${currUser} is currently logged in.`)
-    return <Navbar2 />;
+  if(isLoggedIn && location.pathname !== '/login') {
+    console.log(`${currUser} is currently logged in.`);
+    return <EventNavbar />;
   }
 
   return null;
