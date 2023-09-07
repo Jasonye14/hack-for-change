@@ -1,43 +1,42 @@
 import React from 'react';
 import { 
     Nav,
+    NavLink,
     Bars,
     NavMenu,
     NavBtnLink
 } from './NavbarElement';
-import { useNavigate } from 'react-router-dom';
 
 import { getAuth, signOut } from "firebase/auth";
 
 import NewEventForm from '../NewEventForm/NewEventForm.js';
+import UserProfile from '../UserProfile/UserProfile';
+import UserDropdown from '../UserProfile/ProfileDropdown';
 
-function EventNavbar() {
-  const navigate = useNavigate();
+const EventNavbar = () => {
   const handleLogout = () => {
     document.cookie = 'loggedin=false'; // store auth state as cookie
 
+
     const auth = getAuth();
     signOut(auth).then(() => {
-      navigate('/');
+      window.location.href = '/';
     }).catch((error) => {
-      console.log(error.message);
+      console.log("");
     });
   }
 
   return (
-    <Nav>
-      <Bars/>
-      <NavMenu>
-        <NewEventForm></NewEventForm>
-        <NavBtnLink style={{marginLeft: "auto", marginRight: "3rem"}} onClick={handleLogout}>Logout</NavBtnLink>
-
-        {/* <Avatar
-          alt="Remy Sharp"
-          src={blank_prof}
-          sx={{ width: "2.7rem", height: "85%"}}
-        /> */}
-      </NavMenu>
-    </Nav>
+    <>
+      <Nav>
+        <Bars/>
+        <NavMenu style={{ flexDirection: 'row-reverse'}}>
+          {/* <NavLink to='/'>Home</NavLink> */}
+          <UserProfile handleLogout={handleLogout} />
+          <NewEventForm></NewEventForm>
+        </NavMenu>
+      </Nav>
+    </>
   );
 };
 export default EventNavbar;
