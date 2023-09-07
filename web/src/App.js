@@ -35,7 +35,7 @@ function App(props) {
       <NavBarWrapper />
       <Routes>
         <Route path='/' exact element={<Home />} />
-        <Route path='/login' element={<UserLogin />} />
+        <Route path='/login' element={<UserLogin user={user} setUser={setUser} />} />
         <Route path='/signup' element={<UserSignUp />} />
         <Route path="/users/:username"
           element={
