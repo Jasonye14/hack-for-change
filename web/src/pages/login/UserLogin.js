@@ -16,7 +16,7 @@ import { Alert, AlertTitle} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 // Components
-import GoogleButton from '../../components/Buttons/GoogleSignin';
+import GoogleButton from '../../components/Buttons/GoogleSignInButton';
 
 // Auth
 import {
