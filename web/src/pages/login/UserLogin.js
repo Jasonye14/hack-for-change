@@ -53,7 +53,7 @@ function UserLogin() {
 
     const auth = getAuth();
     await setPersistence(auth, browserSessionPersistence);
-    const data = new FormData(event.currentTarget);
+    const data = new FormData(event.target);
     setPending(true);
     signInWithEmailAndPassword(auth, data.get('email'), data.get('password'))
       .then((userCredential) => {
