@@ -11,7 +11,6 @@ import { getAuth, signOut } from "firebase/auth";
 
 import NewEventForm from '../NewEventForm/NewEventForm.js';
 import UserProfile from '../UserProfile/UserProfile';
-import UserDropdown from '../UserProfile/ProfileDropdown';
 
 const EventNavbar = () => {
   const handleLogout = () => {

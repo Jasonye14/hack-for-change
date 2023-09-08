@@ -4,8 +4,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-
-const defaultAvatar = 'path_to_default_avatar_image';
+import defaultAvatar from '../../images/profile/dog.jpeg'
 
 const UserProfile = ({ userProfile = {}, handleLogout }) => {
   const [anchorEl, setAnchorEl] = useState(null);
