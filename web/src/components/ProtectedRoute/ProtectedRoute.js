@@ -1,5 +1,5 @@
 import React from 'react';
-import { redirect, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../pages/login/AuthContext';
 
 function ProtectedRoute({ children }) {
@@ -8,17 +8,17 @@ function ProtectedRoute({ children }) {
 
     if (pending) {
         console.log("Pending....");
-        return <>Loading...</>;  // Add in a better Loading page
+        return <>Loading...</>;  // TODO: Add in a better Loading page
     }
 
     if (!isLoggedIn || !currUser) {
         console.log("No-one logged in...Redirecting to login...");
-        return redirect("/login");
+        return <Navigate to={'/login'}></Navigate>;
     }
 
     if (currUser.eUsername !== routeParams.username) {
-        console.log(`Tried to go to: ${routeParams.username}. Actual login uid: ${currUser.eUsername}`);
-        return redirect("/login"); // <---- Consider changing to another page ("you dont have access...")
+        console.log(`Tried to go to: ${routeParams.username}. Actual logged-in user: ${currUser.eUsername}`);
+        return <Navigate to={'/404'}></Navigate>; // <---- Consider changing to another page ("you dont have access...")
     }
     else {
         return children

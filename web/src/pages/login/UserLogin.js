@@ -36,7 +36,6 @@ import db from '../../utils/firebase';
 // Images
 import ocean from '../../images/login/oceanBackground.jpg';
 
-
 function UserLogin() {
   const navigate = useNavigate();  // <-- use this hook
   const [errorOpen, setError] = useState(false);
@@ -44,6 +43,7 @@ function UserLogin() {
 
   useEffect(() => {
     if (isLoggedIn) {
+      console.log(`${currUser.eUsername} logged in... (/login)`)
       navigate(`/users/${currUser.eUsername}`)
     }
   }, []);
@@ -54,7 +54,7 @@ function UserLogin() {
     const auth = getAuth();
     await setPersistence(auth, browserSessionPersistence);
     const data = new FormData(event.currentTarget);
-
+    setPending(true);
     signInWithEmailAndPassword(auth, data.get('email'), data.get('password'))
       .then((userCredential) => {
         // Signed in successfully
@@ -79,11 +79,15 @@ function UserLogin() {
         setError(true);
         console.error(error.message);
       })
+    setPending(false);
   };
 
   const handleGoogle = async () => {
     const provider = new GoogleAuthProvider();
     const auth = getAuth();
+    await setPersistence(auth, browserSessionPersistence);
+
+    setPending(true);
     signInWithPopup(auth, provider)
       .then(userCredential => {
         const user = userCredential.user;
@@ -122,6 +126,7 @@ function UserLogin() {
         setError(true);
         console.log(error.message);
       })
+    setPending(false);
   }
 
   const theme = createTheme();
@@ -188,7 +193,7 @@ function UserLogin() {
           </Box>
 
           <GoogleButton onClick={handleGoogle}></GoogleButton>
-          
+
           <Grid container>
             <Grid item sx={{paddingBottom: "20px",}}>
               <Link href="/signup" variant="body2">

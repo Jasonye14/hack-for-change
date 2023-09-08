@@ -31,8 +31,8 @@ const AuthProvider = ({ children }) => {
         const userWithEUsername = { ...user, eUsername: eUsername}
         setIsLoggedIn(true);
         setCurrUser(userWithEUsername);
-        setPending(false);
       }
+      setPending(false);
     })
   }, []);
 
