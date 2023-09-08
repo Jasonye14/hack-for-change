@@ -28,6 +28,7 @@ function App(props) {
 }
 
 function RoutesContent() {
+  const {currUser, setCurrUser} = useAuth();
   return (
     <Routes>
       <Route path='/' element={<Home />} />
@@ -36,7 +37,7 @@ function RoutesContent() {
       <Route path='/community' element={<Community />} />
       <Route path='/volunteer' element={<Volunteer />} />
       <Route path='/resources' element={<Resources />} />
-      <Route path='/login' element={<UserLogin />} />
+      <Route path='/login' element={<UserLogin user={currUser} setUser={setCurrUser} />} />
       <Route path='/signup' element={<UserSignUp />} />
       <Route path="/users/:username" element={
         <ProtectedRoute>
