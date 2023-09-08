@@ -50,15 +50,19 @@ function RoutesContent() {
 
 function NavBarWrapper() {
   const location = useLocation();
-  const { isLoggedIn, currUser } = useAuth();
+  const { isLoggedIn, currUser, pending } = useAuth();
+
+  if (pending) {
+    return null;
+  }
 
   if(!isLoggedIn && location.pathname !== '/login') {
-    console.log(`No one currently logged in.`);
+    console.log(`No one currently logged in. (App.js)`);
     return <DefaultNavbar />;
   }
 
   if(isLoggedIn && location.pathname !== '/login') {
-    console.log(`${currUser} is currently logged in.`);
+    console.log(`${currUser.eUsername} is currently logged in. (App.js)`);
     return <EventNavbar />;
   }
 

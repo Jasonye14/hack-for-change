@@ -12,7 +12,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 // component Imports
-import GoogleButton from '../../components/Buttons/GoogleSignin';
+import GoogleButton from '../../components/Buttons/GoogleSignInButton';
 
 // auth
 import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from "firebase/auth";
