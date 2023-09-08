@@ -10,6 +10,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
 // component Imports
 import GoogleButton from '../../components/Buttons/GoogleSignInButton';
@@ -26,6 +27,7 @@ import ocean from '../../images/login/oceanBackground.jpg';
 
 const UserSignUp = () => {   
   const theme = createTheme();
+  const navigate = useNavigate();
 
   const handleGoogle = async () => {
     const provider = new GoogleAuthProvider();
@@ -70,9 +72,10 @@ const UserSignUp = () => {
     event.preventDefault();
 
     const data = new FormData(event.currentTarget);
+    const username = data.get('username') || email.replace(/\..+/g, '').replace('@', ''); // default username if none provided
+    // const username = data.get('username') ?? '';
     const email = data.get('email');
     const password = data.get('password');
-    const username = data.get('username') || email.replace(/\..+/g, '').replace('@', ''); // default username if none provided
     const fname = data.get('fname') ?? '';
     const lname = data.get('lname') ?? '';
 
@@ -80,20 +83,22 @@ const UserSignUp = () => {
 
     await createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
       const user = userCredential.user;
+      const uid = user.uid;
+      // const usersReference = ref(db, `users/${uid}`);
       const usersReference = ref(db, `users/${username}`);
-      console.log(user);
-
-      console.log(user);
+      
       set(usersReference, {
         email: user.email,
         fname: fname,
         lname: lname,
         location: "",
+        // username: username,
       });
-      window.location.href = `/users/${username}`; // redirect to user's home page
+      navigate(`/users/${username}`); // redirect to user's home page
+      // navigate(`/users/${uid}`);
 
     }).catch((error) => {
-        console.error("ERROR: Email already taken.");
+        console.error(error.message);
     });
 
   }

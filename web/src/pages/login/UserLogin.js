@@ -65,15 +65,23 @@ function UserLogin() {
         setPending(false);
 
         // Get username from db; must exist at this point since auth succeeded
-        const usersReference = ref(db, 'users');
-        onValue(usersReference, snapshot => {
-          const data = snapshot.val();
-          Object.entries(data).forEach(([eUsername, data]) => {
-            if (data.email === user.email) {
-              navigate(`/users/${eUsername}`);                    // <-- use navigate instead of window.location.href
-            }
+        setTimeout(() => {  
+          const usersReference = ref(db, 'users');
+          onValue(usersReference, snapshot => {
+            const data = snapshot.val();
+            const uid = currUser.uid;
+            Object.entries(data).forEach(([eUsername, data]) => {
+              if (data.email === user.email) {
+                navigate(`/users/${eUsername}`);                    // <-- use navigate instead of window.location.href
+              }
+            });
+            // Object.entries(data).forEach(([id, data]) => {
+            //   if (id === uid) {
+            //     navigate(`/users/${uid}`);                    // <-- use navigate instead of window.location.href
+            //   }
+            // });
           });
-        });
+        }, 400);
       })
       .catch(error => {
         setError(true);
