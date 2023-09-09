@@ -10,9 +10,9 @@ import {
 import { getAuth, signOut } from "firebase/auth";
 
 import NewEventForm from '../NewEventForm/NewEventForm.js';
-import UserProfile from '../UserProfile/UserProfile';
+import UserProfile from '../Users/UserDropdown/UserDropdown';
 
-const EventNavbar = () => {
+const EventNavbar = ({ username }) => {
   const handleLogout = () => {
     document.cookie = 'loggedin=false'; // store auth state as cookie
 
@@ -31,7 +31,7 @@ const EventNavbar = () => {
         <Bars/>
         <NavMenu style={{ flexDirection: 'row-reverse'}}>
           {/* <NavLink to='/'>Home</NavLink> */}
-          <UserProfile handleLogout={handleLogout} />
+          <UserProfile userProfile={username} handleLogout={handleLogout} />
           <NewEventForm></NewEventForm>
         </NavMenu>
       </Nav>

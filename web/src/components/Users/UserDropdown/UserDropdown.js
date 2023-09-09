@@ -4,12 +4,15 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import defaultAvatar from '../../images/profile/dog.jpeg'
+import defaultAvatar from '../../../images/profile/dog.jpeg';
+import { useNavigate } from 'react-router-dom';
 
-const UserProfile = ({ userProfile = {}, handleLogout }) => {
+const UserProfile = ({ userProfile, handleLogout }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
+
+  const navigate = useNavigate();
 
   const handleClick = (event) => {
     if (isMenuOpen) {
@@ -29,10 +32,10 @@ const UserProfile = ({ userProfile = {}, handleLogout }) => {
 
     switch(action) {
       case "profile":
-        // Navigate to profile or perform any profile-related action
+        navigate(`/users/${userProfile}/profile`);
         break;
       case "settings":
-        // Navigate to settings or perform settings-related action
+        navigate(`/users/${userProfile}/settings`);
         break;
       case "logout":
         if (handleLogout) handleLogout();

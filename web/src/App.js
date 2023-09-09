@@ -7,6 +7,8 @@ import Home from './pages/home/home';
 import UserEvents from './pages/UserEvents';
 import UserLogin from './pages/login/UserLogin';
 import UserSignUp from './pages/signup/UserSignup';
+import UserSettings from './components/Users/UserSettings/UserSettings';
+import UserProfiles from './components/Users/UserProfiles/UserProfiles';
 import Events from './pages/events/events';
 import FAQ from './pages/faq/faq';
 import Community from './pages/community/community';
@@ -44,6 +46,16 @@ function RoutesContent() {
           <UserEvents />
         </ProtectedRoute>
       } />
+      <Route path="/users/:username/settings" element={
+        <ProtectedRoute>
+          <UserSettings />
+        </ProtectedRoute>
+      } />
+      <Route path="/users/:username/profile" element={
+        <ProtectedRoute>
+          <UserProfiles />
+        </ProtectedRoute>
+      } />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
@@ -64,7 +76,7 @@ function NavBarWrapper() {
 
   if(isLoggedIn && location.pathname !== '/login') {
     console.log(`${currUser.eUsername} is currently logged in. (App.js)`);
-    return <EventNavbar />;
+    return <EventNavbar username={currUser.eUsername}/>;
   }
 
   return null;

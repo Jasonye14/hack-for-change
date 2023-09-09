@@ -13,6 +13,7 @@ export const Nav = styled.nav`
   max-width: 100vw;
   padding: 0.5rem 2%;
   flex-direction: row;
+  
   /* Third Nav */
   /* justify-content: flex-start; */
 `;
