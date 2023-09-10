@@ -3,7 +3,7 @@ import './UserProfiles.css';
 
 // database
 import db from '../../../utils/firebase';
-import { ref, set } from 'firebase/database';
+import { child, get, ref, set } from 'firebase/database';
 
 function UserProfiles({ user }) {
     const [userData, setUserData] = useState({
@@ -48,7 +48,11 @@ function UserProfiles({ user }) {
         // Handle the saving logic here
         // const userReference = ref(db, `users/${UID}`);
         const userReference = ref(db, `users/${user.eUsername}`);
-        set(userReference, userData);
+        let oldData
+        get(child(db, `users/${user.eUsername}`)).then((snapshot) => {
+            oldData = snapshot.val();
+        });
+        set(userReference, {oldData, userData});
 
     };
 
