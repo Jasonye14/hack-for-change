@@ -48,17 +48,7 @@ function UserProfiles({ user }) {
         // Handle the saving logic here
         // const userReference = ref(db, `users/${UID}`);
         const userReference = ref(db, `users/${user.eUsername}`);
-        set(userReference, {
-            firstName: userData.firstName,
-            lastName: userData.lastName,
-            email: userData.email,
-            phoneNumber: userData.phoneNumber,
-            dateOfBirth: userData.dateOfBirth,
-            address: userData.address,
-            education: userData.education,
-            occupation: userData.occupation,
-            affiliatedOrganization: userData.affiliatedOrganization
-          });
+        set(userReference, userData);
 
     };
 

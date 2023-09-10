@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import './UserSettings.css';
 
-function UserSettings() {
+// db
+import { ref, set } from "firebase/database";
+import db from '../../utils/firebase';
+
+function UserSettings({ user }) {
     const [settingsData, setSettingsData] = useState({
         notifications: false,
         currentPassword: '',
@@ -34,6 +38,9 @@ function UserSettings() {
         setMessage('Settings Saved Successfully!');
 
         // Handle saving logic here
+        const userReference = ref(db, `users/${user.eUsername}`);
+        set(userReference, settingsData);
+
     };
 
     return (

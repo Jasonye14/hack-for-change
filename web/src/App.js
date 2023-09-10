@@ -48,7 +48,7 @@ function RoutesContent() {
       } />
       <Route path="/users/:username/settings" element={
         <ProtectedRoute>
-          <UserSettings />
+          <UserSettings user={currUser} />
         </ProtectedRoute>
       } />
       <Route path="/users/:username/profile" element={
