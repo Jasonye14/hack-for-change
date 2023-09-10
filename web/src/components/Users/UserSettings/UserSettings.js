@@ -3,7 +3,7 @@ import './UserSettings.css';
 
 // db
 import { ref, set } from "firebase/database";
-import db from '../../utils/firebase';
+import db from '../../../utils/firebase';
 
 function UserSettings({ user }) {
     const [settingsData, setSettingsData] = useState({
