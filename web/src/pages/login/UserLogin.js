@@ -69,7 +69,7 @@ function UserLogin() {
           const usersReference = ref(db, 'users');
           onValue(usersReference, snapshot => {
             const data = snapshot.val();
-            const uid = currUser.uid;
+            // const uid = user.uid;
             Object.entries(data).forEach(([eUsername, data]) => {
               if (data.email === user.email) {
                 navigate(`/users/${eUsername}`);                    // <-- use navigate instead of window.location.href
