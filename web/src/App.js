@@ -41,6 +41,7 @@ function RoutesContent() {
       <Route path='/resources' element={<Resources />} />
       <Route path='/login' element={<UserLogin user={currUser} setUser={setCurrUser} />} />
       <Route path='/signup' element={<UserSignUp />} />
+      <Route path='/events/:eventSlug' element={<UserEvents />} />
       <Route path="/users/:uid" element={
         <ProtectedRoute>
           <UserEvents />
