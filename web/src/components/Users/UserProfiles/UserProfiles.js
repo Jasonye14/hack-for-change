@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import './UserProfiles.css';
 
-function UserProfiles() {
+// database
+import db from '../../../utils/firebase';
+import { child, get, ref, set } from 'firebase/database';
+
+function UserProfiles({ user }) {
     const [userData, setUserData] = useState({
         firstName: '',
         lastName: '',
@@ -42,6 +46,14 @@ function UserProfiles() {
         setMessage('User Data Saved Successfully!'); // Successful feedback
 
         // Handle the saving logic here
+        // const userReference = ref(db, `users/${UID}`);
+        const userReference = ref(db, `users/${user.eUsername}`);
+        let oldData
+        get(child(db, `users/${user.eUsername}`)).then((snapshot) => {
+            oldData = snapshot.val();
+        });
+        set(userReference, {oldData, userData});
+
     };
 
     return (

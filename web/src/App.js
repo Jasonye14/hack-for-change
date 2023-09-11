@@ -48,12 +48,12 @@ function RoutesContent() {
       } />
       <Route path="/users/:username/settings" element={
         <ProtectedRoute>
-          <UserSettings />
+          <UserSettings user={currUser} />
         </ProtectedRoute>
       } />
       <Route path="/users/:username/profile" element={
         <ProtectedRoute>
-          <UserProfiles />
+          <UserProfiles user={currUser} />
         </ProtectedRoute>
       } />
       <Route path="*" element={<NotFound />} />
