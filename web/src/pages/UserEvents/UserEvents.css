@@ -1,0 +1,31 @@
+
+.events-layout {
+  display: flex;
+  align-content: flex-start;
+  flex-wrap: wrap;
+
+  min-height: 100vh;
+  padding: 80px 0px 0px 50px;
+
+  background-image: url('../../images/events/eventBackground.jpeg');
+}
+
+.event-card {
+  position: relative;
+
+  width: 32%;
+  max-width: 32%;
+  min-height: 400px;
+  max-height: 600px;
+
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.event-card-media {
+
+}
+
+.event-card-info {
+
+}
