@@ -41,17 +41,17 @@ function RoutesContent() {
       <Route path='/resources' element={<Resources />} />
       <Route path='/login' element={<UserLogin user={currUser} setUser={setCurrUser} />} />
       <Route path='/signup' element={<UserSignUp />} />
-      <Route path="/users/:username" element={
+      <Route path="/users/:uid" element={
         <ProtectedRoute>
           <UserEvents />
         </ProtectedRoute>
       } />
-      <Route path="/users/:username/settings" element={
+      <Route path="/users/:uid/settings" element={
         <ProtectedRoute>
           <UserSettings user={currUser} />
         </ProtectedRoute>
       } />
-      <Route path="/users/:username/profile" element={
+      <Route path="/users/:uid/profile" element={
         <ProtectedRoute>
           <UserProfiles user={currUser} />
         </ProtectedRoute>

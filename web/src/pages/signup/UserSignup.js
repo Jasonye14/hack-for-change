@@ -41,8 +41,8 @@ const UserSignUp = () => {
 
       let usersReference = ref(db, 'users');
       onValue(usersReference, snapshot => {
-        const data = snapshot.val();
-        Object.entries(data).forEach(([username, data]) => {
+        const result = snapshot.val();
+        Object.entries(result).forEach(([username, data]) => {
           if (data.email === user.email) {
             found = true;
             window.location.href = `/users/${username}`; // redirect to user's home page
@@ -60,7 +60,7 @@ const UserSignUp = () => {
           });
           window.location.href = `/users/${eUsername}`; // redirect to user's home page
         }
-      });
+      }, { onlyOnce: true });
 
     }).catch((error) => {
       console.error(error.message);
@@ -72,8 +72,8 @@ const UserSignUp = () => {
     event.preventDefault();
 
     const data = new FormData(event.currentTarget);
-    const username = data.get('username') || email.replace(/\..+/g, '').replace('@', ''); // default username if none provided
-    // const username = data.get('username') ?? '';
+    // const username = data.get('username') || email.replace(/\..+/g, '').replace('@', ''); // default username if none provided
+    const username = data.get('username') ?? '';
     const email = data.get('email');
     const password = data.get('password');
     const fname = data.get('fname') ?? '';
@@ -84,18 +84,17 @@ const UserSignUp = () => {
     await createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
       const user = userCredential.user;
       const uid = user.uid;
-      // const usersReference = ref(db, `users/${uid}`);
-      const usersReference = ref(db, `users/${username}`);
+      const usersReference = ref(db, `users/${uid}`);
       
       set(usersReference, {
-        email: user.email,
+        username: username,
+        email: email,
+        // no need to store password here
         fname: fname,
         lname: lname,
-        location: "",
-        // username: username,
       });
-      navigate(`/users/${username}`); // redirect to user's home page
-      // navigate(`/users/${uid}`);
+      
+      navigate(`/users/${uid}`); // redirect to user's home page
 
     }).catch((error) => {
         console.error(error.message);

@@ -16,12 +16,12 @@ function ProtectedRoute({ children }) {
         return <Navigate to={'/login'}></Navigate>;
     }
 
-    if (currUser.eUsername !== routeParams.username) {
-        console.log(`Tried to go to: ${routeParams.username}. Actual logged-in user: ${currUser.eUsername}`);
+    if (currUser.uid !== routeParams.uid) {
+        console.log(`Tried to go to: ${routeParams.uid}. Actual logged-in user: ${currUser.uid}`);
         return <Navigate to={'/404'}></Navigate>; // <---- Consider changing to another page ("you dont have access...")
     }
     else {
-        return children
+        return children;
     }
 }
 

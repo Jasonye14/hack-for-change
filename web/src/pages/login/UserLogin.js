@@ -43,8 +43,8 @@ function UserLogin() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      console.log(`${currUser.eUsername} logged in... (/login)`)
-      navigate(`/users/${currUser.eUsername}`)
+      console.log(`${currUser.eUsername} logged in... (/login)`);
+      navigate(`/users/${currUser.eUsername}`);
     }
   }, []);
 
@@ -69,19 +69,14 @@ function UserLogin() {
           const usersReference = ref(db, 'users');
           onValue(usersReference, snapshot => {
             const data = snapshot.val();
-            // const uid = user.uid;
-            Object.entries(data).forEach(([eUsername, data]) => {
-              if (data.email === user.email) {
-                navigate(`/users/${eUsername}`);                    // <-- use navigate instead of window.location.href
+            const uid = user.uid;
+            Object.keys(data).forEach(id => {
+              if (id === uid) {
+                navigate(`/users/${uid}`); // <-- use navigate instead of window.location.href
               }
             });
-            // Object.entries(data).forEach(([id, data]) => {
-            //   if (id === uid) {
-            //     navigate(`/users/${uid}`);                    // <-- use navigate instead of window.location.href
-            //   }
-            // });
           });
-        }, 400);
+        }, 100);
       })
       .catch(error => {
         setError(true);
