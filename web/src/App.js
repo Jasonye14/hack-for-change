@@ -4,7 +4,7 @@ import DefaultNavbar from './components/Navbar/DefaultNavbar';
 import EventNavbar from './components/Navbar/EventNavbar';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Home from './pages/home/home';
-import UserEvents from './pages/UserEvents';
+import UserEvents from './pages/UserEvents/UserEvents';
 import UserLogin from './pages/login/UserLogin';
 import UserSignUp from './pages/signup/UserSignup';
 import UserSettings from './components/Users/UserSettings/UserSettings';
