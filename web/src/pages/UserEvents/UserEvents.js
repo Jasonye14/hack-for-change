@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './UserEvents.css';
 
 // MUI
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
+import { Card, CardContent, CardMedia, CardActions, CardActionArea } from '@mui/material';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
@@ -23,50 +21,64 @@ const images = [oceanCleanUp, riverCleanUp, forestCleanup, cityCleanUp];
 
 const exComments = {0: 'Hello', 1: 'Howdy'}
 
-function EventCard (key, imageSource, event) {
-  // Info from Firebase
-  const { host, title, desc, location, event_date, post_date } = event;
+function EventCard (key, event, imageSource, navigate) {
+  const { host, title, desc, location, event_date, post_date } = event; // Fields stored in Firebase
   let theDate = new Date(event_date);
   let readableTime = theDate.toDateString();
+
+  const redirectToEventPage = (e) => {
+    e.preventDefault();
+    navigate(`/event/${key}`, {state:{eventID: key, imageSource: imageSource, ...event}})
+  }
+
   return (
     <Card key={key} className='event-card'>
-      <CardMedia
-        sx={{ height: 200 }}
-        image={imageSource}
-        title={title}
-      />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {title}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {desc}
-        </Typography>
-      </CardContent>
-      <CardActions sx={{flexDirection: "column"}}>
-        <Button size="small"><Typography>Location: </Typography>{location}</Button>
-        <Button size="small"><Typography>Time: </Typography>{readableTime}</Button>
-      </CardActions>
+      <CardActionArea onClick={e => redirectToEventPage(e)}>
+        <CardMedia
+          sx={{ height: 200 }}
+          image={imageSource}
+          title={title}
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            <Link to={{
+              pathname: `/events/`,
+              state: {eventInfo: {key: key, imageSource: imageSource, ...event}}
+            }}>
+              {title}
+            </Link>
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {desc}
+          </Typography>
+          <CardActions sx={{flexDirection: "column"}}>
+            <Button size="small"><Typography>Location: </Typography>{location}</Button>
+            <Button size="small"><Typography>Time: </Typography>{readableTime}</Button>
+          </CardActions>
+        </CardContent>
+      </CardActionArea>
     </Card>
   );
 }
 
 const Events = () => {
   const [events, setEvents] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // load events from db
     const eventsReference = ref(db, 'events');
     onValue(eventsReference, snapshot => {
       const data = snapshot.val();
-      setEvents(Object.values(data));
+      console.log(data);
+      setEvents(Object.entries(data));
     });
   }, []);
 
   return (
     <div className='events-layout'>
-      {events.map((event, index) =>
-        EventCard(index, images[index%4], event)
+      {events.map(([eventID, event], index) =>
+        EventCard(eventID, event, images[index%4], navigate)
       )}
     </div>
   );
