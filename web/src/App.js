@@ -70,7 +70,7 @@ function NavBarWrapper() {
     return null;
   }
 
-  if(!isLoggedIn && location.pathname !== '/login') {
+  if(!isLoggedIn && location.pathname !== '/login' && location.pathname !== '/signup' ) {
     console.log(`No one currently logged in. (App.js)`);
     return <DefaultNavbar />;
   }
