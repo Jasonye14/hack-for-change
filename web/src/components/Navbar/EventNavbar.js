@@ -1,10 +1,8 @@
 import React from 'react';
 import { 
     Nav,
-    NavLink,
     Bars,
-    NavMenu,
-    NavBtnLink
+    NavMenu
 } from './NavbarElement';
 
 import { getAuth, signOut } from "firebase/auth";
@@ -12,18 +10,18 @@ import { useAuth } from '../../pages/login/AuthContext';
 
 import NewEventForm from '../NewEventForm/NewEventForm.js';
 import UserProfile from '../Users/UserDropdown/UserDropdown';
+import { useNavigate } from 'react-router-dom';
 
 const EventNavbar = () => {
   const { currUser } = useAuth();
+  const navigate = useNavigate();
+
   const handleLogout = () => {
-    document.cookie = 'loggedin=false'; // store auth state as cookie
-
-
     const auth = getAuth();
     signOut(auth).then(() => {
-      window.location.href = '/';
+      navigate('/');
     }).catch((error) => {
-      console.log("");
+      console.log(error.message);
     });
   }
 
