@@ -55,81 +55,74 @@ function UserLogin() {
     await setPersistence(auth, browserSessionPersistence);
     const data = new FormData(event.target); // changed from event.target, which was null
     setPending(true);
-    signInWithEmailAndPassword(auth, data.get('email'), data.get('password'))
-      .then((userCredential) => {
-        // Signed in successfully
-        const user = userCredential.user
-        setIsLoggedIn(true);                                      // Set logged-in status
-        setCurrUser({ ...user, eUsername: getEUsername(user)});   // Set current user
-        setError(false);
-        setPending(false);
+    signInWithEmailAndPassword(auth, data.get('email'), data.get('password')).then((userCredential) => {
+      // Signed in successfully
+      const user = userCredential.user
+      setIsLoggedIn(true);                                      // Set logged-in status
+      setCurrUser({ ...user, eUsername: getEUsername(user)});   // Set current user
+      setError(false);
+      setPending(false);
 
-        // Get username from db; must exist at this point since auth succeeded
-        setTimeout(() => {  
-          const usersReference = ref(db, 'users');
-          onValue(usersReference, snapshot => {
-            const data = snapshot.val();
-            const uid = user.uid;
-            Object.keys(data).forEach(id => {
-              if (id === uid) {
-                navigate(`/users/${uid}`); // <-- use navigate instead of window.location.href
-              }
-            });
+      // Get username from db; must exist at this point since auth succeeded
+      setTimeout(() => {  
+        const usersReference = ref(db, 'users');
+        onValue(usersReference, snapshot => {
+          const data = snapshot.val();
+          const uid = user.uid;
+          Object.keys(data).forEach(id => {
+            if (id === uid) {
+              navigate(`/users/${uid}`); // <-- use navigate instead of window.location.href
+            }
           });
-        }, 100);
-      })
-      .catch(error => {
-        setError(true);
-        console.error(error.message);
-      })
+        });
+      }, 100);
+    }).catch(error => {
+      setError(true);
+      console.error(error.message);
+    })
     setPending(false);
   };
 
   const handleGoogle = async () => {
     const provider = new GoogleAuthProvider();
     const auth = getAuth();
-    await setPersistence(auth, browserSessionPersistence);
 
-    setPending(true);
-    signInWithPopup(auth, provider)
-      .then(userCredential => {
-        const user = userCredential.user;
-        const email = user.email;
-        const eUsername = getEUsername(user);                 // jak325@lehigh.edu => jak325lehigh
-        let found = false;
+    await signInWithPopup(auth, provider).then((result) => {
+      const user = result.user;
+      
+      const email = user.email;
+      const uid = user.uid;
 
-        let usersReference = ref(db, 'users');
-        onValue(usersReference, snapshot => {
-          const data = snapshot.val();
-          Object.entries(data).forEach(([eUsername, data]) => {
-            if (data.email === user.email) {
-              found = true;
-              setIsLoggedIn(true);                            // Set logged-in status
-              setCurrUser({ ...user, eUsername: eUsername});  // Set current user
-              setError(false);
-              setPending(false);
+      let found = false;
 
-              navigate(`/users/${eUsername}`);                // <-- use navigate here too
-            }
-          });
-  
-          // User not found in db; create an instance for said user
-          if (!found) {
-            usersReference = ref(db, `users/${eUsername}`)
-            set(usersReference, {
-              email: email,
-              fname: "",
-              lname: "",
-              location: "",
-            });
+      let usersReference = ref(db, 'users');
+      onValue(usersReference, snapshot => {
+        const result = snapshot.val();
+        Object.keys(result).forEach(id => {
+          if (uid === id) {
+            // user is already in system
+            found = true;
+            navigate(`/users/${uid}`); // redirect to user's home page
           }
         });
-      })
-      .catch(error => {
-        setError(true);
-        console.log(error.message);
-      })
-    setPending(false);
+
+        // user not found in db; create a new entry
+        if (!found) {
+          usersReference = ref(db, `users/${uid}`)
+          set(usersReference, {
+            username: email.replace(/\..+/g, '').replace('@', ''), // jak325@lehigh.edu => jak325lehigh
+            email: email,
+            fname: "",
+            lname: "",
+          });
+          navigate(`/users/${uid}`); // redirect to user's home page
+        }
+      }, { onlyOnce: true });
+
+    }).catch((error) => {
+      console.error(error.message);
+    });
+
   }
 
   const theme = createTheme();
