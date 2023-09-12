@@ -1,10 +1,11 @@
 import React from 'react';
-import { 
-    Nav,
-    NavLink,
-    Bars,
-    NavMenu,
-    NavBtnLink
+import {
+  Nav,
+  NavLink,
+  Bars,
+  NavMenu,
+  NavBtnLink,
+  UserFormContainer
 } from './NavbarElement';
 
 import { getAuth, signOut } from "firebase/auth";
@@ -12,6 +13,7 @@ import { useAuth } from '../../pages/login/AuthContext';
 
 import NewEventForm from '../NewEventForm/NewEventForm.js';
 import UserProfile from '../Users/UserDropdown/UserDropdown';
+import { Box } from '@mui/material';
 
 const EventNavbar = () => {
   const { currUser } = useAuth();
@@ -29,11 +31,13 @@ const EventNavbar = () => {
 
   return (
     <Nav>
-      <Bars/>
-      <NavMenu style={{ flexDirection: 'row-reverse'}}>
-        {/* <NavLink to='/'>Home</NavLink> */}
-        <UserProfile userProfile={currUser.uid} handleLogout={handleLogout} />
-        <NewEventForm></NewEventForm>
+      <Bars />
+      <NavMenu>
+         <UserFormContainer> {/* here for styling purposes */}
+          <UserProfile userProfile={currUser.uid} handleLogout={handleLogout} />
+          <NewEventForm />
+        </UserFormContainer>
+        <NavLink to={`/users/${currUser.uid}`} id="events-link">Events</NavLink>
       </NavMenu>
     </Nav>
   );
