@@ -18,12 +18,11 @@ const EventNavbar = () => {
   const handleLogout = () => {
     document.cookie = 'loggedin=false'; // store auth state as cookie
 
-
     const auth = getAuth();
     signOut(auth).then(() => {
       window.location.href = '/';
     }).catch((error) => {
-      console.log("");
+      console.log(error);
     });
   }
 
