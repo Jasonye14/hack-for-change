@@ -29,36 +29,40 @@ const UserSignUp = () => {
   const theme = createTheme();
   const navigate = useNavigate();
 
+  // below works for signing new users up AND for logging existing users in
   const handleGoogle = async () => {
     const provider = new GoogleAuthProvider();
     const auth = getAuth();
 
     await signInWithPopup(auth, provider).then((result) => {
       const user = result.user;
+      
       const email = user.email;
-      const eUsername = email.replace(/\..+/g, '').replace('@', ''); // jak325@lehigh.edu => jak325lehigh
+      const uid = user.uid;
+
       let found = false;
 
       let usersReference = ref(db, 'users');
       onValue(usersReference, snapshot => {
         const result = snapshot.val();
-        Object.entries(result).forEach(([username, data]) => {
-          if (data.email === user.email) {
+        Object.keys(result).forEach(id => {
+          if (uid === id) {
+            // user is already in system
             found = true;
-            window.location.href = `/users/${username}`; // redirect to user's home page
+            navigate(`/users/${uid}`); // redirect to user's home page
           }
         });
 
-        // user not found in db; create an instance for said user
+        // user not found in db; create a new entry
         if (!found) {
-          usersReference = ref(db, `users/${eUsername}`)
+          usersReference = ref(db, `users/${uid}`)
           set(usersReference, {
+            username: email.replace(/\..+/g, '').replace('@', ''), // jak325@lehigh.edu => jak325lehigh
             email: email,
             fname: "",
             lname: "",
-            location: "",
           });
-          window.location.href = `/users/${eUsername}`; // redirect to user's home page
+          navigate(`/users/${uid}`); // redirect to user's home page
         }
       }, { onlyOnce: true });
 
@@ -81,6 +85,7 @@ const UserSignUp = () => {
 
     const auth = getAuth();
 
+    // below only works for new users
     await createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
       const user = userCredential.user;
       const uid = user.uid;

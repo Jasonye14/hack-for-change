@@ -3,7 +3,7 @@ import './UserProfiles.css';
 
 // database
 import db from '../../../utils/firebase';
-import { child, get, ref, set } from 'firebase/database';
+import { ref, update } from 'firebase/database';
 
 function UserProfiles({ user }) {
     const [userData, setUserData] = useState({
@@ -41,18 +41,12 @@ function UserProfiles({ user }) {
             setMessage('Please enter a valid 10-digit phone number.');
             return;
         }
+        
+        const userReference = ref(db, `/users/${user.uid}`);
+        update(userReference, userData);
 
         console.log("User Data Saved:", userData);
         setMessage('User Data Saved Successfully!'); // Successful feedback
-
-        // Handle the saving logic here
-        // const userReference = ref(db, `users/${UID}`);
-        const userReference = ref(db, `users/${user.eUsername}`);
-        let oldData
-        get(child(db, `users/${user.eUsername}`)).then((snapshot) => {
-            oldData = snapshot.val();
-        });
-        set(userReference, {oldData, userData});
 
     };
 

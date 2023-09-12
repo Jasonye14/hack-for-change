@@ -4,7 +4,7 @@ import { useAuth } from '../../pages/login/AuthContext';
 
 function ProtectedRoute({ children }) {
     const { isLoggedIn, currUser, pending } = useAuth();
-    const routeParams = useParams(); // Get parameters from dynamic route (:username)
+    const routeParams = useParams(); // Get parameters from dynamic route (:uid)
 
     if (pending) {
         console.log("Pending....");
@@ -18,6 +18,7 @@ function ProtectedRoute({ children }) {
 
     if (currUser.uid !== routeParams.uid) {
         console.log(`Tried to go to: ${routeParams.uid}. Actual logged-in user: ${currUser.uid}`);
+        // console.log(routeParams);
         return <Navigate to={'/404'}></Navigate>; // <---- Consider changing to another page ("you dont have access...")
     }
     else {
