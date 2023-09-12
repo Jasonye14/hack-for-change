@@ -114,6 +114,7 @@ function UserLogin() {
             email: email,
             fname: "",
             lname: "",
+            notifications: false
           });
           navigate(`/users/${uid}`); // redirect to user's home page
         }

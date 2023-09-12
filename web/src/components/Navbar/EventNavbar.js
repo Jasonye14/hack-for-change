@@ -14,18 +14,18 @@ import { useAuth } from '../../pages/login/AuthContext';
 import NewEventForm from '../NewEventForm/NewEventForm.js';
 import UserProfile from '../Users/UserDropdown/UserDropdown';
 import { Box } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const EventNavbar = () => {
   const { currUser } = useAuth();
+  const navigate = useNavigate();
+
   const handleLogout = () => {
-    document.cookie = 'loggedin=false'; // store auth state as cookie
-
-
     const auth = getAuth();
     signOut(auth).then(() => {
-      window.location.href = '/';
+      navigate('/');
     }).catch((error) => {
-      console.log("");
+      console.log(error.message);
     });
   }
 

@@ -36,7 +36,7 @@ const UserSignUp = () => {
 
     await signInWithPopup(auth, provider).then((result) => {
       const user = result.user;
-      
+
       const email = user.email;
       const uid = user.uid;
 
@@ -61,6 +61,7 @@ const UserSignUp = () => {
             email: email,
             fname: "",
             lname: "",
+            notifications: false
           });
           navigate(`/users/${uid}`); // redirect to user's home page
         }
@@ -97,6 +98,7 @@ const UserSignUp = () => {
         // no need to store password here
         fname: fname,
         lname: lname,
+        notifications: false
       });
       
       navigate(`/users/${uid}`); // redirect to user's home page
