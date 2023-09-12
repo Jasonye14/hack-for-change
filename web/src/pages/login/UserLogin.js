@@ -17,24 +17,14 @@ import { useNavigate } from 'react-router-dom';
 
 // Components
 import GoogleButton from '../../components/Buttons/GoogleSignInButton';
+import GoogleLogin from '../../database/GoogleLogin';
 
 // Auth
-import {
-  getAuth,
-  signInWithPopup,
-  GoogleAuthProvider,
-  signInWithEmailAndPassword,
-  setPersistence,
-  browserSessionPersistence
-} from "firebase/auth";
-import { getEUsername, useAuth } from '../../pages/login/AuthContext';
-
-// Firebase
-import { onValue, ref, set } from "firebase/database";
-import db from '../../utils/firebase';
+import { useAuth } from '../../pages/login/AuthContext';
 
 // Images
 import ocean from '../../images/login/oceanBackground.jpg';
+import EmailLogin from '../../database/EmailLogin';
 
 function UserLogin() {
   const navigate = useNavigate();  // <-- use this hook
@@ -47,84 +37,6 @@ function UserLogin() {
       navigate(`/users/${currUser.uid}`);
     }
   }, []);
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    const auth = getAuth();
-    await setPersistence(auth, browserSessionPersistence);
-    const data = new FormData(event.target); // changed from event.target, which was null
-    setPending(true);
-    signInWithEmailAndPassword(auth, data.get('email'), data.get('password')).then((userCredential) => {
-      // Signed in successfully
-      const user = userCredential.user
-      setIsLoggedIn(true);                                      // Set logged-in status
-      setCurrUser({ ...user, eUsername: getEUsername(user)});   // Set current user
-      setError(false);
-      setPending(false);
-
-      // Get username from db; must exist at this point since auth succeeded
-      setTimeout(() => {  
-        const usersReference = ref(db, 'users');
-        onValue(usersReference, snapshot => {
-          const data = snapshot.val();
-          const uid = user.uid;
-          Object.keys(data).forEach(id => {
-            if (id === uid) {
-              navigate(`/users/${uid}`); // <-- use navigate instead of window.location.href
-            }
-          });
-        });
-      }, 100);
-    }).catch(error => {
-      setError(true);
-      console.error(error.message);
-    })
-    setPending(false);
-  };
-
-  const handleGoogle = async () => {
-    const provider = new GoogleAuthProvider();
-    const auth = getAuth();
-
-    await signInWithPopup(auth, provider).then((result) => {
-      const user = result.user;
-      
-      const email = user.email;
-      const uid = user.uid;
-
-      let found = false;
-
-      let usersReference = ref(db, 'users');
-      onValue(usersReference, snapshot => {
-        const result = snapshot.val();
-        Object.keys(result).forEach(id => {
-          if (uid === id) {
-            // user is already in system
-            found = true;
-            navigate(`/users/${uid}`); // redirect to user's home page
-          }
-        });
-
-        // user not found in db; create a new entry
-        if (!found) {
-          usersReference = ref(db, `users/${uid}`)
-          set(usersReference, {
-            username: email.replace(/\..+/g, '').replace('@', ''), // jak325@lehigh.edu => jak325lehigh
-            email: email,
-            fname: "",
-            lname: "",
-            notifications: false
-          });
-          navigate(`/users/${uid}`); // redirect to user's home page
-        }
-      }, { onlyOnce: true });
-
-    }).catch((error) => {
-      console.error(error.message);
-    });
-
-  }
 
   const theme = createTheme();
 
@@ -153,7 +65,11 @@ function UserLogin() {
               <strong>Username or Password does not exist</strong>
             </Alert>
           }
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={(event) => {
+            event.preventDefault();
+            const data = event.target;
+            EmailLogin(data, event, navigate, setPending, setIsLoggedIn, setCurrUser, setError)}}
+            noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -189,7 +105,7 @@ function UserLogin() {
             </Button>
           </Box>
 
-          <GoogleButton onClick={handleGoogle}></GoogleButton>
+          <GoogleButton onClick={() => GoogleLogin(navigate)}></GoogleButton>
 
           <Grid container>
             <Grid item sx={{paddingBottom: "20px",}}>

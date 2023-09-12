@@ -16,62 +16,19 @@ import { useNavigate } from 'react-router-dom';
 import GoogleButton from '../../components/Buttons/GoogleSignInButton';
 
 // auth
-import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 // database
 import db from '../../utils/firebase';
-import { onValue, ref, set } from "firebase/database";
+import { ref, set } from "firebase/database";
 
 //Import image background
 import ocean from '../../images/login/oceanBackground.jpg';
+import GoogleLogin from '../../database/GoogleLogin';
 
 const UserSignUp = () => {   
   const theme = createTheme();
   const navigate = useNavigate();
-
-  // below works for signing new users up AND for logging existing users in
-  const handleGoogle = async () => {
-    const provider = new GoogleAuthProvider();
-    const auth = getAuth();
-
-    await signInWithPopup(auth, provider).then((result) => {
-      const user = result.user;
-
-      const email = user.email;
-      const uid = user.uid;
-
-      let found = false;
-
-      let usersReference = ref(db, 'users');
-      onValue(usersReference, snapshot => {
-        const result = snapshot.val();
-        Object.keys(result).forEach(id => {
-          if (uid === id) {
-            // user is already in system
-            found = true;
-            navigate(`/users/${uid}`); // redirect to user's home page
-          }
-        });
-
-        // user not found in db; create a new entry
-        if (!found) {
-          usersReference = ref(db, `users/${uid}`)
-          set(usersReference, {
-            username: email.replace(/\..+/g, '').replace('@', ''), // jak325@lehigh.edu => jak325lehigh
-            email: email,
-            fname: "",
-            lname: "",
-            notifications: false
-          });
-          navigate(`/users/${uid}`); // redirect to user's home page
-        }
-      }, { onlyOnce: true });
-
-    }).catch((error) => {
-      console.error(error.message);
-    });
-
-  }
 
   const handleSubmit = async (event) => { // TODO: finish this
     event.preventDefault();
@@ -188,7 +145,7 @@ const UserSignUp = () => {
             >
               Sign Up
             </Button>
-            <GoogleButton onClick={handleGoogle}></GoogleButton>
+            <GoogleButton onClick={() => GoogleLogin(navigate)}></GoogleButton>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/login" variant="body2" sx={{paddingBottom: "20px",}}>
