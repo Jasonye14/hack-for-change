@@ -43,8 +43,8 @@ function UserLogin() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      console.log(`${currUser.eUsername} logged in... (/login)`);
-      navigate(`/users/${currUser.eUsername}`);
+      console.log(`${currUser.uid} logged in... (/login)`);
+      navigate(`/users/${currUser.uid}`);
     }
   }, []);
 

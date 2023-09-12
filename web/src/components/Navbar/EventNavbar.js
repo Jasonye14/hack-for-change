@@ -8,11 +8,13 @@ import {
 } from './NavbarElement';
 
 import { getAuth, signOut } from "firebase/auth";
+import { useAuth } from '../../pages/login/AuthContext';
 
 import NewEventForm from '../NewEventForm/NewEventForm.js';
 import UserProfile from '../Users/UserDropdown/UserDropdown';
 
-const EventNavbar = ({ username }) => {
+const EventNavbar = () => {
+  const { currUser } = useAuth();
   const handleLogout = () => {
     document.cookie = 'loggedin=false'; // store auth state as cookie
 
@@ -26,16 +28,14 @@ const EventNavbar = ({ username }) => {
   }
 
   return (
-    <>
-      <Nav>
-        <Bars/>
-        <NavMenu style={{ flexDirection: 'row-reverse'}}>
-          {/* <NavLink to='/'>Home</NavLink> */}
-          <UserProfile userProfile={username} handleLogout={handleLogout} />
-          <NewEventForm></NewEventForm>
-        </NavMenu>
-      </Nav>
-    </>
+    <Nav>
+      <Bars/>
+      <NavMenu style={{ flexDirection: 'row-reverse'}}>
+        {/* <NavLink to='/'>Home</NavLink> */}
+        <UserProfile userProfile={currUser.uid} handleLogout={handleLogout} />
+        <NewEventForm></NewEventForm>
+      </NavMenu>
+    </Nav>
   );
 };
 export default EventNavbar;
