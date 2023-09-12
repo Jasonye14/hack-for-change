@@ -3,7 +3,7 @@ import './UserSettings.css';
 
 import db from '../../../utils/firebase';
 import { ref, update } from 'firebase/database';
-import { getAuth, updatePassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, updatePassword } from 'firebase/auth';
 
 function UserSettings({ user }) {
     // boolean that describes if user was logged in via google or not
@@ -52,13 +52,19 @@ function UserSettings({ user }) {
         const auth = getAuth();
         const userAuth = auth.currentUser;
 
-        // TODO: ensure current password field is correct
-
-        // update password for this user
-        updatePassword(userAuth, settingsData.newPassword).then(() => {
-            console.log("Settings Saved:", settingsData);
-            setMessage('Settings Saved Successfully!');
-        }).catch((error) => {
+        // ensure current password field is correct
+        signInWithEmailAndPassword(auth, user.email, settingsData.currentPassword).then(() => {
+            // update password for this user
+            updatePassword(userAuth, settingsData.newPassword).then(() => {
+                console.log("Settings Saved:", settingsData);
+                setMessage('Settings Saved Successfully!');
+            }).catch((error) => {
+                console.log(error.message);
+            });
+        }).catch(error => {
+            if (error.message === 'Firebase: Error (auth/wrong-password).') {
+                setMessage('Incorrect Current Password');
+            }
             console.log(error.message);
         });
 
