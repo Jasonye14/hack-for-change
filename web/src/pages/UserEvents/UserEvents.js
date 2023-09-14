@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './UserEvents.css';
 
 // MUI
@@ -16,45 +16,39 @@ import oceanCleanUp from "../../images/events/OceanCleanup.jpeg";
 import riverCleanUp from "../../images/events/RiverCleanup.jpeg";
 import forestCleanup from "../../images/events/forestCleanup.png";
 import cityCleanUp from "../../images/events/CityCleanup.png";
-import background from "../../images/events/eventBackground.jpeg";
 const images = [oceanCleanUp, riverCleanUp, forestCleanup, cityCleanUp];
 
-const exComments = {0: 'Hello', 1: 'Howdy'}
-
-function EventCard (key, event, imageSource, navigate) {
+function EventCard (eventID, event, imageSource, navigate) {
   const { host, title, desc, location, event_date, post_date } = event; // Fields stored in Firebase
   let theDate = new Date(event_date);
   let readableTime = theDate.toDateString();
 
   const redirectToEventPage = (e) => {
     e.preventDefault();
-    navigate(`/event/${key}`, {state:{eventID: key, imageSource: imageSource, ...event}})
+    navigate(`/events/${eventID}`,
+      {state: {eventID: eventID, imageSource: imageSource, ...event}}
+    );
   }
 
   return (
-    <Card key={key} className='event-card'>
-      <CardActionArea onClick={e => redirectToEventPage(e)}>
+    <Card key={eventID} className='event-card'>
+      <CardActionArea onClick={e => redirectToEventPage(e)} >
         <CardMedia
-          sx={{ height: 200 }}
+          className='event-card-media'
           image={imageSource}
           title={title}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            <Link to={{
-              pathname: `/events/`,
-              state: {eventInfo: {key: key, imageSource: imageSource, ...event}}
-            }}>
-              {title}
-            </Link>
+            {title}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {desc}
           </Typography>
-          <CardActions sx={{flexDirection: "column"}}>
+          {/* <CardActions sx={{flexDirection: "column"}}>
             <Button size="small"><Typography>Location: </Typography>{location}</Button>
             <Button size="small"><Typography>Time: </Typography>{readableTime}</Button>
-          </CardActions>
+          </CardActions> */}
         </CardContent>
       </CardActionArea>
     </Card>
@@ -69,9 +63,7 @@ const Events = () => {
     // load events from db
     const eventsReference = ref(db, 'events');
     onValue(eventsReference, snapshot => {
-      const data = snapshot.val();
-      console.log(data);
-      setEvents(Object.entries(data));
+      setEvents(Object.entries(snapshot.val()));
     });
   }, []);
 

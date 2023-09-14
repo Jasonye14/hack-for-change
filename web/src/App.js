@@ -10,6 +10,7 @@ import UserSignUp from './pages/signup/UserSignup';
 import UserSettings from './components/Users/UserSettings/UserSettings';
 import UserProfiles from './components/Users/UserProfiles/UserProfiles';
 import Events from './pages/events/events';
+import EventPage from './pages/EventPage/EventPage';
 import FAQ from './pages/faq/faq';
 import Community from './pages/community/community';
 import Volunteer from './pages/volunteer/volunteer';
@@ -41,7 +42,7 @@ function RoutesContent() {
       <Route path='/resources' element={<Resources />} />
       <Route path='/login' element={<UserLogin user={currUser} setUser={setCurrUser} />} />
       <Route path='/signup' element={<UserSignUp />} />
-      <Route path='/events/:eventSlug' element={<UserEvents />} />
+      <Route path='/events/:eventSlug' element={<EventPage />} />
       <Route path="/users/:uid" element={
         <ProtectedRoute>
           <UserEvents />
@@ -78,6 +79,7 @@ function NavBarWrapper() {
   if(isLoggedIn && location.pathname !== '/login') {
     console.log(`${currUser.uid} is currently logged in. (App.js)`);
     return <EventNavbar />;
+;
   }
 
   return null;
