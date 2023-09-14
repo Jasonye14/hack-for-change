@@ -1,10 +1,10 @@
 import React from 'react';
 import { 
-    Nav,
+    StickyNav,
     NavLink,
     Bars,
     NavMenu,
-    NavBtnLink
+    NavBtnLink,
 } from './NavbarElement';
 
 import { getAuth, signOut } from "firebase/auth";
@@ -29,8 +29,8 @@ const EventNavbar = () => {
   }
 
   return (
-    <Nav>
-      <Bars/>
+    <StickyNav>
+      <Bars />
       <NavMenu style={{ flexDirection: 'row-reverse', justifyContent: 'space-between',}}>
         {/* <NavLink to='/'>Home</NavLink> */}
         <div style={{ display: 'flex', flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -39,9 +39,8 @@ const EventNavbar = () => {
         </div>
 
         <NavLink to={`/users/${currUser.uid}`} id="events-link">Events</NavLink>
-        
       </NavMenu>
-    </Nav>
+    </StickyNav>
   );
 };
 export default EventNavbar;

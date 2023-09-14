@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
-    Nav,
+    StickyNav,
     NavLink,
     Bars,
     NavMenu,
@@ -19,7 +19,7 @@ const DefaultNavbar = () => {
 
   return (
     <nav aria-label="Main Navigation">
-      <Nav>
+      <StickyNav>
         <Bars onClick={toggleMobileMenu} aria-label="Toggle mobile menu"/>
         <NavMenu isOpen={isMobileMenuOpen}>
           <NavLink to='/' aria-label="Home">Home</NavLink>
@@ -40,7 +40,7 @@ const DefaultNavbar = () => {
             Login
           </NavLink>
         </NavMenu>
-      </Nav>
+      </StickyNav>
     </nav>
   );
 };
