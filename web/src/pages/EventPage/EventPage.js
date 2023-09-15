@@ -11,7 +11,17 @@ import {
   Button,
   Paper,
 } from "@mui/material";
-import './EventPage.css';
+import {
+  StyledEventPage,
+  EventImgs,
+  EventLargeImg,
+  EventSmallImg,
+  EventDetailsWrapper,
+  EventTitle,
+  EventSpecWrapper,
+  EventDesc
+} from './EventPageComponents';
+import CalendarMonthTwoToneIcon from '@mui/icons-material/CalendarMonthTwoTone';
 
 // Auth
 import { useAuth } from "../login/AuthContext";
@@ -31,68 +41,83 @@ function EventPage() {
   const { isLoggedIn, currUser, pending } = useAuth();
   const { eventID, imageSource, host, title, desc, location, event_date, post_date } = routeLocation.state;
 
+  const formatDate = (ISODateString) => {
+    const date = new Date(ISODateString);
+    const date_options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+    const time_options = { hour: 'numeric', minute: 'numeric'}
+    return `${date.toLocaleDateString(undefined, date_options)} ${date.toLocaleTimeString(undefined, time_options)}`;
+  };
+
+  if (pending) {
+    return <>Loading...</> // Add better loading page
+  }
+
   return (
-    <Container className="event-page">
+    <StyledEventPage>
       {/* Event Image(s) */}
-      <Card elevation={0} className="event-imgs">
+      <EventImgs>
         {/* Larger Image */}
-        <CardMedia
+        <EventLargeImg
           component="img"
           image={imageSource}
           alt="larger image"
-          className="event-large-img"
         />
         {/* Smaller Image */}
-        <CardMedia
+        <EventSmallImg
           component="img"
           image={imageSource}
           alt="smaller image"
-          className="event-small-img"
         />
-      </Card>
+      </EventImgs>
 
-      {/* Event Title */}
-      <Typography variant="h2" gutterBottom>
-        Awesome Event
-      </Typography>
 
-      {/* Event Description */}
-      <Card elevation={0}>
-        <CardContent>
-          <Typography variant="body1" paragraph>
-            This is an awesome event that you definitely should not miss! Come join us for a day full of fun and excitement.
-          </Typography>
-        </CardContent>
-      </Card>
+      <EventDetailsWrapper>
+        {/* Event Title */}
+        <EventTitle variant="h2">
+          {title}
+        </EventTitle>
 
-      {/* Comments */}
-      <Typography variant="h4" gutterBottom>
-        Comments
-      </Typography>
-      {comments.map((comment) => (
-        <Paper elevation={3} style={{ padding: "16px", marginBottom: "16px" }} key={comment.id}>
-          <Typography variant="h6" gutterBottom>
-            {comment.name}
-          </Typography>
-          <Typography variant="body2" paragraph>
-            {comment.text}
-          </Typography>
-        </Paper>
-      ))}
+        {/* Event Description */}
+        {/* <EventTitle variant="h4">About</EventTitle> */}
+        <EventDesc variant="body1" paragraph>
+          {desc}
+        </EventDesc>
 
-      {/* Comment Input */}
-      <TextField
-        variant="outlined"
-        fullWidth
-        label="Add a comment"
-        multiline
-        rows={3}
-        style={{ marginBottom: "16px" }}
-      />
-      <Button variant="contained" color="primary">
-        Submit
-      </Button>
-    </Container>
+        <EventTitle variant="h4">Date and Time</EventTitle>
+        <EventSpecWrapper>
+          <CalendarMonthTwoToneIcon fontSize="large" />
+          <EventDesc>{formatDate(event_date)}</EventDesc>
+        </EventSpecWrapper>
+
+        {/* Comments */}
+        <Typography variant="h4" gutterBottom>
+          Comments
+        </Typography>
+        {comments.map((comment) => (
+          <Paper elevation={3} style={{ padding: "16px", marginBottom: "16px" }} key={comment.id}>
+            <Typography variant="h6" gutterBottom>
+              {comment.name}
+            </Typography>
+            <Typography variant="body2" paragraph>
+              {comment.text}
+            </Typography>
+          </Paper>
+        ))}
+
+        {/* Comment Input */}
+        <TextField
+          variant="outlined"
+          fullWidth
+          label="Add a comment"
+          multiline
+          rows={3}
+          style={{ marginBottom: "16px" }}
+        />
+        <Button variant="contained" color="primary">
+          Submit
+        </Button>
+      </EventDetailsWrapper>
+    </StyledEventPage>
   );
 };
 
