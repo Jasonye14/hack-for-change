@@ -1,4 +1,5 @@
-import React from 'react';
+import {useState} from 'react';
+import './EventNavBar.css';
 import { 
     StickyNav,
     NavLink,
@@ -6,11 +7,12 @@ import {
     NavMenu,
     NavBtnLink,
 } from './NavbarElement';
+import { FaBell } from 'react-icons/fa';
 
 import { getAuth, signOut } from "firebase/auth";
 import { useAuth } from '../../pages/login/AuthContext';
 
-import NewEventForm from '../NewEventForm/NewEventForm.js';
+import NewEventForm from '../NewEventForm/NewEventForm.js'; // this wikll be moved into admin menu bar
 import UserProfile from '../Users/UserDropdown/UserDropdown';
 import { Box } from '@mui/material';
 
@@ -28,6 +30,15 @@ const EventNavbar = () => {
     });
   }
 
+
+  const [showAlerts, setShowAlerts] = useState(false);
+
+  const alerts = [
+    'Alert 1: Something happened',
+    'Alert 2: Another event occurred',
+    'Alert 3: Check this out'
+  ];
+
   return (
     <StickyNav>
       <Bars />
@@ -35,7 +46,19 @@ const EventNavbar = () => {
         {/* <NavLink to='/'>Home</NavLink> */}
         <div style={{ display: 'flex', flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center'}}>
           <UserProfile userProfile={currUser.uid} handleLogout={handleLogout} />
-          <NewEventForm></NewEventForm>
+          <button className="AlertIconBtn" onClick={() => setShowAlerts(!showAlerts)}>
+              <FaBell id="outlined-icon"/>
+          </button>
+
+          {showAlerts && (
+            <div className="alerts">
+              {alerts.map((alert, index) => (
+                <div key={index} className="alert">
+                  {alert}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <NavLink to={`/users/${currUser.uid}`} id="events-link">Events</NavLink>

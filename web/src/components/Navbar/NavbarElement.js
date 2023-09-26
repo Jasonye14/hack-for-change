@@ -18,7 +18,7 @@ export const StickyNav = styled.nav`
   display: flex;
   flex-direction: row;
 
-  background: #000;
+  background: white;
   opacity: 0.8;
 `;
 
@@ -33,7 +33,7 @@ export const FixedNav = styled.nav`
   display: flex;
   flex-direction: row;
 
-  background: #000;
+  background: white;
   opacity: 0.8;
 `;
 
