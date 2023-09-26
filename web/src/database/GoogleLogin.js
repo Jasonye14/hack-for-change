@@ -16,27 +16,27 @@ const GoogleLogin = async (navigate) => {
 
         let usersReference = ref(db, 'users');
         onValue(usersReference, snapshot => {
-        const result = snapshot.val();
-        Object.keys(result).forEach(id => {
-            if (uid === id) {
-            // user is already in system
-            found = true;
-            navigate(`/users/${uid}`); // redirect to user's home page
-            }
-        });
-
-        // user not found in db; create a new entry
-        if (!found) {
-            usersReference = ref(db, `users/${uid}`)
-            set(usersReference, {
-            username: email.replace(/\..+/g, '').replace('@', ''), // jak325@lehigh.edu => jak325lehigh
-            email: email,
-            fname: "",
-            lname: "",
-            notifications: false
+            const result = snapshot.val();
+            Object.keys(result).forEach(id => {
+                if (uid === id) {
+                    // user is already in system
+                    found = true;
+                    navigate(`/users/${uid}`); // redirect to user's home page
+                }
             });
-            navigate(`/users/${uid}`); // redirect to user's home page
-        }
+
+            // user not found in db; create a new entry
+            if (!found) {
+                usersReference = ref(db, `users/${uid}`)
+                set(usersReference, {
+                username: email.replace(/\..+/g, '').replace('@', ''), // jak325@lehigh.edu => jak325lehigh
+                email: email,
+                fname: "",
+                lname: "",
+                notifications: false
+                });
+                navigate(`/users/${uid}`); // redirect to user's home page
+            }
         }, { onlyOnce: true });
 
     }).catch((error) => {

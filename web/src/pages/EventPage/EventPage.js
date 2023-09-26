@@ -1,27 +1,16 @@
 import React from "react";
 import { useParams, useLocation } from "react-router-dom";
-import {
-  Container,
-  Card,
-  CardMedia,
-  CardContent,
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Paper,
-} from "@mui/material";
-import {
-  StyledEventPage,
-  EventImgs,
-  EventLargeImg,
-  EventSmallImg,
-  EventDetailsWrapper,
-  EventTitle,
-  EventSpecWrapper,
-  EventDesc
-} from './EventPageComponents';
 import CalendarMonthTwoToneIcon from '@mui/icons-material/CalendarMonthTwoTone';
+import {
+  StyledEventPage, EventImgs,
+  EventLargeImg, EventSmallImg,
+  EventDetailsWrapper, EventTitle,
+  EventIconWrapper, EventDesc
+} from './EventPageComponents';
+
+// Pages/Components
+import LoadingPage from "../LoadingPage/LoadingPage";
+import Comments from "./Comments";
 
 // Auth
 import { useAuth } from "../login/AuthContext";
@@ -30,10 +19,6 @@ import { useAuth } from "../login/AuthContext";
 import db from "../../utils/firebase";
 import { ref, onValue } from "firebase/database";
 
-const comments = [
-  { id: 1, name: "John", text: "Great event!" },
-  { id: 2, name: "Jane", text: "Can't wait for this!" },
-];
 
 function EventPage() {
   const { eventSlug } = useParams();
@@ -49,7 +34,7 @@ function EventPage() {
   };
 
   if (pending) {
-    return <>Loading...</> // Add better loading page
+    return <LoadingPage />
   }
 
   return (
@@ -84,39 +69,13 @@ function EventPage() {
         </EventDesc>
 
         <EventTitle variant="h4">Date and Time</EventTitle>
-        <EventSpecWrapper>
+        <EventIconWrapper>
           <CalendarMonthTwoToneIcon fontSize="large" />
           <EventDesc>{formatDate(event_date)}</EventDesc>
-        </EventSpecWrapper>
-
-        {/* Comments */}
-        <Typography variant="h4" gutterBottom>
-          Comments
-        </Typography>
-        {comments.map((comment) => (
-          <Paper elevation={3} style={{ padding: "16px", marginBottom: "16px" }} key={comment.id}>
-            <Typography variant="h6" gutterBottom>
-              {comment.name}
-            </Typography>
-            <Typography variant="body2" paragraph>
-              {comment.text}
-            </Typography>
-          </Paper>
-        ))}
-
-        {/* Comment Input */}
-        <TextField
-          variant="outlined"
-          fullWidth
-          label="Add a comment"
-          multiline
-          rows={3}
-          style={{ marginBottom: "16px" }}
-        />
-        <Button variant="contained" color="primary">
-          Submit
-        </Button>
+        </EventIconWrapper>
       </EventDetailsWrapper>
+
+      <Comments eventID={eventID}/>
     </StyledEventPage>
   );
 };

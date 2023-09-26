@@ -36,7 +36,7 @@ function UserLogin() {
       console.log(`${currUser.uid} logged in... (/login)`);
       navigate(`/users/${currUser.uid}`);
     }
-  }, []);
+  }, [isLoggedIn, currUser.uid, navigate]);
 
   const theme = createTheme();
 
@@ -65,11 +65,15 @@ function UserLogin() {
               <strong>Username or Password does not exist</strong>
             </Alert>
           }
-          <Box component="form" onSubmit={(event) => {
-            event.preventDefault();
-            const data = event.target;
-            EmailLogin(data, event, navigate, setPending, setIsLoggedIn, setCurrUser, setError)}}
-            noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            sx={{ mt: 1 }}
+            noValidate
+            onSubmit={(event) => {
+              event.preventDefault();
+              EmailLogin(event.target, navigate, setPending, setIsLoggedIn, setCurrUser, setError)
+            }}
+          >
             <TextField
               margin="normal"
               required
