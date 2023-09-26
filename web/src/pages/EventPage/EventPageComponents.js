@@ -1,14 +1,10 @@
 import styled from "@emotion/styled";
 import { css } from "@emotion/react"
 import {
-  Container,
-  Card,
-  CardMedia,
-  CardContent,
-  Box,
-  Typography,
-  TextField,
-  Button,
+  Container, Card,
+  CardMedia, CardContent,
+  Box, Typography,
+  TextField, Button,
   Paper,
 } from "@mui/material";
 
@@ -67,7 +63,7 @@ const EventTitle = styled(Typography)`
   font-weight: 600;
 `;
 
-const EventSpecWrapper = styled(Box)`
+const EventIconWrapper = styled(Box)`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -82,4 +78,9 @@ const EventDesc = styled(Typography)`
   padding: 1rem 0rem;
 `;
 
-export { StyledEventPage, EventImgs, EventLargeImg, EventSmallImg, EventDetailsWrapper, EventTitle, EventSpecWrapper, EventDesc };
+export {
+  StyledEventPage, EventImgs,
+  EventLargeImg, EventSmallImg,
+  EventDetailsWrapper, EventTitle,
+  EventIconWrapper, EventDesc
+};
