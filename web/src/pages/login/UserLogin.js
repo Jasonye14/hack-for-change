@@ -36,7 +36,7 @@ function UserLogin() {
       console.log(`${currUser.uid} logged in... (/login)`);
       navigate(`/users/${currUser.uid}`);
     }
-  }, [isLoggedIn, currUser.uid, navigate]);
+  }, []);
 
   const theme = createTheme();
 
