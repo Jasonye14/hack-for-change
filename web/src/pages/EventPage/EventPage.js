@@ -10,7 +10,7 @@ import {
 
 // Pages/Components
 import LoadingPage from "../LoadingPage/LoadingPage";
-import Comments from "./Comments";
+import Comments from "../../components/Comments/Comments";
 
 // Auth
 import { useAuth } from "../login/AuthContext";

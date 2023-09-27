@@ -9,7 +9,9 @@ import {
   CommentHeader, CommentContent,
   CommentOptions, SubCommentWrapper,
   CommentThreadWrapper, RepliedTo,
-  ReplyButton
+  ReplyButton, ReplyField,
+  ReplyBoxWrapper, ReplyBody,
+  ReplyOptions
 } from './CommentsComponents';
 
 // Firebase
@@ -71,6 +73,9 @@ function getTimeDifference(dateTime) {
 
 function CommentTemplate ({comment, children}) {
   const [replyOpen, setReplyOpen] = useState(false);
+  const [likes, setLikes] = useState(comment.likes);
+  const [dislikes, setDislikes] = useState(comment.dislikes);
+
 
   return (
     <CommentThreadWrapper key={comment.commentID}>
@@ -83,7 +88,8 @@ function CommentTemplate ({comment, children}) {
         </ProfileImgWrapper>
         <CommentBody>
           <CommentHeader>
-            <span>@{comment.author}&ensp;{getTimeDifference(comment.post_date)}</span> {/* '&ensp;' represents 4 spaces */}
+            @{comment.author}&ensp;
+            <span className="postDate">{getTimeDifference(comment.post_date)}</span>
           </CommentHeader>
 
           <CommentContent>
@@ -92,12 +98,38 @@ function CommentTemplate ({comment, children}) {
           </CommentContent>
 
           <CommentOptions>
-            <span><ThumbUpAltOutlinedIcon />{comment.likes}</span>
-            <span><ThumbDownOffAltIcon />{comment.dislikes}</span>
-            <ReplyButton onClick={() => setReplyOpen((prev) => !prev)}>Reply</ReplyButton>
+            <span><ThumbUpAltOutlinedIcon />{likes}</span>
+            <span><ThumbDownOffAltIcon />{dislikes}</span>
+            <ReplyButton variant="filledTonal" onClick={() => setReplyOpen(true)}>Reply</ReplyButton>
           </CommentOptions>
         </CommentBody>
       </CommentWrapper>
+
+      {replyOpen &&
+        <ReplyBoxWrapper>
+          <ProfileImgWrapper>
+            <ProfileImg
+              alt={comment.author || "User Avatar"} 
+              src={comment.avatarURL || userDefault}
+            />
+          </ProfileImgWrapper>
+          <ReplyBody>
+            <ReplyField
+              variant="standard"
+              label={'Add a reply...'}
+              multiline
+              rows={1}
+            / >
+            <ReplyOptions>
+              <Button
+                variant="filledTonal"
+                onClick={() => setReplyOpen(false)}
+              >Cancel</Button>
+              <Button variant="filledTonal">Reply</Button>
+            </ReplyOptions>
+          </ReplyBody>
+        </ReplyBoxWrapper>
+      }
 
       
 
@@ -111,7 +143,7 @@ function CommentTemplate ({comment, children}) {
 function CommentThread ({ comment }) {
   return (
     <CommentTemplate comment={comment}>
-      {comment?.subcomments.map((subComment) =>
+      {comment.subcomments?.map((subComment) =>
         <CommentTemplate comment={subComment} key={subComment.commentID}/>
       )}
     </CommentTemplate>
@@ -148,6 +180,7 @@ function Comments ({ eventID }) {
         newSubComments.sort((a, b) => {return a.post_date - b.post_date});
 
         comment.subcomments = newSubComments;
+        // comment.subcomments = null;
         comment.post_date = new Date(comment.post_date);
         newComments.push({
           commentID: commentID,

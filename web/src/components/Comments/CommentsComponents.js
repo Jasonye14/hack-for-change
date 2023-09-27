@@ -10,8 +10,7 @@ const CommentThreadWrapper = styled.div`
 const CommentWrapper = styled.div`
   display: flex;
   flex-direction: row;
-
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 `;
 
 const ProfileImgWrapper = styled.div`
@@ -30,9 +29,13 @@ const CommentBody = styled.div`
   flex-direction: column;
 `;
 
-const CommentHeader = styled.div`
+const CommentHeader = styled.span`
   display: flex;
   flex-direction: row;
+
+  span.postDate {
+    color: #a7a6a9;
+  }
 `;
 
 const CommentContent = styled.p`
@@ -64,13 +67,42 @@ const ReplyButton = styled(Button)`
   padding: 0;
 `;
 
+const ReplyBoxWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  margin-left: 2.5rem;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+`;
+
+const ReplyBody = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  width: 80%;
+`;
+
+const ReplyField = styled(TextField)`
+  width: 100%;
+`;
+
+const ReplyOptions = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  gap: 0.5rem;
+  margin-top: 0.2rem;
+`;
+
 const SubCommentWrapper = styled.div`
   display: flex;
   flex-direction: column;
 
   padding-left: 2.5rem;
-  border-left: 3px solid lightgray;
-  border-radius: 3px 0 0 3px;
+  margin-top: 0.5rem;
+  /* border-left: 3px solid lightgray;
+  border-radius: 3px 0 0 3px; */
 `;
 
 const RepliedTo = styled.span`
@@ -84,5 +116,7 @@ export {
   CommentHeader, CommentContent,
   CommentOptions, SubCommentWrapper,
   CommentThreadWrapper, RepliedTo,
-  ReplyButton
+  ReplyButton, ReplyField,
+  ReplyBoxWrapper, ReplyBody,
+  ReplyOptions
 }
