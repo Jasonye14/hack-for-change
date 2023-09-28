@@ -28,4 +28,15 @@
     height: 1.2rem;
     width: 1.2rem;
   }
+  #leftDiv{
+    width: auto;
+    display: flex;
+    align-items: center;
+  }
+  #leftDiv img {
+    height: 50px; /* Or whatever height you want */
+    width: auto;
+    margin-right: 20px; /* Adjust as per your design needs */
+  }
+  
   

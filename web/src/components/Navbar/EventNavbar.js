@@ -16,6 +16,8 @@ import NewEventForm from '../NewEventForm/NewEventForm.js'; // this wikll be mov
 import UserProfile from '../Users/UserDropdown/UserDropdown';
 import { Box } from '@mui/material';
 
+import LehighLogo from '../../images/OrgLogos/Lehigh/LehighSusLogo.jpeg';
+
 const EventNavbar = () => {
   const { currUser } = useAuth();
   const handleLogout = () => {
@@ -42,8 +44,13 @@ const EventNavbar = () => {
   return (
     <StickyNav>
       <Bars />
-      <NavMenu style={{ flexDirection: 'row-reverse', justifyContent: 'space-between',}}>
+      <NavMenu style={{justifyContent: 'space-between',}}>
         {/* <NavLink to='/'>Home</NavLink> */}
+        <div id="leftDiv">
+            <img src={LehighLogo} alt="Company Logo" />
+            <NavLink to={`/users/${currUser.uid}`} id="events-link">Events</NavLink>
+        </div>
+        
         <div style={{ display: 'flex', flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center'}}>
           <UserProfile userProfile={currUser.uid} handleLogout={handleLogout} />
           <button className="AlertIconBtn" onClick={() => setShowAlerts(!showAlerts)}>
@@ -61,7 +68,7 @@ const EventNavbar = () => {
           )}
         </div>
 
-        <NavLink to={`/users/${currUser.uid}`} id="events-link">Events</NavLink>
+        
       </NavMenu>
     </StickyNav>
   );
