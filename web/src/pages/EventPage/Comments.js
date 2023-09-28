@@ -9,15 +9,12 @@ import {
   CommentHeader, CommentContent,
   CommentOptions, SubCommentWrapper,
   CommentThreadWrapper, RepliedTo,
-  ReplyButton, ReplyField,
-  ReplyBoxWrapper, ReplyBody,
-  ReplyOptions
+  ReplyButton
 } from './CommentsComponents';
 
 // Firebase
 import db from '../../utils/firebase';
 import { onValue, ref, query, orderByChild, equalTo } from "firebase/database";
-import { useAuth } from "../../pages/login/AuthContext";
 
 // Images/Icons
 import userDefault from '../../images/home/coral_reef.jpg';
@@ -67,62 +64,13 @@ function getTimeDifference(dateTime) {
   }
 
   if (timeDiff > 1) {
-    return `${timeDiff} ${type} ago`;
+    return `${timeDiff} ${type}s ago`;
   }
   return `${timeDiff} ${type} ago`;
 }
 
-function postComment() {
-
-}
-
-function CommentTemplate ({comment, index, subIndex, setComments, children}) {
-  const { isLoggedIn, currUser, pending } = useAuth();
+function CommentTemplate ({comment, children}) {
   const [replyOpen, setReplyOpen] = useState(false);
-  const [likes, setLikes] = useState(comment.likes);
-  const [dislikes, setDislikes] = useState(comment.dislikes);
-  const [replyText, setReplyText] = useState("");
-
-  const handleTextChange = (event) => {
-    setReplyText(event.target.value);
-  }
-
-  const handleReply = (event) => {
-    event.preventDefault();
-    if (index) {
-      setComments(currComments => {
-        currComments.push({
-          commentID: "",
-          author: currUser,
-
-        })
-      });
-      const comments = {
-        comment_id: {
-          author: "string",
-          event_id: "idk what this is (string i think?)",
-          post_date: "also idk (datetime object or string)",
-          content: "string",
-          like: "number/integer",
-          dislike: "number/integer",
-          subcomments: {
-            sub_comment_id: {
-              author: "string", // This would be username
-              reply_to: "author",
-              post_date: "also idk (datetime object or string)",
-              content: "string",
-              like: "number/integer",
-              dislike: "number/integer"
-            },
-          }
-        },
-      }
-      setComments();
-    } else {
-
-    }
-  }
-
 
   return (
     <CommentThreadWrapper key={comment.commentID}>
@@ -135,8 +83,7 @@ function CommentTemplate ({comment, index, subIndex, setComments, children}) {
         </ProfileImgWrapper>
         <CommentBody>
           <CommentHeader>
-            @{comment.author}&ensp;
-            <span className="postDate">{getTimeDifference(comment.post_date)}</span>
+            <span>@{comment.author}&ensp;{getTimeDifference(comment.post_date)}</span> {/* '&ensp;' represents 4 spaces */}
           </CommentHeader>
 
           <CommentContent>
@@ -145,77 +92,41 @@ function CommentTemplate ({comment, index, subIndex, setComments, children}) {
           </CommentContent>
 
           <CommentOptions>
-            <span><ThumbUpAltOutlinedIcon />{likes}</span>
-            <span><ThumbDownOffAltIcon />{dislikes}</span>
-            <ReplyButton variant="filledTonal" onClick={() => setReplyOpen(true)}>Reply</ReplyButton>
+            <span><ThumbUpAltOutlinedIcon />{comment.likes}</span>
+            <span><ThumbDownOffAltIcon />{comment.dislikes}</span>
+            <ReplyButton onClick={() => setReplyOpen((prev) => !prev)}>Reply</ReplyButton>
           </CommentOptions>
         </CommentBody>
       </CommentWrapper>
 
-      {replyOpen &&
-        <ReplyBoxWrapper>
-          <ProfileImgWrapper>
-            <ProfileImg
-              alt={comment.author || "User Avatar"} 
-              src={comment.avatarURL || userDefault}
-            />
-          </ProfileImgWrapper>
-          <ReplyBody>
-            <ReplyField
-              variant="standard"
-              label={'Add a reply...'}
-              multiline
-              rows={1}
-              onChange={handleTextChange}
-            />
-            <ReplyOptions>
-              <Button
-                variant="filledTonal"
-                onClick={() => setReplyOpen(false)}
-                children="Cancel"
-              />
-              <Button
-                variant="filledTonal"
-                onClick={() => {}}
-                children="Reply"
-              />
-            </ReplyOptions>
-          </ReplyBody>
-        </ReplyBoxWrapper>
-      }
-
       
-      {children &&
-        <SubCommentWrapper>
-          {children}
-        </SubCommentWrapper>
-      }
+
+      <SubCommentWrapper>
+        {children}
+      </SubCommentWrapper>
     </CommentThreadWrapper>
   );
 }
 
-function CommentThread ({ comment, index, setComments }) {
+function CommentThread ({ comment }) {
   return (
-    <CommentTemplate
-      comment={comment}
-      index={index}
-      setComments={setComments}
-    >
-      {comment.subcomments?.map((subComment, subIndex) =>
-        <CommentTemplate
-          comment={subComment}
-          index={index}
-          subIndex={subIndex}
-          setComments={setComments}
-          key={subComment.commentID || subIndex}
-        />
+    <CommentTemplate comment={comment}>
+      {comment?.subcomments.map((subComment) =>
+        <CommentTemplate comment={subComment} key={subComment.commentID}/>
       )}
     </CommentTemplate>
   );
 }
 
+function HandleSubmit({ commentBody }) {
+  const commentsRef = ref(db, 'comments');
+  const commentsQuery = query(commentsRef, orderByChild('event_id'), equalTo(eventID));
+  
+}
+
 function Comments ({ eventID }) {
   const [comments, setComments] = useState([]);
+  const [newCommentBody, setNewCommentBody] = useState("");
 
   useEffect(() => {
     // Look in 'comments' collection
@@ -223,13 +134,7 @@ function Comments ({ eventID }) {
     // Create a query to filter comments based on event_id
     const commentsQuery = query(commentsRef, orderByChild('event_id'), equalTo(eventID));
     onValue(commentsQuery, snapshot => {
-      const snapshotValue = snapshot.val();
-      if (!snapshotValue) {
-          console.error("Snapshot value is null or undefined. No comments to process.");
-          setComments([]);
-          return;
-      }
-      const data = Object.entries(snapshotValue);
+      const data = Object.entries(snapshot.val());
       const newComments = [];
       
       // Convert comment threads (Object) to an array
@@ -247,10 +152,9 @@ function Comments ({ eventID }) {
         }
 
         // We want replies sorted oldest to latest
-        newSubComments.sort((a, b) => {return a.post_date - b.post_date});
+        newSubComments.sort((a, b) => a.post_date - b.post_date);
 
         comment.subcomments = newSubComments;
-        // comment.subcomments = null;
         comment.post_date = new Date(comment.post_date);
         newComments.push({
           commentID: commentID,
@@ -259,7 +163,7 @@ function Comments ({ eventID }) {
       }
 
       // We want comment threads sorted latest to oldest
-      newComments.sort((a, b) => {return b.post_date - a.post_date});
+      newComments.sort((a, b) => b.post_date - a.post_date);
       console.log(newComments);
       setComments(newComments);
     });
@@ -271,13 +175,8 @@ function Comments ({ eventID }) {
       <Typography variant="h4" gutterBottom>Comments</Typography>
 
       {/* All Comment Threads */}
-      {comments?.map((comment, index) => (
-        <CommentThread
-          comment={comment}
-          index={index}
-          setComments={setComments}
-          key={comment.commentID || index}
-        />
+      {comments?.map((comment) => (
+        <CommentThread comment={comment} key={comment.commentID} />
       ))}
 
       {/* Comment Input */}
@@ -288,12 +187,14 @@ function Comments ({ eventID }) {
         multiline
         rows={3}
         style={{ marginBottom: "16px" }}
+        value={newCommentBody}
+        onChange={setNewCommentBody}
       />
-      <Button variant="contained" color="primary">
+      <Button onClick={HandleSubmit(newCommentBody)} variant="contained" color="primary">
         Submit
       </Button>
     </>
   );
 }
 
-export default Comments;
+export default Comments; 
