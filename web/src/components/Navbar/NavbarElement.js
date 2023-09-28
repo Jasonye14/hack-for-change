@@ -22,6 +22,18 @@ export const StickyNav = styled.nav`
   opacity: 0.8;
 `;
 
+export const StickyNavBlack = styled.nav`
+  ${NavDefaults}
+  position: fixed;
+  z-index: 999;
+
+  display: flex;
+  flex-direction: row;
+
+  background: black;
+  opacity: 0.8;
+`;
+
 export const PlaceholderNav = styled.div`
   ${NavDefaults}
 `;

@@ -159,7 +159,13 @@ function Comments ({ eventID }) {
     // Create a query to filter comments based on event_id
     const commentsQuery = query(commentsRef, orderByChild('event_id'), equalTo(eventID));
     onValue(commentsQuery, snapshot => {
-      const data = Object.entries(snapshot.val());
+      const snapshotValue = snapshot.val();
+      if (!snapshotValue) {
+          console.error("Snapshot value is null or undefined. No comments to process.");
+          setComments([]);
+          return;
+      }
+      const data = Object.entries(snapshotValue);
       const newComments = [];
       
       // Convert comment threads (Object) to an array

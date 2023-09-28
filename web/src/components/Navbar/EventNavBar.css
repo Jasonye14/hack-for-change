@@ -22,4 +22,10 @@
     background-color: white;
     border: 0;
   }
+
+  .AlertIconBtn > svg{
+    margin-top: 4px;
+    height: 1.2rem;
+    width: 1.2rem;
+  }
   
