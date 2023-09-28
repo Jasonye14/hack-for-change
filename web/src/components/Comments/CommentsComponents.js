@@ -101,8 +101,6 @@ const SubCommentWrapper = styled.div`
 
   padding-left: 2.5rem;
   margin-top: 0.5rem;
-  /* border-left: 3px solid lightgray;
-  border-radius: 3px 0 0 3px; */
 `;
 
 const RepliedTo = styled.span`
