@@ -51,3 +51,28 @@
 .event-card-info {
 
 }
+
+/* tag */
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;  /* Space between tags */
+}
+
+.tag {
+  padding: 5px 10px;
+  background-color: #e0e0e0;
+  border-radius: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+
+.remove-tag {
+  cursor: pointer;
+  padding: 2px 5px;
+  background-color: #ccc;
+  border-radius: 50%;
+}
