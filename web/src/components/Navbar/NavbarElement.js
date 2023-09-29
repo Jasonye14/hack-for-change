@@ -19,8 +19,11 @@ export const StickyNav = styled.nav`
   flex-direction: row;
 
   background: white;
-  opacity: 0.8;
+  opacity: 0.95;  /* Increased opacity for less transparency */
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);  /* Subtle shadow for depth */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);  /* Light border at the bottom */
 `;
+
 
 export const StickyNavBlack = styled.nav`
   ${NavDefaults}
