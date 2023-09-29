@@ -17,6 +17,7 @@ import {
 // Firebase
 import db from '../../utils/firebase';
 import { onValue, ref, query, orderByChild, equalTo } from "firebase/database";
+import { useAuth } from "../../pages/login/AuthContext";
 
 // Images/Icons
 import userDefault from '../../images/home/coral_reef.jpg';
@@ -66,15 +67,61 @@ function getTimeDifference(dateTime) {
   }
 
   if (timeDiff > 1) {
-    return `${timeDiff} ${type}s ago`;
+    return `${timeDiff} ${type} ago`;
   }
   return `${timeDiff} ${type} ago`;
 }
 
-function CommentTemplate ({comment, children}) {
+function postComment() {
+
+}
+
+function CommentTemplate ({comment, index, subIndex, setComments, children}) {
+  const { isLoggedIn, currUser, pending } = useAuth();
   const [replyOpen, setReplyOpen] = useState(false);
   const [likes, setLikes] = useState(comment.likes);
   const [dislikes, setDislikes] = useState(comment.dislikes);
+  const [replyText, setReplyText] = useState("");
+
+  const handleTextChange = (event) => {
+    setReplyText(event.target.value);
+  }
+
+  const handleReply = (event) => {
+    event.preventDefault();
+    if (index) {
+      setComments(currComments => {
+        currComments.push({
+          commentID: "",
+          author: currUser,
+
+        })
+      });
+      const comments = {
+        comment_id: {
+          author: "string",
+          event_id: "idk what this is (string i think?)",
+          post_date: "also idk (datetime object or string)",
+          content: "string",
+          like: "number/integer",
+          dislike: "number/integer",
+          subcomments: {
+            sub_comment_id: {
+              author: "string", // This would be username
+              reply_to: "author",
+              post_date: "also idk (datetime object or string)",
+              content: "string",
+              like: "number/integer",
+              dislike: "number/integer"
+            },
+          }
+        },
+      }
+      setComments();
+    } else {
+
+    }
+  }
 
 
   return (
@@ -119,32 +166,49 @@ function CommentTemplate ({comment, children}) {
               label={'Add a reply...'}
               multiline
               rows={1}
-            / >
+              onChange={handleTextChange}
+            />
             <ReplyOptions>
               <Button
                 variant="filledTonal"
                 onClick={() => setReplyOpen(false)}
-              >Cancel</Button>
-              <Button variant="filledTonal">Reply</Button>
+                children="Cancel"
+              />
+              <Button
+                variant="filledTonal"
+                onClick={() => {}}
+                children="Reply"
+              />
             </ReplyOptions>
           </ReplyBody>
         </ReplyBoxWrapper>
       }
 
       
-
-      <SubCommentWrapper>
-        {children}
-      </SubCommentWrapper>
+      {children &&
+        <SubCommentWrapper>
+          {children}
+        </SubCommentWrapper>
+      }
     </CommentThreadWrapper>
   );
 }
 
-function CommentThread ({ comment }) {
+function CommentThread ({ comment, index, setComments }) {
   return (
-    <CommentTemplate comment={comment}>
-      {comment.subcomments?.map((subComment) =>
-        <CommentTemplate comment={subComment} key={subComment.commentID}/>
+    <CommentTemplate
+      comment={comment}
+      index={index}
+      setComments={setComments}
+    >
+      {comment.subcomments?.map((subComment, subIndex) =>
+        <CommentTemplate
+          comment={subComment}
+          index={index}
+          subIndex={subIndex}
+          setComments={setComments}
+          key={subComment.commentID || subIndex}
+        />
       )}
     </CommentTemplate>
   );
@@ -207,8 +271,13 @@ function Comments ({ eventID }) {
       <Typography variant="h4" gutterBottom>Comments</Typography>
 
       {/* All Comment Threads */}
-      {comments?.map((comment) => (
-        <CommentThread comment={comment} key={comment.commentID} />
+      {comments?.map((comment, index) => (
+        <CommentThread
+          comment={comment}
+          index={index}
+          setComments={setComments}
+          key={comment.commentID || index}
+        />
       ))}
 
       {/* Comment Input */}
