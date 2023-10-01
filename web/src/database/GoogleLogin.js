@@ -29,11 +29,23 @@ const GoogleLogin = async (navigate) => {
             if (!found) {
                 usersReference = ref(db, `users/${uid}`)
                 set(usersReference, {
-                username: email.replace(/\..+/g, '').replace('@', ''), // jak325@lehigh.edu => jak325lehigh
-                email: email,
-                fname: "",
-                lname: "",
-                notifications: false
+                    // basic fields
+                    username: email.replace(/\..+/g, '').replace('@', ''), // jak325@lehigh.edu => jak325lehigh
+                    email: email,
+                    fname: "",
+                    lname: "",
+                    
+                    // user profile
+                    phoneNumber: '',
+                    dateOfBirth: '',
+                    address: '',
+                    education: '',
+                    occupation: '',
+                    affiliatedOrganization: '',
+
+                    // user settings
+                    notifications: false,
+                    privateProfile: false
                 });
                 navigate(`/users/${uid}`); // redirect to user's home page
             }

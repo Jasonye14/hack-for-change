@@ -50,12 +50,24 @@ const UserSignUp = () => {
       const usersReference = ref(db, `users/${uid}`);
       
       set(usersReference, {
+        // form fields
         username: username,
         email: email,
-        // no need to store password here
         fname: fname,
         lname: lname,
-        notifications: false
+        notifications: false,
+
+        // user profile
+        phoneNumber: '',
+        dateOfBirth: '',
+        address: '',
+        education: '',
+        occupation: '',
+        affiliatedOrganization: '',
+
+        // user settings
+        notifications: false,
+        privateProfile: false
       });
       
       navigate(`/users/${uid}`); // redirect to user's home page
