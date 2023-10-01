@@ -16,7 +16,7 @@ import {
 
 // Firebase
 import db from '../../utils/firebase';
-import { onValue, ref, query, orderByChild, equalTo } from "firebase/database";
+import { onValue, ref, query, orderByChild, equalTo, push } from "firebase/database";
 import { useAuth } from "../../pages/login/AuthContext";
 
 // Images/Icons
@@ -76,56 +76,19 @@ function postComment() {
 
 }
 
-function CommentTemplate ({comment, index, subIndex, setComments, children}) {
-  const { isLoggedIn, currUser, pending } = useAuth();
+function CommentTemplate ({comment, index, subIndex, handleComment, children}) {
   const [replyOpen, setReplyOpen] = useState(false);
+  const [replyText, setReplyText] = useState("");
   const [likes, setLikes] = useState(comment.likes);
   const [dislikes, setDislikes] = useState(comment.dislikes);
-  const [replyText, setReplyText] = useState("");
 
   const handleTextChange = (event) => {
     setReplyText(event.target.value);
   }
 
-  const handleReply = (event) => {
-    event.preventDefault();
-    if (index) {
-      setComments(currComments => {
-        currComments.push({
-          commentID: "",
-          author: currUser,
-
-        })
-      });
-      const comments = {
-        comment_id: {
-          author: "string",
-          event_id: "idk what this is (string i think?)",
-          post_date: "also idk (datetime object or string)",
-          content: "string",
-          like: "number/integer",
-          dislike: "number/integer",
-          subcomments: {
-            sub_comment_id: {
-              author: "string", // This would be username
-              reply_to: "author",
-              post_date: "also idk (datetime object or string)",
-              content: "string",
-              like: "number/integer",
-              dislike: "number/integer"
-            },
-          }
-        },
-      }
-      setComments();
-    } else {
-
-    }
-  }
-
 
   return (
-    <CommentThreadWrapper key={comment.commentID}>
+    <CommentThreadWrapper key={comment.commentID || subIndex || index}>
       <CommentWrapper>
         <ProfileImgWrapper>
           <ProfileImg
@@ -135,7 +98,7 @@ function CommentTemplate ({comment, index, subIndex, setComments, children}) {
         </ProfileImgWrapper>
         <CommentBody>
           <CommentHeader>
-            @{comment.author}&ensp;
+            <span>@{comment.author}&ensp;</span>
             <span className="postDate">{getTimeDifference(comment.post_date)}</span>
           </CommentHeader>
 
@@ -145,8 +108,14 @@ function CommentTemplate ({comment, index, subIndex, setComments, children}) {
           </CommentContent>
 
           <CommentOptions>
-            <span><ThumbUpAltOutlinedIcon />{likes}</span>
-            <span><ThumbDownOffAltIcon />{dislikes}</span>
+            <span>
+              <ThumbUpAltOutlinedIcon />
+              {likes > 0 ? likes : ""}
+            </span>
+            <span>
+              <ThumbDownOffAltIcon />
+              {dislikes > 0 ? dislikes : ""}
+            </span>
             <ReplyButton variant="filledTonal" onClick={() => setReplyOpen(true)}>Reply</ReplyButton>
           </CommentOptions>
         </CommentBody>
@@ -176,12 +145,21 @@ function CommentTemplate ({comment, index, subIndex, setComments, children}) {
               />
               <Button
                 variant="filledTonal"
-                onClick={() => {}}
+                onClick={(event) => {
+                  handleComment(event, index, subIndex, replyText);
+                  setReplyOpen(false);
+                }}
                 children="Reply"
               />
             </ReplyOptions>
           </ReplyBody>
         </ReplyBoxWrapper>
+      }
+
+      {children && 
+        <>
+          
+        </>
       }
 
       
@@ -194,19 +172,19 @@ function CommentTemplate ({comment, index, subIndex, setComments, children}) {
   );
 }
 
-function CommentThread ({ comment, index, setComments }) {
+function CommentThread ({ comment, index, handleComment }) {
   return (
     <CommentTemplate
       comment={comment}
       index={index}
-      setComments={setComments}
+      handleComment={handleComment}
     >
       {comment.subcomments?.map((subComment, subIndex) =>
         <CommentTemplate
           comment={subComment}
           index={index}
           subIndex={subIndex}
-          setComments={setComments}
+          handleComment={handleComment}
           key={subComment.commentID || subIndex}
         />
       )}
@@ -216,6 +194,36 @@ function CommentThread ({ comment, index, setComments }) {
 
 function Comments ({ eventID }) {
   const [comments, setComments] = useState([]);
+  const { currUser } = useAuth();
+
+  const handleComment = (event, index, subIndex, newComment) => {
+    event.preventDefault();
+    // DON'T JUST USE 'comments' - MUST USE ARRAY UNPACKING '[...comments]'
+    // Modifying state object directly will NOT re-render page
+    const updatedComments = [...comments]; // Need array unpacking
+    const commentsRef = ref(db, `/comments/${index}/subcomments/`);
+    const currDate = new Date();
+    let newReply = {
+      commentID: null,
+      author: currUser.eUsername,
+      post_date: currDate.toISOString(),
+      content: newComment,
+      likes: 0,
+      dislikes: 0,
+      reply_to: null
+    }
+
+    if (subIndex !== null) {
+      const replyTo = comments[index].subcomments[subIndex].author
+      newReply.reply_to = replyTo
+    }
+
+    const newCommentRef = push(commentsRef, newReply);
+    newReply.commentID = newCommentRef.key;
+    newReply.post_date = currDate
+    updatedComments[index].subcomments.push(newReply);
+    setComments(updatedComments);
+  }
 
   useEffect(() => {
     // Look in 'comments' collection
@@ -275,7 +283,7 @@ function Comments ({ eventID }) {
         <CommentThread
           comment={comment}
           index={index}
-          setComments={setComments}
+          handleComment={handleComment}
           key={comment.commentID || index}
         />
       ))}

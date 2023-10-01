@@ -1,14 +1,36 @@
 
-.events-layout {
+.events-wrapper {
+  width: 100vw;
+  top: 5.5rem;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow-y: hidden;
+  background-color: rgb(246,249,252);
+}
+
+
+.events-layout {
+  position: relative;
+  display: flex;
+  border-radius: 1.5rem;
   align-content: flex-start;
   flex-wrap: wrap;
 
-  min-height: 100vh;
-  padding: 80px 0px 0px 50px;
+  width: 70%;
+  max-height: calc(100vh - 5.5rem - 4rem);  /* example height; adjust as needed */
+  overflow-y: auto;  /* make it scrollable */
 
-  background-image: url('../../images/events/eventBackground.jpeg');
+  padding: 30px 0px 0px 50px;
+  top: 2rem;
+  
+
+  background-color: rgb(120,79,56);
+  /* background-image: url('../../images/events/eventBackground.jpeg'); */
 }
+
 
 .event-card {
   position: relative;
@@ -28,4 +50,29 @@
 
 .event-card-info {
 
+}
+
+/* tag */
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;  /* Space between tags */
+}
+
+.tag {
+  padding: 5px 10px;
+  background-color: #e0e0e0;
+  border-radius: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+
+.remove-tag {
+  cursor: pointer;
+  padding: 2px 5px;
+  background-color: #ccc;
+  border-radius: 50%;
 }

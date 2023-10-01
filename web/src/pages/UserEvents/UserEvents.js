@@ -6,6 +6,7 @@ import './UserEvents.css';
 import { Card, CardContent, CardMedia, CardActions, CardActionArea } from '@mui/material';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import EventsBar from '../../components/EventsBar/EventsBar';
 
 // Firebase
 import db from '../../utils/firebase';
@@ -68,10 +69,13 @@ const Events = () => {
   }, []);
 
   return (
-    <div className='events-layout'>
-      {events.map(([eventID, event], index) =>
-        EventCard(eventID, event, images[index%4], navigate)
-      )}
+    <div className='events-wrapper'>
+      <EventsBar></EventsBar>
+      <div className='events-layout'>
+        {events.map(([eventID, event], index) =>
+          EventCard(eventID, event, images[index%4], navigate)
+        )}
+      </div>
     </div>
   );
 };

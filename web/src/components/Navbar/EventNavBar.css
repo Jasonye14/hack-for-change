@@ -38,5 +38,7 @@
     width: auto;
     margin-right: 20px; /* Adjust as per your design needs */
   }
-  
+  #events-link{
+      color: black;
+  }
   

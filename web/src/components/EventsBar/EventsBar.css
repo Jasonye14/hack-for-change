@@ -1,0 +1,81 @@
+/*  DARK MODE IMPLEMENTATION => if you are making darkmode, use this commented color scheme
+
+.event-bar {
+    position: sticky;
+    top: 4rem;
+    width: 70%;
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #333; 
+    border-radius: 25px;
+  }
+  
+  .search-bar {
+    flex-grow: 1;
+    margin-right: 20px;
+    position: relative;
+  }
+  
+  .search-input {
+    width: 20%;
+    padding: 10px;
+    border-radius: 15px;
+    border: 1px solid #aaa;
+    outline: none;
+  }
+  
+  .dropdown {
+    margin-left: 10px;
+    border: none;
+    border-radius: 15px;
+    padding: 10px 15px;
+    background-color: #555;
+    color: #fff;
+    cursor: pointer;
+    outline: none;
+  }
+
+  */
+  
+
+.event-bar {
+  position: sticky;
+  top: 4rem;
+  width: 70%;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #fff;  /* Solid white background */
+  border-radius: 25px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);  /* Increased shadow for more depth */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);  /* Light border at the bottom */
+}
+
+
+.search-bar {
+    flex-grow: 1;
+    margin-right: 20px;
+    position: relative;
+}
+
+.search-input {
+    width: 50%;
+    padding: 10px;
+    border-radius: 15px;
+    border: 1px solid #aaa;  /* You can darken this slightly if needed */
+    outline: none;
+    color: #333;  /* Dark text for readability on light backgrounds */
+    background-color: #fff;  /* White background for the input */
+}
+
+.dropdown {
+    margin-left: 10px;
+    border: none;
+    border-radius: 15px;
+    padding: 10px 15px;
+    background-color: #e0e0e0;  /* Slightly grey background for the dropdown */
+    color: #333;  /* Dark text */
+    cursor: pointer;
+    outline: none;
+}
