@@ -27,7 +27,7 @@ const GoogleLogin = async (navigate) => {
 
             // user not found in db; create a new entry
             if (!found) {
-                usersReference = ref(db, `users/${uid}`)
+                usersReference = ref(db, `users/${uid}`);
                 set(usersReference, {
                     // basic fields
                     username: email.replace(/\..+/g, '').replace('@', ''), // jak325@lehigh.edu => jak325lehigh
