@@ -15,7 +15,7 @@
 .events-layout {
   position: relative;
   display: flex;
-  border-radius: 1.5rem;
+  border-radius: 0.8rem;
   align-content: flex-start;
   flex-wrap: wrap;
 
