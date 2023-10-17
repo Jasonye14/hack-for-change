@@ -2,15 +2,16 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { Avatar, Button, TextField } from "@mui/material";
 
+// ------------ Comment Template Styling ------------- //
 const CommentThreadWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  margin-block: 0.5rem;
 `;
 
 const CommentWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  margin-bottom: 0.5rem;
 `;
 
 const ProfileImgWrapper = styled.div`
@@ -67,6 +68,14 @@ const ReplyButton = styled(Button)`
   padding: 0;
 `;
 
+const SeeRepliesButton = styled(Button)`
+  padding: 0.3rem;
+
+  width: 10rem;
+  border-radius: 1rem;
+`;
+
+// ------------ Reply Input Styling ------------- //
 const ReplyBoxWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -95,6 +104,7 @@ const ReplyOptions = styled.div`
   margin-top: 0.2rem;
 `;
 
+// ------------ SubComment Styling ------------- //
 const SubCommentWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -116,5 +126,5 @@ export {
   CommentThreadWrapper, RepliedTo,
   ReplyButton, ReplyField,
   ReplyBoxWrapper, ReplyBody,
-  ReplyOptions
+  ReplyOptions, SeeRepliesButton
 }

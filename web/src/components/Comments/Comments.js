@@ -11,7 +11,7 @@ import {
   CommentThreadWrapper, RepliedTo,
   ReplyButton, ReplyField,
   ReplyBoxWrapper, ReplyBody,
-  ReplyOptions
+  ReplyOptions, SeeRepliesButton
 } from './CommentsComponents';
 
 // Firebase
@@ -21,9 +21,11 @@ import { useAuth } from "../../pages/login/AuthContext";
 
 // Images/Icons
 import userDefault from '../../images/home/coral_reef.jpg';
-import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 function getTimeDifference(dateTime) {
   const postDate = new Date(dateTime);
@@ -78,6 +80,7 @@ function postComment() {
 
 function CommentTemplate ({comment, index, subIndex, handleComment, children}) {
   const [replyOpen, setReplyOpen] = useState(false);
+  const [seeReplies, setSeeReplies] = useState(false);
   const [replyText, setReplyText] = useState("");
   const [likes, setLikes] = useState(comment.likes);
   const [dislikes, setDislikes] = useState(comment.dislikes);
@@ -116,7 +119,11 @@ function CommentTemplate ({comment, index, subIndex, handleComment, children}) {
               <ThumbDownOffAltIcon />
               {dislikes > 0 ? dislikes : ""}
             </span>
-            <ReplyButton variant="filledTonal" onClick={() => setReplyOpen(true)}>Reply</ReplyButton>
+            <ReplyButton
+              variant="filledTonal"
+              children="Reply"
+              onClick={() => setReplyOpen(true)}
+            />
           </CommentOptions>
         </CommentBody>
       </CommentWrapper>
@@ -132,7 +139,7 @@ function CommentTemplate ({comment, index, subIndex, handleComment, children}) {
           <ReplyBody>
             <ReplyField
               variant="standard"
-              label={'Add a reply...'}
+              label="Add a reply..."
               multiline
               rows={1}
               onChange={handleTextChange}
@@ -140,32 +147,37 @@ function CommentTemplate ({comment, index, subIndex, handleComment, children}) {
             <ReplyOptions>
               <Button
                 variant="filledTonal"
-                onClick={() => setReplyOpen(false)}
                 children="Cancel"
+                onClick={() => setReplyOpen(false)}
               />
               <Button
                 variant="filledTonal"
+                children="Reply"
                 onClick={(event) => {
                   handleComment(event, index, subIndex, replyText);
                   setReplyOpen(false);
                 }}
-                children="Reply"
               />
             </ReplyOptions>
           </ReplyBody>
         </ReplyBoxWrapper>
       }
-
-      {children && 
-        <>
-          
-        </>
-      }
-
       
       {children &&
         <SubCommentWrapper>
-          {children}
+          <SeeRepliesButton
+            variant='text'
+            onClick={() => setSeeReplies(prev => !prev)}
+          >
+            {seeReplies ?
+              <ArrowDropUpIcon />
+              :
+              <ArrowDropDownIcon />
+            }
+            {`${children.length} Replies`}
+          </SeeRepliesButton>
+
+          {seeReplies && children}
         </SubCommentWrapper>
       }
     </CommentThreadWrapper>
@@ -213,7 +225,7 @@ function Comments ({ eventID }) {
       reply_to: null
     }
 
-    if (subIndex !== null) {
+    if (subIndex !== null && subIndex !== undefined) {
       const replyTo = comments[index].subcomments[subIndex].author
       newReply.reply_to = replyTo
     }
