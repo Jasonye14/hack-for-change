@@ -55,7 +55,7 @@ const UserSignUp = () => {
         email: email,
         fname: fname,
         lname: lname,
-        notifications: false,
+        role: "User",
 
         // user profile
         phoneNumber: '',
