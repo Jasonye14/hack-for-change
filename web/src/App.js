@@ -19,6 +19,9 @@ import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import NotFound from './pages/NotFound';
 import { AuthProvider, useAuth } from './pages/login/AuthContext';
 
+// admin
+import AdminHome from './pages/Admin_Pages/home/home'
+
 function App(props) {
   return (
     <AuthProvider>
@@ -58,6 +61,11 @@ function RoutesContent() {
           <UserProfiles user={currUser} />
         </ProtectedRoute>
       } />
+
+      {/* admin routes */}
+      <Route path='/admin' element={<AdminHome />} />
+
+
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
@@ -67,6 +75,7 @@ function NavBarWrapper() {
   const location = useLocation();
   const { isLoggedIn, currUser, pending } = useAuth();
 
+  if (location.pathname === '/admin') {return null } // REPALCE AFTER ROLES ARE IMPLEMENTED IN DATABASE
   if (pending) {
     return null;
   }
