@@ -42,7 +42,7 @@
 .event-bar {
   position: sticky;
   top: 4rem;
-  width: 70%;
+  width: 97.6%;
   display: flex;
   align-items: center;
   padding: 10px 20px;
@@ -60,7 +60,7 @@
 }
 
 .search-input {
-    width: 50%;
+    width: 30%;
     padding: 10px;
     border-radius: 15px;
     border: 1px solid #aaa;  /* You can darken this slightly if needed */

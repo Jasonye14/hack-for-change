@@ -20,7 +20,8 @@ import NotFound from './pages/NotFound';
 import { AuthProvider, useAuth } from './pages/login/AuthContext';
 
 // admin
-import AdminHome from './pages/Admin_Pages/home/home'
+import AdminDashboard from './pages/Admin_Pages/home/home';
+import AdminMembers from './pages/Admin_Pages/members/members'
 
 function App(props) {
   return (
@@ -63,8 +64,15 @@ function RoutesContent() {
       } />
 
       {/* admin routes */}
-      <Route path='/admin' element={<AdminHome />} />
-
+      <Route path='/admin/dashboard' element={<AdminDashboard />} />
+      <Route path='/admin/members' element={<AdminMembers />} />
+      <Route path='/admin/edit-events' element={<AdminDashboard />} />
+      <Route path='/admin/announcements' element={<AdminDashboard />} />
+      <Route path='/admin/analytics' element={<AdminDashboard />} />
+      <Route path='/admin/billing' element={<AdminDashboard />} />
+      <Route path='/admin/support' element={<AdminDashboard />} />
+      <Route path='/admin/settings' element={<AdminDashboard />} />
+      
 
       <Route path="*" element={<NotFound />} />
     </Routes>
@@ -75,7 +83,7 @@ function NavBarWrapper() {
   const location = useLocation();
   const { isLoggedIn, currUser, pending } = useAuth();
 
-  if (location.pathname === '/admin') {return null } // REPALCE AFTER ROLES ARE IMPLEMENTED IN DATABASE
+  if (location.pathname === '/admin' || /^\/admin\/.+/i.test(location.pathname)) {return null } // REPALCE AFTER ROLES ARE IMPLEMENTED IN DATABASE
   if (pending) {
     return null;
   }
