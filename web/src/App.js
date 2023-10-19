@@ -21,7 +21,8 @@ import { AuthProvider, useAuth } from './pages/login/AuthContext';
 
 // admin
 import AdminDashboard from './pages/Admin_Pages/home/home';
-import AdminMembers from './pages/Admin_Pages/members/members'
+import AdminMembers from './pages/Admin_Pages/members/members';
+import AdminEvents from './pages/Admin_Pages/edit-events/edit-events'
 
 function App(props) {
   return (
@@ -66,7 +67,7 @@ function RoutesContent() {
       {/* admin routes */}
       <Route path='/admin/dashboard' element={<AdminDashboard />} />
       <Route path='/admin/members' element={<AdminMembers />} />
-      <Route path='/admin/edit-events' element={<AdminDashboard />} />
+      <Route path='/admin/edit-events' element={<AdminEvents />} />
       <Route path='/admin/announcements' element={<AdminDashboard />} />
       <Route path='/admin/analytics' element={<AdminDashboard />} />
       <Route path='/admin/billing' element={<AdminDashboard />} />
