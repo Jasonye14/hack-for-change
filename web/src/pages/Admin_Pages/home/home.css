@@ -1,49 +1,39 @@
-.dashboard-container {
+.analytics-card {
+    padding: 1.5em;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-    background-color: #f8f9fa;
-}
-
-.overview-section {
-    display: flex;
-    gap: 20px;
-}
-
-.overview-card {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    align-items: center;
-    padding: 20px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    gap: 1.2em;
+    border-radius: 15px;
+    background-color: #f8f9fa;  /* A soft gray background */
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
 
-.card-icon {
+.analytics-icon {
+    font-size: 2.2em;
+    color: #3f51b5; /* Material-UI primary color */
     margin-bottom: 10px;
-    color: #007bff;
-    font-size: 2em;
 }
 
-.chart-section {
-    background-color: #ffffff;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+.icon-container {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 20px;
+    justify-content: center;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.activity-section, .actions-section {
-    background-color: #ffffff;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    gap: 10px;
+/* Titles and numbers styled for clarity */
+.analytics-card h6 {
+    color: #4a4a4a;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.analytics-card h4 {
+    color: #2c3e50;
+    font-weight: bold;
 }
