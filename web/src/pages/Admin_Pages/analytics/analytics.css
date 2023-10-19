@@ -1,0 +1,12 @@
+.analytics-card {
+    padding: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 1em;
+}
+
+.analytics-icon {
+    font-size: 2em;
+    color: #3f51b5;  /* Material-UI primary color, can adjust as necessary */
+}
