@@ -1,0 +1,18 @@
+.announcements-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.announcement-card, .announcement-list-card {
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.announcement-input {
+    margin-bottom: 10px;
+}
