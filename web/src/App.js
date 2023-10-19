@@ -24,6 +24,8 @@ import AdminDashboard from './pages/Admin_Pages/home/home';
 import AdminMembers from './pages/Admin_Pages/members/members';
 import AdminEvents from './pages/Admin_Pages/edit-events/edit-events';
 import AdminAnnouncements from './pages/Admin_Pages/announcements/announcements';
+import AdminAnalytics from './pages/Admin_Pages/analytics/analytics';
+import AdminBilling from './pages/Admin_Pages/billing/billing'
 
 function App(props) {
   return (
@@ -70,8 +72,8 @@ function RoutesContent() {
       <Route path='/admin/members' element={<AdminMembers />} />
       <Route path='/admin/edit-events' element={<AdminEvents />} />
       <Route path='/admin/announcements' element={<AdminAnnouncements />} />
-      <Route path='/admin/analytics' element={<AdminDashboard />} />
-      <Route path='/admin/billing' element={<AdminDashboard />} />
+      <Route path='/admin/analytics' element={<AdminAnalytics />} />
+      <Route path='/admin/billing' element={<AdminBilling />} />
       <Route path='/admin/support' element={<AdminDashboard />} />
       <Route path='/admin/settings' element={<AdminDashboard />} />
       
