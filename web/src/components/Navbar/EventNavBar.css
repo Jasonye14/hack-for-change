@@ -1,0 +1,44 @@
+.alerts {
+    background-color: #f4f4f4;
+    max-width: 300px;
+    padding: 10px;
+    margin-top: 170px;
+    margin-right: -40px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  .alert {
+    padding: 5px 10px;
+    margin: 5px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .alert:last-child {
+    border-bottom: none;
+  }
+
+  .AlertIconBtn{
+    background-color: white;
+    border: 0;
+  }
+
+  .AlertIconBtn > svg{
+    margin-top: 4px;
+    height: 1.2rem;
+    width: 1.2rem;
+  }
+  #leftDiv{
+    width: auto;
+    display: flex;
+    align-items: center;
+  }
+  #leftDiv img {
+    height: 50px; /* Or whatever height you want */
+    width: auto;
+    margin-right: 20px; /* Adjust as per your design needs */
+  }
+  #events-link{
+      color: black;
+  }
+  
