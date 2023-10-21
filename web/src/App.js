@@ -19,6 +19,14 @@ import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import NotFound from './pages/NotFound';
 import { AuthProvider, useAuth } from './pages/login/AuthContext';
 
+// admin
+import AdminDashboard from './pages/Admin_Pages/home/home';
+import AdminMembers from './pages/Admin_Pages/members/members';
+import AdminEvents from './pages/Admin_Pages/edit-events/edit-events';
+import AdminAnnouncements from './pages/Admin_Pages/announcements/announcements';
+import AdminAnalytics from './pages/Admin_Pages/analytics/analytics';
+import AdminBilling from './pages/Admin_Pages/billing/billing'
+
 function App(props) {
   return (
     <AuthProvider>
@@ -58,6 +66,18 @@ function RoutesContent() {
           <UserProfiles user={currUser} />
         </ProtectedRoute>
       } />
+
+      {/* admin routes */}
+      <Route path='/admin/dashboard' element={<AdminDashboard />} />
+      <Route path='/admin/members' element={<AdminMembers />} />
+      <Route path='/admin/edit-events' element={<AdminEvents />} />
+      <Route path='/admin/announcements' element={<AdminAnnouncements />} />
+      <Route path='/admin/analytics' element={<AdminAnalytics />} />
+      <Route path='/admin/billing' element={<AdminBilling />} />
+      <Route path='/admin/support' element={<AdminDashboard />} />
+      <Route path='/admin/settings' element={<AdminDashboard />} />
+      
+
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
@@ -67,6 +87,7 @@ function NavBarWrapper() {
   const location = useLocation();
   const { isLoggedIn, currUser, pending } = useAuth();
 
+  if (location.pathname === '/admin' || /^\/admin\/.+/i.test(location.pathname)) {return null } // REPALCE AFTER ROLES ARE IMPLEMENTED IN DATABASE
   if (pending) {
     return null;
   }

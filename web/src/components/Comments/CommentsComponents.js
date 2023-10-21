@@ -76,6 +76,14 @@ const SeeRepliesButton = styled(Button)`
 `;
 
 // ------------ Reply Input Styling ------------- //
+const CommentBoxWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+`;
+
 const ReplyBoxWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -126,5 +134,6 @@ export {
   CommentThreadWrapper, RepliedTo,
   ReplyButton, ReplyField,
   ReplyBoxWrapper, ReplyBody,
-  ReplyOptions, SeeRepliesButton
+  ReplyOptions, SeeRepliesButton,
+  CommentBoxWrapper
 }

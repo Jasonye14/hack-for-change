@@ -1,0 +1,40 @@
+/* For the entire table */
+.MuiTable-root {
+    border-collapse: separate;
+    border-spacing: 0 5px; /* Adds spacing between rows */
+}
+
+/* Headers with a modern feel */
+.MuiTableHead-root {
+    background-color: #f5f5f5;
+}
+
+.MuiTableCell-head {
+    font-weight: 600;
+}
+
+/* Thinner rows */
+.thin-row {
+    height: 20px;
+}
+
+/* Specific styles for the table cells */
+.MuiTableCell-root.thin-row {
+    background-color: #ffffff; /* Giving a white background for the cells */
+    border-radius: 5px; /* Rounded corners */
+}
+
+/* Hover effect for rows */
+.MuiTableRow-root:hover {
+    background-color: #f5f5f5;
+}
+
+/* Icon styling */
+.MuiIconButton-root {
+    color: #333;
+}
+
+.MuiIconButton-root:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
