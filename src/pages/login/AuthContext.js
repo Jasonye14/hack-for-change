@@ -21,7 +21,7 @@ const getEUsername = (user) => {
 const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);  // default to false
   const [currUser, setCurrUser] = useState(null);       // default to null
-  const [pending, setPending] = useState(true);
+  const [pending, setPending] = useState(true);         // default to true
   const auth = getAuth();
 
   useEffect(() => {

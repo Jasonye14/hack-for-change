@@ -3,13 +3,15 @@ import { getAuth, signInWithEmailAndPassword, setPersistence, browserSessionPers
 import { onValue, ref } from "firebase/database";
 import db from '../utils/firebase';
 
-const EmailLogin = async ({ data, navigate, setPending, setIsLoggedIn, setCurrUser, setError }) => {
+const EmailLogin = async function (data, navigate, setPending, setIsLoggedIn, setCurrUser, setError) {
   const auth = getAuth();
+
+  console.log(data);
 
   await setPersistence(auth, browserSessionPersistence);
   setPending(true);
 
-  signInWithEmailAndPassword(auth, data.get('email'), data.get('password')).then((userCredential) => {
+  signInWithEmailAndPassword(auth, data['email'], data['password']).then((userCredential) => {
     // Signed in successfully
     const user = userCredential.user
     setIsLoggedIn(true);                                      // Set logged-in status

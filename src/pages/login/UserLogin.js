@@ -29,6 +29,9 @@ import EmailLogin from '../../database/EmailLogin';
 function UserLogin() {
   const navigate = useNavigate();  // <-- use this hook
   const [errorOpen, setError] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  
   const { isLoggedIn, setIsLoggedIn, currUser, setCurrUser, setPending } = useAuth();
 
   useEffect(() => {
@@ -71,7 +74,7 @@ function UserLogin() {
             noValidate
             onSubmit={(event) => {
               event.preventDefault();
-              EmailLogin(event.target, navigate, setPending, setIsLoggedIn, setCurrUser, setError)
+              EmailLogin({ email, password }, navigate, setPending, setIsLoggedIn, setCurrUser, setError)
             }}
           >
             <TextField
@@ -83,6 +86,9 @@ function UserLogin() {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={(event) => {
+                setEmail(event.target.value);
+              }}
             />
             <TextField
               margin="normal"
@@ -93,6 +99,9 @@ function UserLogin() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(event) => {
+                setPassword(event.target.value);
+              }}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
