@@ -7,7 +7,6 @@ import { onValue, ref, query, orderByChild, equalTo, push } from "firebase/datab
 const COMMENT_REF = `/comments/`;
 
 
-
 function postComment(user, eventID, commentContent, oldComments, setComments) { // setComments in a callback
   if (commentContent === "") {return false}
   const updatedComments = [...oldComments];
@@ -33,8 +32,39 @@ function postComment(user, eventID, commentContent, oldComments, setComments) { 
   return true;
 }
 
+function postSubComment(user, index, subIndex, subCommentContent, oldComments, setComments) {
+  if (subCommentContent === "") {return false}
+  // DON'T JUST USE 'comments' - MUST USE ARRAY UNPACKING '[...comments]'
+  // Modifying state object directly will NOT re-render page
+  const updatedComments = [...oldComments]; // Need array unpacking
+  const commentsRef = ref(db, COMMENT_REF + `${index}/subcomments`);
+  const currDate = new Date();
+  let newSubComment = {
+    commentID: null,
+    author: user.eUsername,
+    avatar_url: null,
+    post_date: currDate.toISOString(),
+    content: subCommentContent,
+    likes: 0,
+    dislikes: 0,
+    reply_to: null
+  }
+
+  if (subIndex) {
+    const replyTo = oldComments[index].subcomments[subIndex].author
+    newSubComment.reply_to = replyTo
+  }
+
+  const newCommentRef = push(commentsRef, newSubComment);
+  newSubComment.commentID = newCommentRef.key;
+  newSubComment.post_date = currDate
+  updatedComments[index].subcomments.push(newSubComment);
+  setComments(updatedComments);
+  return true;
+}
+
 function getComments(eventID, setComments) { // setComments is a callback
-  const commentsRef = ref(db, 'comments'); // Look in 'comments' collection
+  const commentsRef = ref(db, COMMENT_REF); // Look in 'comments' collection
   const commentsQuery = query(commentsRef, orderByChild('event_id'), equalTo(eventID)); // Create a query to filter comments based on event_id
   onValue(commentsQuery, snapshot => {
     const snapshotValue = snapshot.val();
@@ -79,4 +109,51 @@ function getComments(eventID, setComments) { // setComments is a callback
   });
 }
 
-export {postComment};
+function calcTimeDifference(dateTime) {
+  const postDate = new Date(dateTime);
+  if (isNaN(postDate.getTime())) {
+    return dateTime;
+  }
+  const currentDate = new Date();
+  const differenceInSeconds = Math.floor((currentDate - postDate) / 1000);
+
+  const minute = 60;
+  const hour = minute * 60;
+  const day = hour * 24;
+  const week = day * 7;
+  const month = day * 30;
+  const year = day * 365;
+
+  let timeDiff = 0;
+  let type = "";
+
+  if (differenceInSeconds < minute) {
+    timeDiff = differenceInSeconds
+    type = 'sec'
+  } else if (differenceInSeconds < hour) {
+    timeDiff = Math.floor(differenceInSeconds / minute);
+    type = 'min'
+  } else if (differenceInSeconds < day) {
+    timeDiff = Math.floor(differenceInSeconds / hour);
+    type = 'hour'
+  } else if (differenceInSeconds < week) {
+    timeDiff = Math.floor(differenceInSeconds / day);
+    type = 'day'
+  } else if (differenceInSeconds < month) {
+    timeDiff = Math.floor(differenceInSeconds / week);
+    type = 'week'
+  } else if (differenceInSeconds < year) {
+    timeDiff = Math.floor(differenceInSeconds / month);
+    type = 'month'
+  } else {
+    timeDiff = Math.floor(differenceInSeconds / year);
+    type = 'year'
+  }
+
+  if (timeDiff > 1) {
+    return `${timeDiff} ${type}s ago`;
+  }
+  return `${timeDiff} ${type} ago`;
+}
+
+export { postComment, postSubComment, getComments, calcTimeDifference };
