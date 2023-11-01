@@ -68,14 +68,46 @@ function RoutesContent() {
       } />
 
       {/* admin routes */}
-      <Route path='/admin/dashboard' element={<AdminDashboard />} />
-      <Route path='/admin/members' element={<AdminMembers />} />
-      <Route path='/admin/edit-events' element={<AdminEvents />} />
-      <Route path='/admin/announcements' element={<AdminAnnouncements />} />
-      <Route path='/admin/analytics' element={<AdminAnalytics />} />
-      <Route path='/admin/billing' element={<AdminBilling />} />
-      <Route path='/admin/support' element={<AdminDashboard />} />
-      <Route path='/admin/settings' element={<AdminDashboard />} />
+      <Route path='/admin/dashboard' element={
+        <ProtectedRoute admin >
+          <AdminDashboard />
+        </ProtectedRoute>
+        } />
+      <Route path='/admin/members' element={
+        <ProtectedRoute admin >
+          <AdminMembers />
+        </ProtectedRoute>
+        } />
+      <Route path='/admin/edit-events' element={
+        <ProtectedRoute admin >
+          <AdminEvents />
+        </ProtectedRoute>
+        } />
+      <Route path='/admin/announcements' element={
+        <ProtectedRoute admin >
+          <AdminAnnouncements />
+        </ProtectedRoute>
+        } />
+      <Route path='/admin/analytics' element={
+        <ProtectedRoute admin >
+          <AdminAnalytics />
+        </ProtectedRoute>
+        } />
+      <Route path='/admin/billing' element={
+        <ProtectedRoute admin >
+          <AdminBilling />
+        </ProtectedRoute>
+        } />
+      <Route path='/admin/support' element={
+        <ProtectedRoute admin >
+          <AdminDashboard />
+        </ProtectedRoute>
+        } />
+      <Route path='/admin/settings' element={
+        <ProtectedRoute admin >
+          <AdminDashboard />
+        </ProtectedRoute>
+        } />
       
 
       <Route path="*" element={<NotFound />} />
