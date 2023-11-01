@@ -20,12 +20,14 @@ function ProtectedRoute({ admin, children }) { // admin is a boolean that descri
         return <Navigate to={'/login'}></Navigate>; // I feel like this should redirect to 404 too
     }
 
+    // page is available to some user
     if (routeParams.uid && (currUser.uid !== routeParams.uid)) {
         console.log(`Authorization error: ${currUser.uid} does not have access to this page.`);
         return <Navigate to={'/404'}></Navigate>; // <---- Consider changing to another page ("you dont have access...")
     }
 
-    if (admin) { // page is only available to admins
+    // page is only available to admins
+    if (admin) {
         // get user info from realtime database in currUser object
         const dbRef = ref(db, '/');
         get(child(dbRef, `users/${currUser.uid}`))
