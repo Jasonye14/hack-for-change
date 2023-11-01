@@ -17,12 +17,14 @@ function ProtectedRoute({ admin, children }) { // admin is a boolean that descri
         return <Navigate to={'/login'}></Navigate>;
     }
 
-    if (currUser.uid !== routeParams.uid || currUser.admin !== admin) {
+    if (currUser.uid !== routeParams.uid || (admin && !currUser.admin)) {
         // console.log(`Tried to go to: ${routeParams.uid}. Actual logged-in user: ${currUser.uid}`);
         console.log(`Authorization error: ${currUser.uid} does not have access to this page.`);
+        console.log(currUser.admin);
+        console.log(admin);
         return <Navigate to={'/404'}></Navigate>; // <---- Consider changing to another page ("you dont have access...")
     }
-        
+
     return children;
 
 }
