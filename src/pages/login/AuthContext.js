@@ -1,10 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
-// database
-import { child, get, onValue, ref } from "firebase/database";
-import db from '../../utils/firebase';
-
 const AuthContext = createContext({
   isLoggedIn: false,
   setIsLoggedIn: () => { },
@@ -31,22 +27,12 @@ const AuthProvider = ({ children }) => {
       if (user) {
         const eUsername = getEUsername(user);
         let userWithEUsername = { ...user, eUsername }
-
-        // track user info from realtime database in currUser object
-        const dbRef = ref(db, '/');
-        console.log(user.uid);
-        get(child(dbRef, `users/${user.uid}`))
-          .then(snapshot => {
-            const dbData = snapshot.val();
-            userWithEUsername = { ...userWithEUsername, ...dbData };
-          }).then(() => {
-            setIsLoggedIn(true);
-            setCurrUser(userWithEUsername);
-          })
+        setIsLoggedIn(true);
+        setCurrUser(userWithEUsername);
       }
       setPending(false);
     })
-  }, []);
+  }, [auth]);
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, currUser, setCurrUser, pending, setPending }}>

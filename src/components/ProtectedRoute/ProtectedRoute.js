@@ -2,10 +2,13 @@ import React from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../pages/login/AuthContext';
 
+// database
+import { child, get, ref } from "firebase/database";
+import db from '../../utils/firebase';
+
 function ProtectedRoute({ admin, children }) { // admin is a boolean that describes whether admin privileges are required to visit some route
     const { isLoggedIn, currUser, pending } = useAuth();
     const routeParams = useParams(); // Get parameters from dynamic route (:uid)
-    // console.log(routeParams);
     
     if (pending) {
         console.log("Pending....");
@@ -14,15 +17,27 @@ function ProtectedRoute({ admin, children }) { // admin is a boolean that descri
 
     if (!isLoggedIn || !currUser) {
         console.log("No-one logged in...Redirecting to login...");
-        return <Navigate to={'/login'}></Navigate>;
+        return <Navigate to={'/login'}></Navigate>; // I feel like this should redirect to 404 too
     }
 
-    if (currUser.uid !== routeParams.uid || (admin && !currUser.admin)) {
-        // console.log(`Tried to go to: ${routeParams.uid}. Actual logged-in user: ${currUser.uid}`);
+    if (routeParams.uid && (currUser.uid !== routeParams.uid)) {
         console.log(`Authorization error: ${currUser.uid} does not have access to this page.`);
-        console.log(currUser.admin);
-        console.log(admin);
         return <Navigate to={'/404'}></Navigate>; // <---- Consider changing to another page ("you dont have access...")
+    }
+
+    if (admin) { // page is only available to admins
+        // get user info from realtime database in currUser object
+        const dbRef = ref(db, '/');
+        get(child(dbRef, `users/${currUser.uid}`))
+        .then(snapshot => {
+            const dbData = snapshot.val();
+            console.log(dbData);
+            const isAdmin = dbData.admin;
+            if (!isAdmin) {
+                console.log(`Authorization error: ${currUser.uid} does not have access to this page.`);
+                return <Navigate to={'/404'}></Navigate>; // <---- Consider changing to another page ("you dont have access...")
+            }
+        });
     }
 
     return children;

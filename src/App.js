@@ -132,7 +132,7 @@ function NavBarWrapper() {
   if(isLoggedIn && location.pathname !== '/login') {
     console.log(`${currUser.uid} is currently logged in. (App.js)`);
     return <EventNavbar />;
-;
+
   }
 
   return null;
