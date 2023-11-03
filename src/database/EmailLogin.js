@@ -6,8 +6,6 @@ import db from '../utils/firebase';
 const EmailLogin = async function (data, navigate, setPending, setIsLoggedIn, setCurrUser, setError) {
   const auth = getAuth();
 
-  console.log(data);
-
   await setPersistence(auth, browserSessionPersistence);
   setPending(true);
 
