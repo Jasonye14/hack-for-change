@@ -32,8 +32,8 @@ const GoogleLogin = async (navigate) => {
                     // basic fields
                     username: email.replace(/\..+/g, '').replace('@', ''), // jak325@lehigh.edu => jak325lehigh
                     email: email,
-                    fname: "",
-                    lname: "",
+                    firstName: "",
+                    lastName: "",
                     admin: false,
                     
                     // user profile

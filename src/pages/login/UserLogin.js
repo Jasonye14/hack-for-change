@@ -1,4 +1,8 @@
+// React
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+// Mui
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {
   Alert,
@@ -12,11 +16,10 @@ import {
   FormControlLabel,
   Grid,
   Link,
-  LockOutlinedIcon,
   TextField,
   Typography
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 // Components
 import GoogleButton from '../../components/Buttons/GoogleSignInButton';

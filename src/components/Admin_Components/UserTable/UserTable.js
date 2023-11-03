@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow, IconButton, Paper, TextField, Box, Tooltip } from '@mui/material';
 import { FiTrash2, FiPlus, FiEye, FiEyeOff } from 'react-icons/fi';  // Using Feather icons
 import { FiArrowUp, FiArrowDown } from 'react-icons/fi';
 import './UserTable.css';
+import { onValue, ref } from "firebase/database";
+import db from '../../../utils/firebase';
 
 function UserTable() {
     const [users, setUsers] = useState([
@@ -157,7 +159,43 @@ function UserTable() {
             address: '50 Circuit Court, City, Country'
         }        
     ]);
-    
+
+    useEffect(() => {
+        let usersReference = ref(db, 'users');
+        onValue(usersReference, snapshot => {
+            const result = snapshot.val();
+            const uids = Object.keys(result);
+            const userData = Object.values(result);
+            const users = uids.map((uid, index) => ({
+                // basic info
+                uid,
+                email: userData[index].email,
+                password: userData[index].password,
+                username: userData[index].username,
+                firstName: userData[index].fname,
+                lastName: userData[index].lname,
+                admin: userData[index].admin,
+                
+                // user profile
+                phoneNumber: userData[index].phoneNumber,
+                dateOfBirth: userData[index].dateOfBirth,
+                gender: userData[index].gender, // no option for this in user profile yet
+                address: userData[index].address,
+                education: userData[index].education,
+                occupation: userData[index].occupation,
+                affiliatedOrganization: userData[index].affiliatedOrganization,
+
+                // user settings
+                notifications: userData[index].notifications,
+                privateProfile: userData[index].privateProfile
+            }));
+
+            setUsers(users);
+
+            console.log(users);
+              
+        })
+    }, []);
 
     // adding users to table
     const [newUser, setNewUser] = useState({ username: '', password: '', email: '' });
@@ -207,10 +245,13 @@ function UserTable() {
                         <TableHead>
                             <TableRow className="thin-row">
                                 <TableCell className="MuiTableCell-head">
-                                    Username
+                                    UID
                                     <IconButton size="small" onClick={(e) => toggleSortOrder(e)}>
                                         {sortOrder === 'asc' ? <FiArrowUp /> : <FiArrowDown />}
                                     </IconButton>
+                                </TableCell>
+                                <TableCell>
+                                    Username
                                 </TableCell>
                                 <TableCell>First Name</TableCell>
                                 <TableCell>Last Name</TableCell>
