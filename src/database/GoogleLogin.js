@@ -34,7 +34,7 @@ const GoogleLogin = async (navigate) => {
                     email: email,
                     fname: "",
                     lname: "",
-                    role: "User",
+                    admin: false,
                     
                     // user profile
                     phoneNumber: '',
