@@ -2,6 +2,7 @@
     padding-left: 30px;
     padding-right: 50px;
     padding-top: 100px;
+    padding-bottom: 50px;
     max-width: 600px;
     margin: 0 auto;
     background-color: #fff;
@@ -30,7 +31,7 @@
 
 .save-button {
     padding: 10px 15px;
-    background-color: #007BFF;
+    background-color: #8B4513;
     border: none;
     border-radius: 4px;
     color: white;
@@ -39,7 +40,7 @@
 }
 
 .save-button:hover {
-    background-color: #0056b3;
+    background-color: #8B4513;
 }
 
 .input-wrapper textarea {

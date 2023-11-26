@@ -1,0 +1,52 @@
+/* UserAccount.css */
+.profile-container {
+    text-align: center;
+    padding-left: 100px;
+    padding-right: 100px;
+    padding-top: 100px;
+    padding-bottom: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .user-info {
+    text-align: center;  /* Center content vertically */
+  }
+  
+  
+  .header {
+    text-align: center;
+    padding-left: 100px;
+    padding-right: 100px;
+    padding-top: 100px;
+    padding-bottom: 50px;
+    background-color: #6A4000; /* Blue background color */
+    padding: 20px;
+    text-align: center;
+    color: white;
+  }
+  
+  .info-container {
+    background-color: white; 
+    font-size: 16px;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(100, 48, 0, 0.1); /* Optional: Add a subtle box shadow */
+    margin-top: 20px;
+  }
+
+  .edit-profile-button {
+    background-color: #8B4513; /* Brown background color */
+    color: white;
+    padding: 15px 20px; /* Adjust padding to make the button bigger */
+    font-size: 16px; /* Adjust font size */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 30px;
+  }
+  
+  

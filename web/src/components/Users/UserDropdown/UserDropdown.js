@@ -32,7 +32,7 @@ const UserProfile = ({ userProfile, handleLogout }) => {
 
     switch(action) {
       case "profile":
-        navigate(`/users/${userProfile}/profile`);
+        navigate(`/users/${userProfile}/account`);
         break;
       case "settings":
         navigate(`/users/${userProfile}/settings`);

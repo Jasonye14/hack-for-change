@@ -9,6 +9,7 @@ import UserLogin from './pages/login/UserLogin';
 import UserSignUp from './pages/signup/UserSignup';
 import UserSettings from './components/Users/UserSettings/UserSettings';
 import UserProfiles from './components/Users/UserProfiles/UserProfiles';
+import UserAccount from './components/Users/UserAccount/UserAccount';
 import Events from './pages/events/events';
 import EventPage from './pages/EventPage/EventPage';
 import FAQ from './pages/faq/faq';
@@ -61,9 +62,13 @@ function RoutesContent() {
           <UserSettings user={currUser} />
         </ProtectedRoute>
       } />
-      <Route path="/users/:uid/profile" element={
+      <Route path="/users/:uid/profiles" element={
         <ProtectedRoute>
           <UserProfiles user={currUser} />
+        </ProtectedRoute>} />
+      <Route path="/users/:uid/account" element={
+        <ProtectedRoute>
+          <UserAccount user={currUser} />
         </ProtectedRoute>
       } />
 
