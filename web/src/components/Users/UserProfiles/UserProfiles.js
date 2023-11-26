@@ -48,6 +48,8 @@ function UserProfiles({ user }) {
         console.log("User Data Saved:", userData);
         setMessage('User Data Saved Successfully!'); // Successful feedback
 
+        window.location.href = `/users/${user.uid}/account`;
+
     };
 
     return (
