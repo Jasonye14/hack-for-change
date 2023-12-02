@@ -18,7 +18,7 @@ import {
 import db from '../../utils/firebase';
 import { onValue, ref, query, orderByChild, equalTo, push } from "firebase/database";
 import { useAuth } from "../../pages/login/AuthContext";
-import { postComment, postSubComment, getComments, calcTimeDifference } from "./CommentsUtils";
+import { postComment, postSubComment, getComments, calcTimeDifference, putLikes, putDislikes } from "./CommentsUtils";
 
 // Images/Icons
 import userDefault from '../../images/home/coral_reef.jpg';
@@ -40,6 +40,8 @@ function CommentTemplate ({comment, index, subIndex, handleSubComment, children}
   const [dislikes, setDislikes] = useState(comment.dislikes);
   const [likeState, setLikeState] = useState(DEFAULT); // Default state is 'default'
 
+  
+
   const handleLikeChange = (index, subIndex, newLikeState) => {
     if (newLikeState === likeState ||
       (newLikeState !== LIKED
@@ -57,7 +59,7 @@ function CommentTemplate ({comment, index, subIndex, handleSubComment, children}
       }
     } else if (likeState === DEFAULT) {
       if (newLikeState === LIKED) {
-
+        
       } else {
 
       }

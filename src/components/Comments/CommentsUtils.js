@@ -1,6 +1,6 @@
 // Firebase
 import db from '../../utils/firebase';
-import { onValue, ref, query, orderByChild, equalTo, push } from "firebase/database";
+import { onValue, ref, query, orderByChild, equalTo, push, runTransaction } from "firebase/database";
 
 
 
@@ -156,4 +156,24 @@ function calcTimeDifference(dateTime) {
   return `${timeDiff} ${type} ago`;
 }
 
-export { postComment, postSubComment, getComments, calcTimeDifference };
+async function putLikes(user, index, subIndex, newLikes, setComments) {
+  let likesRef = null;
+  if (subIndex) {
+    likesRef = ref(db, COMMENT_REF + `${index}/subcomments/${subIndex}/likes`);
+  }
+  else {
+    likesRef = ref(db, COMMENT_REF + `${index}/likes`);
+  }
+
+  await runTransaction(likesRef, (currLikes) => {
+    return newLikes
+  }).then((res) => {
+    console.log(res);
+  })
+}
+
+async function putDislikes(user, index, subIndex, newDislikes, setComments) {
+
+}
+
+export { postComment, postSubComment, getComments, calcTimeDifference, putLikes, putDislikes };
