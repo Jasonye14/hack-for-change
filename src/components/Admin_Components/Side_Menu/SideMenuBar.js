@@ -67,12 +67,12 @@ function SideMenuBar({ isOpen, toggleDrawer }) {
                         <ListItemText primary="Analytics" />
                     </ListItem>
                 </Link>
-                <Link to="/admin/billing" style={{ textDecoration: 'none', color: 'inherit' }}>
+                {/* <Link to="/admin/billing" style={{ textDecoration: 'none', color: 'inherit' }}>
                     <ListItem button>
                         <ListItemIcon><FiCreditCard /></ListItemIcon>
                         <ListItemText primary="Billing" />
                     </ListItem>
-                </Link>
+                </Link> */}
                 <Link to="/admin/support" style={{ textDecoration: 'none', color: 'inherit' }}>
                     <ListItem button>
                         <ListItemIcon><FiHelpCircle /></ListItemIcon>
