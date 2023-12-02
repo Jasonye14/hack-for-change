@@ -1,11 +1,11 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import './EventNavBar.css';
-import { 
-    StickyNav,
-    NavLink,
-    Bars,
-    NavMenu,
-    NavBtnLink,
+import {
+  StickyNav,
+  NavLink,
+  Bars,
+  NavMenu,
+  NavBtnLink,
 } from './NavbarElement';
 import { FaBell } from 'react-icons/fa';
 
@@ -44,17 +44,17 @@ const EventNavbar = () => {
   return (
     <StickyNav>
       <Bars />
-      <NavMenu style={{justifyContent: 'space-between',}}>
+      <NavMenu style={{ justifyContent: 'space-between' }}>
         {/* <NavLink to='/'>Home</NavLink> */}
         <div id="leftDiv">
-            <img src={LehighLogo} alt="Company Logo" />
-            <NavLink to={`/users/${currUser.uid}`} id="events-link">Events</NavLink>
+          <img src={LehighLogo} alt="Company Logo" />
+          <NavLink to={`/users/${currUser.uid}`} id="events-link">Events</NavLink>
         </div>
-        
-        <div style={{ display: 'flex', flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center'}}>
+
+        <div style={{ display: 'flex', flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center' }}>
           <UserProfile userProfile={currUser.uid} handleLogout={handleLogout} />
           <button className="AlertIconBtn" onClick={() => setShowAlerts(!showAlerts)}>
-              <FaBell id="outlined-icon"/>
+            <FaBell id="outlined-icon" />
           </button>
 
           {showAlerts && (
@@ -68,7 +68,7 @@ const EventNavbar = () => {
           )}
         </div>
 
-        
+
       </NavMenu>
     </StickyNav>
   );

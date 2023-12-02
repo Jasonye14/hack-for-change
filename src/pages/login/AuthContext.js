@@ -3,38 +3,36 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const AuthContext = createContext({
   isLoggedIn: false,
-  setIsLoggedIn: () => {},
+  setIsLoggedIn: () => { },
   currUser: null,
-  setCurrUser: () => {},
+  setCurrUser: () => { },
   pending: true,
-  setPending: () => {}
+  setPending: () => { }
 });
 
 /**
  * abc123@lehigh.edu => abc123lehigh
  * test456@gmail.com => test456gmail
  */
-const getEUsername = (user) => {
-  return user.email.replace(/\..+/g, '').replace('@', '');
-}
+const getEUsername = user => user.email.replace(/\..+/g, '').replace('@', '');
 
 const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);  // default to false
   const [currUser, setCurrUser] = useState(null);       // default to null
-  const [pending, setPending] = useState(true);
+  const [pending, setPending] = useState(true);         // default to true
   const auth = getAuth();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const eUsername = getEUsername(user);
-        const userWithEUsername = { ...user, eUsername: eUsername}
+        let userWithEUsername = { ...user, eUsername }
         setIsLoggedIn(true);
         setCurrUser(userWithEUsername);
       }
       setPending(false);
     })
-  }, []);
+  }, [auth]);
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, currUser, setCurrUser, pending, setPending }}>
@@ -47,4 +45,4 @@ const useAuth = () => {
   return useContext(AuthContext);
 };
 
-export {getEUsername, AuthProvider, useAuth}
+export { getEUsername, AuthProvider, useAuth }

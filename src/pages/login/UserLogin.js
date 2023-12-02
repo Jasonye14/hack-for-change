@@ -1,19 +1,25 @@
+// React
 import React, { useEffect, useState } from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Alert, AlertTitle} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+
+// Mui
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {
+  Alert,
+  AlertTitle,
+  Avatar,
+  Box,
+  Button,
+  Checkbox,
+  Container,
+  CssBaseline,
+  FormControlLabel,
+  Grid,
+  Link,
+  TextField,
+  Typography
+} from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 // Components
 import GoogleButton from '../../components/Buttons/GoogleSignInButton';
@@ -29,6 +35,9 @@ import EmailLogin from '../../database/EmailLogin';
 function UserLogin() {
   const navigate = useNavigate();  // <-- use this hook
   const [errorOpen, setError] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const { isLoggedIn, setIsLoggedIn, currUser, setCurrUser, setPending } = useAuth();
 
   useEffect(() => {
@@ -42,8 +51,8 @@ function UserLogin() {
 
   return (
     <ThemeProvider theme={theme}>
-      <img src={ocean} alt="" style={{position: "absolute", top:0, width: "100vw", height: "100vh", zIndex: -1, opacity: 0.8}}></img>
-      <Container component="main" maxWidth="xs" sx={{backgroundColor: "white", opacity: 0.8, borderRadius: "20px"}}>
+      <img src={ocean} alt="" style={{ position: "absolute", top: 0, width: "100vw", height: "100vh", zIndex: -1, opacity: 0.8 }}></img>
+      <Container component="main" maxWidth="xs" sx={{ backgroundColor: "white", opacity: 0.8, borderRadius: "20px" }}>
         <CssBaseline />
         <Box
           sx={{
@@ -71,7 +80,7 @@ function UserLogin() {
             noValidate
             onSubmit={(event) => {
               event.preventDefault();
-              EmailLogin(event.target, navigate, setPending, setIsLoggedIn, setCurrUser, setError)
+              EmailLogin({ email, password }, navigate, setPending, setIsLoggedIn, setCurrUser, setError)
             }}
           >
             <TextField
@@ -83,6 +92,9 @@ function UserLogin() {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={(event) => {
+                setEmail(event.target.value);
+              }}
             />
             <TextField
               margin="normal"
@@ -93,6 +105,9 @@ function UserLogin() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(event) => {
+                setPassword(event.target.value);
+              }}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -112,7 +127,7 @@ function UserLogin() {
           <GoogleButton onClick={() => GoogleLogin(navigate)}></GoogleButton>
 
           <Grid container>
-            <Grid item sx={{paddingBottom: "20px",}}>
+            <Grid item sx={{ paddingBottom: "20px", }}>
               <Link href="/signup" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>

@@ -4,6 +4,7 @@ import './UserProfiles.css';
 // database
 import db from '../../../utils/firebase';
 import { ref, update } from 'firebase/database';
+import { Button } from '@mui/material';
 
 function UserProfiles({ user }) {
     const [userData, setUserData] = useState({
@@ -12,10 +13,10 @@ function UserProfiles({ user }) {
         email: '',
         phoneNumber: '',
         dateOfBirth: '',
-        address: '',
+        city: '',
         education: '',
         occupation: '',
-        affiliatedOrganization: '' 
+        affiliatedOrganization: ''
     });
 
     const [message, setMessage] = useState(''); // Feedback message
@@ -33,7 +34,7 @@ function UserProfiles({ user }) {
         const phonePattern = /^[0-9]{10}$/; // Very basic phone number validation
 
         if (!emailPattern.test(userData.email)) {
-            setMessage('Please enter a valid email address.');
+            setMessage('Please enter a valid email city.');
             return;
         }
 
@@ -41,7 +42,7 @@ function UserProfiles({ user }) {
             setMessage('Please enter a valid 10-digit phone number.');
             return;
         }
-        
+
         const userReference = ref(db, `/users/${user.uid}`);
         update(userReference, userData);
 
@@ -57,9 +58,20 @@ function UserProfiles({ user }) {
             {message && <p className="feedback">{message}</p>}
 
             <form onSubmit={handleSubmit}>
-            <div className="input-wrapper">
+                <Button
+                    variant="contained"
+                    component="label"
+                >
+                    Change Profile Picture
+                    <input
+                        type="file"
+                        hidden
+                    />
+                </Button>
+
+                <div className="input-wrapper">
                     <label htmlFor="firstName">First Name *</label>
-                    <input 
+                    <input
                         type="text"
                         id="firstName"
                         name="firstName"
@@ -71,7 +83,7 @@ function UserProfiles({ user }) {
 
                 <div className="input-wrapper">
                     <label htmlFor="lastName">Last Name *</label>
-                    <input 
+                    <input
                         type="text"
                         id="lastName"
                         name="lastName"
@@ -83,7 +95,7 @@ function UserProfiles({ user }) {
 
                 <div className="input-wrapper">
                     <label htmlFor="email">Email *</label>
-                    <input 
+                    <input
                         type="email"
                         id="email"
                         name="email"
@@ -95,7 +107,7 @@ function UserProfiles({ user }) {
 
                 <div className="input-wrapper">
                     <label htmlFor="phoneNumber">Phone Number *</label>
-                    <input 
+                    <input
                         type="tel"
                         id="phoneNumber"
                         name="phoneNumber"
@@ -107,7 +119,7 @@ function UserProfiles({ user }) {
 
                 <div className="input-wrapper">
                     <label htmlFor="dateOfBirth">Date of Birth</label>
-                    <input 
+                    <input
                         type="date"
                         id="dateOfBirth"
                         name="dateOfBirth"
@@ -119,7 +131,7 @@ function UserProfiles({ user }) {
 
                 <div className="input-wrapper">
                     <label htmlFor="affiliatedOrganization">Affiliated Organization *</label>
-                    <input 
+                    <input
                         type="text"
                         id="affiliatedOrganization"
                         name="affiliatedOrganization"
@@ -131,7 +143,7 @@ function UserProfiles({ user }) {
 
                 <div className="input-wrapper">
                     <label htmlFor="occupation">Occupation</label>
-                    <input 
+                    <input
                         type="text"
                         id="occupation"
                         name="occupation"
@@ -141,11 +153,11 @@ function UserProfiles({ user }) {
                 </div>
 
                 <div className="input-wrapper">
-                    <label htmlFor="address">Home Address</label>
-                    <textarea 
-                        id="address"
-                        name="address"
-                        value={userData.address}
+                    <label htmlFor="city">City</label>
+                    <input
+                        id="city"
+                        name="city"
+                        value={userData.city}
                         onChange={handleInputChange}
                     />
                 </div>

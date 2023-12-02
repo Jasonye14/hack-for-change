@@ -38,8 +38,8 @@ const UserSignUp = () => {
     const username = data.get('username') ?? '';
     const email = data.get('email');
     const password = data.get('password');
-    const fname = data.get('fname') ?? '';
-    const lname = data.get('lname') ?? '';
+    const firstName = data.get('firstName') ?? '';
+    const lastName = data.get('lastName') ?? '';
 
     const auth = getAuth();
 
@@ -53,14 +53,15 @@ const UserSignUp = () => {
         // form fields
         username: username,
         email: email,
-        fname: fname,
-        lname: lname,
-        role: "User",
+        firstName: firstName,
+        lastName: lastName,
+        admin: false,
 
         // user profile
         phoneNumber: '',
         dateOfBirth: '',
         address: '',
+        gender: '',
         education: '',
         occupation: '',
         affiliatedOrganization: '',
@@ -111,18 +112,18 @@ const UserSignUp = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  name="fname"
+                  name="firstName"
                   fullWidth
-                  id="fname"
+                  id="firstName"
                   label="First Name"
                   autoFocus
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  name="lname"
+                  name="lastName"
                   fullWidth
-                  id="lname"
+                  id="lastName"
                   label="Last Name"
                   autoFocus
                 />
