@@ -1,16 +1,33 @@
 import React, { useState } from 'react';
 import { Box, Typography, Card, CardContent, Button, List, ListItem, ListItemText } from '@mui/material';
-import { FaChartLine, FaPlus, FaUserCheck, FaCommentDots } from 'react-icons/fa';
+import { FaPlus, FaUserCheck, FaCommentDots } from 'react-icons/fa';
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import Menu from '../../../components/Admin_Components/Horizontal_Menu/MenuBar';
-import UserTable from '../../../components/Admin_Components/UserTable/UserTable';
 import './home.css';
 
 const Home = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
+  // Sample data for the chart
+  const data = [
+    { name: 'Jan', participants: 400 },
+    { name: 'Feb', participants: 300 },
+    { name: 'Mar', participants: 500 },
+    { name: 'Apr', participants: 200 },
+    { name: 'May', participants: 350 },
+    { name: 'Jun', participants: 600 },
+    { name: 'Jul', participants: 700 },
+    { name: 'Aug', participants: 500 },
+    { name: 'Sep', participants: 450 },
+    { name: 'Oct', participants: 400 },
+    { name: 'Nov', participants: 550 },
+    { name: 'Dec', participants: 650 }
+  ];
+
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
+
 
   return (
     <div>
@@ -46,10 +63,18 @@ const Home = () => {
 
           {/* Charts Section */}
           <Box className="chart-section">
-            {/* You can use a library like Recharts or Chart.js to render a chart here. */}
-            <FaChartLine size="5em" />
-            <Typography>Participants Over Time</Typography>
+            <Typography variant="h6">Participants Over Time</Typography>
+            <ResponsiveContainer width="95%" height={300}>
+              <LineChart data={data}>
+                <Line type="monotone" dataKey="participants" stroke="#8884d8" />
+                <CartesianGrid stroke="#ccc" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+              </LineChart>
+            </ResponsiveContainer>
           </Box>
+          
 
           {/* Recent Activity */}
           <Box className="activity-section">
