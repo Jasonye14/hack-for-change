@@ -79,7 +79,6 @@ const SeeRepliesButton = styled(Button)`
 const CommentBoxWrapper = styled.div`
   display: flex;
   flex-direction: row;
-
   margin-top: 1rem;
   margin-bottom: 0.5rem;
 `;
