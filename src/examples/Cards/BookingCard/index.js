@@ -7,8 +7,8 @@ import Divider from "@mui/material/Divider";
 import Icon from "@mui/material/Icon";
 
 // Material Dashboard 2 PRO React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
+import MDBox from "../../../components/external_components/MDBox";
+import MDTypography from "../../../components/external_components/MDTypography";
 
 function BookingCard({ image, title, description, price, location, action }) {
   return (

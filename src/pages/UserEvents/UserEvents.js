@@ -12,6 +12,9 @@ import EventsBar from '../../components/EventsBar/EventsBar';
 import db from '../../utils/firebase';
 import { onValue, ref } from "firebase/database";
 
+// External Components
+import BookingCard from '../../examples/Cards/BookingCard';
+
 // Images
 import oceanCleanUp from "../../images/events/OceanCleanup.jpeg";
 import riverCleanUp from "../../images/events/RiverCleanup.jpeg";
@@ -46,10 +49,6 @@ function EventCard (eventID, event, imageSource, navigate) {
           <Typography variant="body2" color="text.secondary">
             {desc}
           </Typography>
-          {/* <CardActions sx={{flexDirection: "column"}}>
-            <Button size="small"><Typography>Location: </Typography>{location}</Button>
-            <Button size="small"><Typography>Time: </Typography>{readableTime}</Button>
-          </CardActions> */}
         </CardContent>
       </CardActionArea>
     </Card>
@@ -72,9 +71,11 @@ const Events = () => {
     <div className='events-wrapper'>
       <EventsBar></EventsBar>
       <div className='events-layout'>
-        {events.map(([eventID, event], index) =>
+        {/* {events.map(([eventID, event], index) =>
           EventCard(eventID, event, images[index%4], navigate)
-        )}
+        )} */}
+
+        <BookingCard></BookingCard>
       </div>
     </div>
   );
