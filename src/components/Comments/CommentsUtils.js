@@ -2,10 +2,55 @@
 import db from '../../utils/firebase';
 import { onValue, ref, query, orderByChild, equalTo, push, runTransaction } from "firebase/database";
 
-
-
+// Final vars
 const COMMENT_REF = `/comments/`;
 
+function calcTimeDifference(dateTime) {
+  const postDate = new Date(dateTime);
+  if (isNaN(postDate.getTime())) {
+    return dateTime;
+  }
+  const currentDate = new Date();
+  const differenceInSeconds = Math.floor((currentDate - postDate) / 1000);
+
+  const minute = 60;
+  const hour = minute * 60;
+  const day = hour * 24;
+  const week = day * 7;
+  const month = day * 30;
+  const year = day * 365;
+
+  let timeDiff = 0;
+  let type = "";
+
+  if (differenceInSeconds < minute) {
+    timeDiff = differenceInSeconds
+    type = 'sec'
+  } else if (differenceInSeconds < hour) {
+    timeDiff = Math.floor(differenceInSeconds / minute);
+    type = 'min'
+  } else if (differenceInSeconds < day) {
+    timeDiff = Math.floor(differenceInSeconds / hour);
+    type = 'hour'
+  } else if (differenceInSeconds < week) {
+    timeDiff = Math.floor(differenceInSeconds / day);
+    type = 'day'
+  } else if (differenceInSeconds < month) {
+    timeDiff = Math.floor(differenceInSeconds / week);
+    type = 'week'
+  } else if (differenceInSeconds < year) {
+    timeDiff = Math.floor(differenceInSeconds / month);
+    type = 'month'
+  } else {
+    timeDiff = Math.floor(differenceInSeconds / year);
+    type = 'year'
+  }
+
+  if (timeDiff > 1) {
+    return `${timeDiff} ${type}s ago`;
+  }
+  return `${timeDiff} ${type} ago`;
+}
 
 function postComment(user, eventID, commentContent, oldComments, setComments) { // setComments in a callback
   if (commentContent === "") {return false}
@@ -34,10 +79,9 @@ function postComment(user, eventID, commentContent, oldComments, setComments) { 
 
 function postSubComment(user, index, subIndex, subCommentContent, oldComments, setComments) {
   if (subCommentContent === "") {return false}
-  // DON'T JUST USE 'comments' - MUST USE ARRAY UNPACKING '[...comments]'
-  // Modifying state object directly will NOT re-render page
-  const updatedComments = [...oldComments]; // Need array unpacking
-  const commentsRef = ref(db, COMMENT_REF + `${index}/subcomments`);
+  const updatedComments = [...oldComments]; // DON'T JUST USE 'comments' - MUST USE ARRAY UNPACKING '[...comments]'
+  const commentID = updatedComments[index].commentID
+  const commentsRef = ref(db, COMMENT_REF + `${commentID}/subcomments`);
   const currDate = new Date();
   let newSubComment = {
     commentID: null,
@@ -57,7 +101,8 @@ function postSubComment(user, index, subIndex, subCommentContent, oldComments, s
 
   const newCommentRef = push(commentsRef, newSubComment);
   newSubComment.commentID = newCommentRef.key;
-  newSubComment.post_date = currDate
+  newSubComment.post_date = currDate;
+  updatedComments[index].subcomments ??= [];
   updatedComments[index].subcomments.push(newSubComment);
   setComments(updatedComments);
   return true;
@@ -109,53 +154,6 @@ function getComments(eventID, setComments) { // setComments is a callback
   });
 }
 
-function calcTimeDifference(dateTime) {
-  const postDate = new Date(dateTime);
-  if (isNaN(postDate.getTime())) {
-    return dateTime;
-  }
-  const currentDate = new Date();
-  const differenceInSeconds = Math.floor((currentDate - postDate) / 1000);
-
-  const minute = 60;
-  const hour = minute * 60;
-  const day = hour * 24;
-  const week = day * 7;
-  const month = day * 30;
-  const year = day * 365;
-
-  let timeDiff = 0;
-  let type = "";
-
-  if (differenceInSeconds < minute) {
-    timeDiff = differenceInSeconds
-    type = 'sec'
-  } else if (differenceInSeconds < hour) {
-    timeDiff = Math.floor(differenceInSeconds / minute);
-    type = 'min'
-  } else if (differenceInSeconds < day) {
-    timeDiff = Math.floor(differenceInSeconds / hour);
-    type = 'hour'
-  } else if (differenceInSeconds < week) {
-    timeDiff = Math.floor(differenceInSeconds / day);
-    type = 'day'
-  } else if (differenceInSeconds < month) {
-    timeDiff = Math.floor(differenceInSeconds / week);
-    type = 'week'
-  } else if (differenceInSeconds < year) {
-    timeDiff = Math.floor(differenceInSeconds / month);
-    type = 'month'
-  } else {
-    timeDiff = Math.floor(differenceInSeconds / year);
-    type = 'year'
-  }
-
-  if (timeDiff > 1) {
-    return `${timeDiff} ${type}s ago`;
-  }
-  return `${timeDiff} ${type} ago`;
-}
-
 function putLikes(user, commentID, subCommentID, newLikes) {
   let likesRef = null;
   if (subCommentID) {
@@ -192,4 +190,11 @@ function putDislikes(user, commentID, subCommentID, newDislikes) {
   });
 }
 
-export { postComment, postSubComment, getComments, calcTimeDifference, putLikes, putDislikes };
+export {
+  calcTimeDifference,
+  postComment,
+  postSubComment,
+  getComments,
+  putLikes,
+  putDislikes
+};
