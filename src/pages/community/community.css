@@ -1,0 +1,12 @@
+/* Additional custom styles if needed */
+.community-page {
+    font-family: 'Arial', sans-serif;
+}
+
+.event-card, .discussion-card {
+    transition: transform 0.3s ease-in-out;
+}
+
+.event-card:hover, .discussion-card:hover {
+    transform: scale(1.03);
+}
