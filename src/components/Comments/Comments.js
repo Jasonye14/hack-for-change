@@ -31,7 +31,7 @@ import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-function CommentTemplate ({comment, index, subIndex, handleSubComment, children}) {
+function CommentTemplate ({comment, index, subIndex, commentID, subCommentID, handleSubComment, children}) {
   const LIKED = 'liked', DISLIKED = 'disliked', DEFAULT = 'default';
   const [replyOpen, setReplyOpen] = useState(false);
   const [seeReplies, setSeeReplies] = useState(false);
@@ -39,42 +39,52 @@ function CommentTemplate ({comment, index, subIndex, handleSubComment, children}
   const [likes, setLikes] = useState(comment.likes);
   const [dislikes, setDislikes] = useState(comment.dislikes);
   const [likeState, setLikeState] = useState(DEFAULT); // Default state is 'default'
-
+  const { currUser } = useAuth();
   
 
-  const handleLikeChange = (index, subIndex, newLikeState) => {
-    if (newLikeState === likeState ||
-      (newLikeState !== LIKED
-      && newLikeState !== DISLIKED
-      && newLikeState !== DEFAULT)
-    ) {
+  const handleLikeChange = (newLikeState) => {
+    if (newLikeState === likeState || (newLikeState !== LIKED && newLikeState !== DISLIKED)) {
       return false;
     }
 
-    if (newLikeState === DEFAULT) {
-      if (likeState === LIKED) {
-        
-      } else { // DISLIKED
-
-      }
-    } else if (likeState === DEFAULT) {
-      if (newLikeState === LIKED) {
-        
-      } else {
-
-      }
-    } else {
-      if (newLikeState === LIKED) {
-
-      } else {
-        
-      }
+    if (newLikeState === LIKED) {
+      putLikes(currUser, commentID, subCommentID, likes + 1);
+      setLikes(likes + 1);
+    } else if (likeState === LIKED) { // Convert like to dislike
+      putLikes(currUser, commentID, subCommentID, likes - 1);
+      setLikes(likes - 1);
     }
 
-    const commentsRef = ref(db, `/comments//`);
-    const currDate = new Date();
+    setLikeState(newLikeState);
+    return true;
+  }
+
+  const handleDislikeChange = (newLikeState) => {
+    if (newLikeState === likeState || (newLikeState !== LIKED && newLikeState !== DISLIKED)) {
+      return false;
+    }
+
+    if (newLikeState === DISLIKED) {
+      putDislikes(currUser, commentID, subCommentID, dislikes + 1);
+      setDislikes(dislikes + 1);
+    } else if (likeState === DISLIKED){ // Convert dislike to like
+      putDislikes(currUser, commentID, subCommentID, dislikes - 1);
+      setDislikes(dislikes - 1);
+    }
 
     setLikeState(newLikeState);
+    return true;
+  }
+
+  const handleRemoveLikeOrDislike = () => {
+    if (likeState === LIKED) {
+      putLikes(currUser, commentID, subCommentID, likes - 1);
+      setLikes(likes - 1);
+    } else {
+      putDislikes(currUser, commentID, subCommentID, dislikes - 1);
+      setDislikes(dislikes - 1);
+    }
+    setLikeState(DEFAULT);
     return true;
   }
 
@@ -105,15 +115,21 @@ function CommentTemplate ({comment, index, subIndex, handleSubComment, children}
           <CommentOptions>
             <span>
               {likeState === LIKED ?
-                <ThumbUpAltIcon onClick={() => handleLikeChange(DEFAULT)}/> :
-                <ThumbUpOffAltIcon onClick={() => handleLikeChange(LIKED)}/>
+                <ThumbUpAltIcon onClick={() => handleRemoveLikeOrDislike()}/> :
+                <ThumbUpOffAltIcon onClick={() => {
+                  handleLikeChange(LIKED)
+                  handleDislikeChange(LIKED)
+                }}/>
               }
               {likes > 0 && likes}
             </span>
             <span>
               {likeState === DISLIKED ?
-                <ThumbDownAltIcon onClick={() => handleLikeChange(DEFAULT)}/> :
-                <ThumbDownOffAltIcon onClick={() => handleLikeChange(DISLIKED)}/>
+                <ThumbDownAltIcon onClick={() => handleRemoveLikeOrDislike()}/> :
+                <ThumbDownOffAltIcon onClick={() => {
+                  handleLikeChange(DISLIKED)
+                  handleDislikeChange(DISLIKED)
+                }}/>
               }
               {dislikes > 0 && dislikes}
             </span>
@@ -187,6 +203,7 @@ function CommentThread ({ comment, index, handleSubComment }) {
     <CommentTemplate
       comment={comment}
       index={index}
+      commentID={comment.commentID}
       handleSubComment={handleSubComment}
     >
       {comment.subcomments?.map((subComment, subIndex) =>
@@ -194,6 +211,8 @@ function CommentThread ({ comment, index, handleSubComment }) {
           comment={subComment}
           index={index}
           subIndex={subIndex}
+          commentID={comment.commentID}
+          subCommentID={subComment.commentID}
           handleSubComment={handleSubComment}
           key={subComment.commentID || subIndex}
         />

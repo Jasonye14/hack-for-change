@@ -156,24 +156,40 @@ function calcTimeDifference(dateTime) {
   return `${timeDiff} ${type} ago`;
 }
 
-async function putLikes(user, index, subIndex, newLikes, setComments) {
+function putLikes(user, commentID, subCommentID, newLikes) {
   let likesRef = null;
-  if (subIndex) {
-    likesRef = ref(db, COMMENT_REF + `${index}/subcomments/${subIndex}/likes`);
+  if (subCommentID) {
+    likesRef = ref(db, COMMENT_REF + `${commentID}/subcomments/${subCommentID}/likes`);
   }
   else {
-    likesRef = ref(db, COMMENT_REF + `${index}/likes`);
+    likesRef = ref(db, COMMENT_REF + `${commentID}/likes`);
   }
 
-  await runTransaction(likesRef, (currLikes) => {
-    return newLikes
-  }).then((res) => {
-    console.log(res);
-  })
+  runTransaction(likesRef, (oldLikes) => {
+    return newLikes;
+  }).then(res => {
+    // console.log(res);
+  }).catch(err => {
+    console.log(err);
+  });
 }
 
-async function putDislikes(user, index, subIndex, newDislikes, setComments) {
+function putDislikes(user, commentID, subCommentID, newDislikes) {
+  let dislikesRef = null;
+  if (subCommentID) {
+    dislikesRef = ref(db, COMMENT_REF + `${commentID}/subcomments/${subCommentID}/dislikes`);
+  }
+  else {
+    dislikesRef = ref(db, COMMENT_REF + `${commentID}/dislikes`);
+  }
 
+  runTransaction(dislikesRef, (oldLikes) => {
+    return newDislikes;
+  }).then(res => {
+    // console.log(res);
+  }).catch(err => {
+    console.log(err);
+  });
 }
 
 export { postComment, postSubComment, getComments, calcTimeDifference, putLikes, putDislikes };
