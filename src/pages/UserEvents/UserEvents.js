@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './UserEvents.css';
 
 // MUI
-import { Card, CardContent, CardMedia, CardActions, CardActionArea } from '@mui/material';
+import { Tooltip, Icon, Card, CardContent, CardMedia, CardActions, CardActionArea } from '@mui/material';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import EventsBar from '../../components/EventsBar/EventsBar';
@@ -14,6 +14,7 @@ import { onValue, ref } from "firebase/database";
 
 // External Components
 import BookingCard from '../../examples/Cards/BookingCard';
+import MDTypography from '../../components/ExternalComponents/MDTypography';
 
 // Images
 import oceanCleanUp from "../../images/events/OceanCleanup.jpeg";
@@ -58,6 +59,26 @@ function EventCard (eventID, event, imageSource, navigate) {
 const Events = () => {
   const [events, setEvents] = useState([]);
   const navigate = useNavigate();
+  // Action buttons for the BookingCard
+  const actionButtons = (
+    <>
+      <Tooltip title="Refresh" placement="bottom">
+        <MDTypography
+          variant="body1"
+          color="primary"
+          lineHeight={1}
+          sx={{ cursor: "pointer", mx: 3 }}
+        >
+          <Icon color="inherit">refresh</Icon>
+        </MDTypography>
+      </Tooltip>
+      <Tooltip title="Edit" placement="bottom">
+        <MDTypography variant="body1" color="info" lineHeight={1} sx={{ cursor: "pointer", mx: 3 }}>
+          <Icon color="inherit">edit</Icon>
+        </MDTypography>
+      </Tooltip>
+    </>
+  );
 
   useEffect(() => {
     // load events from db
@@ -75,7 +96,15 @@ const Events = () => {
           EventCard(eventID, event, images[index%4], navigate)
         )} */}
 
-        <BookingCard></BookingCard>
+        <BookingCard
+          image={oceanCleanUp}
+          title="Cozy 5 Stars Apartment"
+          description='The place is close to Barceloneta Beach and bus stop just 2 min by walk and near to "Naviglio" where you can enjoy the main night life in Barcelona.'
+          price="$899/night"
+          location="Barcelona, Spain"
+          action={actionButtons}
+        />
+
       </div>
     </div>
   );

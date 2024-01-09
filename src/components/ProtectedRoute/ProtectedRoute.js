@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate, useParams } from 'react-router-dom';
-import { useAuth } from '../../pages/login/AuthContext';
+import { useAuth } from '../../pages/Login/AuthContext';
 
 // database
 import { child, get, ref } from "firebase/database";

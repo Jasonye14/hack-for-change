@@ -7,8 +7,8 @@ import { getDatabase, ref, onValue, push, remove } from 'firebase/database';
 import styled from "@emotion/styled";
 
 
-import Menu from '../../../components/Admin_Components/Horizontal_Menu/MenuBar';
-import UserTable from '../../../components/Admin_Components/UserTable/UserTable';
+import Menu from '../../../components/AdminComponents/Horizontal_Menu/MenuBar';
+import UserTable from '../../../components/AdminComponents/UserTable/UserTable';
 
 
 //styles for tags

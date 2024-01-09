@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container, Typography, Box, Paper, Grid, Button, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { FaCreditCard, FaCheckCircle, FaExclamationCircle, FaArrowUp, FaDollarSign } from 'react-icons/fa';
 import './billing.css';
-import Menu from '../../../components/Admin_Components/Horizontal_Menu/MenuBar';
+import Menu from '../../../components/AdminComponents/Horizontal_Menu/MenuBar';
 
 
 function AdminBilling() {

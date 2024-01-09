@@ -17,7 +17,7 @@ import {
 // Firebase
 import db from '../../utils/firebase';
 import { onValue, ref, query, orderByChild, equalTo, push } from "firebase/database";
-import { useAuth } from "../../pages/login/AuthContext";
+import { useAuth } from "../../pages/Login/AuthContext";
 import { postComment, postSubComment, getComments, calcTimeDifference, putLikes, putDislikes } from "./CommentsUtils";
 
 // Images/Icons

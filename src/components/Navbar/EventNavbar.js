@@ -10,7 +10,7 @@ import {
 import { FaBell } from 'react-icons/fa';
 
 import { getAuth, signOut } from "firebase/auth";
-import { useAuth } from '../../pages/login/AuthContext';
+import { useAuth } from '../../pages/Login/AuthContext';
 
 import NewEventForm from '../NewEventForm/NewEventForm.js'; // this wikll be moved into admin menu bar
 import UserProfile from '../Users/UserDropdown/UserDropdown';

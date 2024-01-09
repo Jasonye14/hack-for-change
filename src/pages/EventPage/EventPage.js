@@ -13,7 +13,7 @@ import LoadingPage from "../LoadingPage/LoadingPage";
 import Comments from "../../components/Comments/Comments";
 
 // Auth
-import { useAuth } from "../login/AuthContext";
+import { useAuth } from "../Login/AuthContext";
 
 // Firebase
 import db from "../../utils/firebase";

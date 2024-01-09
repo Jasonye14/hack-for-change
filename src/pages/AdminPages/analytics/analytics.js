@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container, Typography, Box, Paper, Grid } from '@mui/material';
 import { FaUsers, FaCalendarCheck, FaThumbsUp, FaClipboardCheck, FaHandshake, FaCalendarPlus } from 'react-icons/fa';
 import './analytics.css';
-import Menu from '../../../components/Admin_Components/Horizontal_Menu/MenuBar';
+import Menu from '../../../components/AdminComponents/Horizontal_Menu/MenuBar';
 
 
 function AdminAnalytics() {

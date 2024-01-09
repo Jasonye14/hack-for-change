@@ -26,7 +26,7 @@ import GoogleButton from '../../components/Buttons/GoogleSignInButton';
 import GoogleLogin from '../../database/GoogleLogin';
 
 // Auth
-import { useAuth } from '../../pages/login/AuthContext';
+import { useAuth } from './AuthContext';
 
 // Images
 import ocean from '../../images/login/oceanBackground.jpg';

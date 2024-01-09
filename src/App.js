@@ -3,29 +3,29 @@ import React from 'react';
 import DefaultNavbar from './components/Navbar/DefaultNavbar';
 import EventNavbar from './components/Navbar/EventNavbar';
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
-import Home from './pages/home/home';
+import Home from './pages/Home/home';
 import UserEvents from './pages/UserEvents/UserEvents';
-import UserLogin from './pages/login/UserLogin';
-import UserSignUp from './pages/signup/UserSignup';
+import UserLogin from './pages/Login/UserLogin';
+import UserSignUp from './pages/Signup/UserSignup';
 import UserSettings from './components/Users/UserSettings/UserSettings';
 import UserProfiles from './components/Users/UserProfiles/UserProfiles';
-import Events from './pages/events/events';
+import Events from './pages/Events/events';
 import EventPage from './pages/EventPage/EventPage';
-import FAQ from './pages/faq/faq';
-import Community from './pages/community/community';
-import Volunteer from './pages/volunteer/volunteer';
-import Resources from './pages/resources/resources';
+import FAQ from './pages/FAQ/faq';
+import Community from './pages/Community/community';
+import Volunteer from './pages/Volunteer/volunteer';
+import Resources from './pages/Resources/resources';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import NotFound from './pages/NotFound';
-import { AuthProvider, useAuth } from './pages/login/AuthContext';
+import { AuthProvider, useAuth } from './pages/Login/AuthContext';
 
 // admin
-import AdminDashboard from './pages/Admin_Pages/home/home';
-import AdminMembers from './pages/Admin_Pages/members/members';
-import AdminEvents from './pages/Admin_Pages/edit-events/edit-events';
-import AdminAnnouncements from './pages/Admin_Pages/announcements/announcements';
-import AdminAnalytics from './pages/Admin_Pages/analytics/analytics';
-import AdminBilling from './pages/Admin_Pages/billing/billing'
+import AdminDashboard from './pages/AdminPages/home/home';
+import AdminMembers from './pages/AdminPages/members/members';
+import AdminEvents from './pages/AdminPages/edit-events/edit-events';
+import AdminAnnouncements from './pages/AdminPages/announcements/announcements';
+import AdminAnalytics from './pages/AdminPages/analytics/analytics';
+import AdminBilling from './pages/AdminPages/billing/billing'
 
 function App(props) {
   return (

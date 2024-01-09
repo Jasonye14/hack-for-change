@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Typography, Card, CardContent, Button, List, ListItem, ListItemText, TextField, IconButton, ListItemSecondaryAction, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { FaPlus, FaTrash, FaEdit } from 'react-icons/fa';
-import Menu from '../../../components/Admin_Components/Horizontal_Menu/MenuBar';
+import Menu from '../../../components/AdminComponents/Horizontal_Menu/MenuBar';
 import './announcements.css';
 import mockAnnouncements from './mock';  //to be replaced by firebase databse
 

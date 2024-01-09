@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Typography, Card, CardContent, Button, List, ListItem, ListItemText } from '@mui/material';
 import { FaPlus, FaUserCheck, FaCommentDots } from 'react-icons/fa';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import Menu from '../../../components/Admin_Components/Horizontal_Menu/MenuBar';
+import Menu from '../../../components/AdminComponents/Horizontal_Menu/MenuBar';
 import './home.css';
 
 const Home = () => {
