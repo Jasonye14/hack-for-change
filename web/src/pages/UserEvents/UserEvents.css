@@ -23,8 +23,8 @@
   max-height: calc(100vh - 5.5rem - 4rem);  /* example height; adjust as needed */
   overflow-y: auto;  /* make it scrollable */
 
-  padding: 30px 0px 0px 50px;
-  top: 2rem;
+  padding: 30px 50px 30px 80px;
+  top: 3rem;
   
 
   background-color: rgb(120,79,56);

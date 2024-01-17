@@ -42,7 +42,7 @@
 .event-bar {
   position: sticky;
   top: 4rem;
-  width: 97.6%;
+  width: 96.4%;
   display: flex;
   align-items: center;
   padding: 10px 20px;
@@ -60,9 +60,10 @@
 }
 
 .search-input {
-    width: 30%;
+    width: 50%;
+    margin-left: 150px;
     padding: 10px;
-    border-radius: 15px;
+    border-radius: 20px;
     border: 1px solid #aaa;  /* You can darken this slightly if needed */
     outline: none;
     color: #333;  /* Dark text for readability on light backgrounds */
@@ -70,12 +71,25 @@
 }
 
 .dropdown {
-    margin-left: 10px;
-    border: none;
-    border-radius: 15px;
-    padding: 10px 15px;
-    background-color: #e0e0e0;  /* Slightly grey background for the dropdown */
-    color: #333;  /* Dark text */
-    cursor: pointer;
-    outline: none;
+  margin-left: 10px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 15px;
+  padding: 10px 15px;
+  background-color: #e0e0e0;  /* Slightly grey background for the dropdown */
+  color: #333;  /* Dark text */
+  cursor: pointer;
+  outline: none;
+}
+
+.dropdown3 {
+  margin-left: 10px;
+  margin-right: 170px;
+  border: none;
+  border-radius: 15px;
+  padding: 10px 15px;
+  background-color: #e0e0e0;  /* Slightly grey background for the dropdown */
+  color: #333;  /* Dark text */
+  cursor: pointer;
+  outline: none;
 }
